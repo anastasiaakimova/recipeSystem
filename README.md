@@ -1,4 +1,4 @@
-# Resipe and ingredients
+# Recipe and ingredients
 
 Задание:
 Консольное приложение.
