@@ -28,7 +28,6 @@ public class RecipeRepoImpl implements RecipeRepository {
             Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
             recipes.add(recipe);
         }
-
         return recipes;
     }
 
@@ -70,8 +69,13 @@ public class RecipeRepoImpl implements RecipeRepository {
         return (Recipe) recipes;
     }
 
+    //дописать или переписать запрос
     @Override
     public Recipe viewIngredients() throws SQLException {
+        String query = "SELECT id, name FROM recipe " +
+                "LEFT JOIN ingredients ON recipeIngredients.idRecipe=recipe.id " +
+                "AND recipeIngredients.idIngredient = ingredient.id";
+
         return null;
     }
 
