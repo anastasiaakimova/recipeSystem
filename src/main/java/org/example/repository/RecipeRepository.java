@@ -7,7 +7,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface RecipeRepository extends GenericRepository<Recipe, Integer> {
+    // get recipe by name
     Recipe findByName(Recipe name) throws SQLException;
 
-    List<Recipe> viewIngredients(List<Ingredient> ingredient) throws SQLException;
+    // get recipe's ingredients
+    Recipe viewIngredients() throws SQLException;
+
+    // find recipes by ingredients
+    List<Recipe> findRecipesByIngredients(List<Ingredient> ingredient) throws SQLException;
 }
