@@ -33,7 +33,7 @@ public class RecipeRepoImpl implements RecipeRepository {
 
     //дописать
     @Override
-    public Recipe findById(Integer i) throws SQLException {
+    public Recipe findById(Integer id) throws SQLException {
         String query = "SELECT id, name FROM recipe WHERE id = ?";
 
         Scanner scanner = new Scanner(System.in);
@@ -44,21 +44,20 @@ public class RecipeRepoImpl implements RecipeRepository {
         resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
-            Recipe newRecipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
+            Recipe newRecipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getArray());
             recipe.setId(id);
         }
         return recipe;
     }
 
     @Override
-    public Recipe findByName(Recipe name) throws SQLException {
-        String query = "SELECT id, name FROM recipe WHERE name = ?";
+    public Recipe findByName(String name) throws SQLException {
+        String query = "SELECT * FROM recipe WHERE name = ?";
         List<Recipe> recipes = new ArrayList<Recipe>();
-        Scanner scanner = new Scanner(System.in);
-        String recipeName = scanner.nextLine();
+
 
         preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, recipeName);
+        preparedStatement.setString(1, name);
         resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
