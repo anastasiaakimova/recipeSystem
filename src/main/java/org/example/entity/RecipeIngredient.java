@@ -1,14 +1,14 @@
 package org.example.entity;
 
-public class RecipeIngredients {
+public class RecipeIngredient {
     private int recipeId;
     private int ingredientId;
     private int requiredAmount;
 
-    public RecipeIngredients() {
+    public RecipeIngredient() {
     }
 
-    public RecipeIngredients(int recipeId, int ingredientId, int requiredAmount) {
+    public RecipeIngredient(int recipeId, int ingredientId, int requiredAmount) {
         this.recipeId = recipeId;
         this.ingredientId = ingredientId;
         this.requiredAmount = requiredAmount;

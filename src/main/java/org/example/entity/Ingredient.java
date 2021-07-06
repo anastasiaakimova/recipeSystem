@@ -7,16 +7,14 @@ public class Ingredient {
     private String name;
     private float calories;
 
-    private List<RecipeIngredients> recipeIngredients;
 
     public Ingredient() {
     }
 
-    public Ingredient(int id, String name, float calories, List<RecipeIngredients> recipeIngredients) {
+    public Ingredient(int id, String name, float calories) {
         this.id = id;
         this.name = name;
         this.calories = calories;
-        this.recipeIngredients = recipeIngredients;
     }
 
     public int getId() {
@@ -43,11 +41,4 @@ public class Ingredient {
         this.calories = calories;
     }
 
-    public List<RecipeIngredients> getRecipeIngredients() {
-        return recipeIngredients;
-    }
-
-    public void setRecipeIngredients(List<RecipeIngredients> recipeIngredients) {
-        this.recipeIngredients = recipeIngredients;
-    }
 }

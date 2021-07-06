@@ -8,12 +8,12 @@ public class Recipe {
     private String name;
     private String description;
 
-    private List<RecipeIngredients> recipeIngredients;
+    private List<RecipeIngredient> recipeIngredients;
 
     public Recipe() {
     }
 
-    public Recipe(int id, String name, String description, List<RecipeIngredients> recipeIngredients) {
+    public Recipe(int id, String name, String description, List<RecipeIngredient> recipeIngredients) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -49,11 +49,21 @@ public class Recipe {
         this.description = description;
     }
 
-    public List<RecipeIngredients> getRecipeIngredients() {
+    public List<RecipeIngredient> getRecipeIngredients() {
         return recipeIngredients;
     }
 
-    public void setRecipeIngredients(List<RecipeIngredients> recipeIngredients) {
+    public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
+    }
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", recipeIngredients=" + recipeIngredients +
+                '}';
     }
 }
