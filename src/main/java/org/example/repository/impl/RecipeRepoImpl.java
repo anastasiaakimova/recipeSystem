@@ -71,7 +71,7 @@ public class RecipeRepoImpl implements RecipeRepository {
 
     // метода выводит все поля рецепта по заданному имени
     @Override
-    public Recipe findByName(String name) throws SQLException {
+    public Recipe getByName(String name) throws SQLException {
         String query = "SELECT * FROM recipe WHERE name = ?";
         List<Recipe> recipes = new ArrayList<Recipe>();
 
@@ -82,7 +82,7 @@ public class RecipeRepoImpl implements RecipeRepository {
             Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
             recipes.add(recipe);
         }
-    //    Map<String, Recipe> map = new HashMap<>();
+        //    Map<String, Recipe> map = new HashMap<>();
 
         return (Recipe) recipes;
     }
@@ -103,7 +103,7 @@ public class RecipeRepoImpl implements RecipeRepository {
         Map<String, Recipe> map = new HashMap<>();
 
         while (resultSet.next()) {
-            if(map.containsKey(resultSet.getString("recipeName"))){
+            if (map.containsKey(resultSet.getString("recipeName"))) {
                 Ingredient ingredient = new Ingredient();
                 map.get(resultSet.getString("recipeName")).getRecipeIngredients().add(ingredient);
             } else {
