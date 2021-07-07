@@ -4,9 +4,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface GenericRepository<T, ID> {
-    // get all
+
+    T save(T t);
+
+    T update(T t);
+
     List<T> findAll() throws SQLException;
 
-    // get by id
     T findById(ID id) throws SQLException;
+
+    void deleteById(ID id);
 }
