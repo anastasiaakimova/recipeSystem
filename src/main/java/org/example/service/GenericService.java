@@ -13,5 +13,5 @@ public interface GenericService <T, ID>{
 
     T getById(ID id) throws SQLException;
 
-    void deleteById(ID id) throws SQLException;
+    void remove(ID id) throws SQLException;
 }
