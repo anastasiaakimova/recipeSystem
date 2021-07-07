@@ -21,7 +21,7 @@ public class RecipeRepoImpl implements RecipeRepository {
 
     // методы выводит все поля всех рецептов
     @Override
-    public List<Recipe> findAll() throws SQLException {
+    public List<Recipe> getAll() throws SQLException {
         List<Recipe> recipes = new ArrayList<Recipe>();
         String query = "SELECT * FROM recipe";
         preparedStatement = connection.prepareStatement(query);
@@ -33,10 +33,22 @@ public class RecipeRepoImpl implements RecipeRepository {
         return recipes;
     }
 
+    // добавление рецепта
+    @Override
+    public Recipe save(Recipe recipe) {
+        return null;
+    }
+
+    // редактироание рецепта
+    @Override
+    public Recipe update(Recipe recipe) {
+        return null;
+    }
+
     // метод выводит все поля рецептов по заданному id
     //дописать
     @Override
-    public Recipe findById(Integer id) throws SQLException {
+    public Recipe getById(Integer id) throws SQLException {
         String query = "SELECT * FROM recipe WHERE id = ?";
 
         Recipe recipe = null;
@@ -49,6 +61,12 @@ public class RecipeRepoImpl implements RecipeRepository {
             recipe.setId(id);
         }
         return recipe;
+    }
+
+    // удаление рецепта
+    @Override
+    public void deleteById(Integer integer) {
+
     }
 
     // метода выводит все поля рецепта по заданному имени
