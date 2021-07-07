@@ -2,13 +2,15 @@ package org.example.service.impl;
 
 import org.example.entity.Recipe;
 import org.example.repository.RecipeRepository;
+import org.example.repository.impl.RecipeRepoImpl;
 import org.example.service.RecipeService;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class RecipeServiceImpl implements RecipeService {
-    private RecipeRepository recipeRepository;
+
+    private RecipeRepository recipeRepository = new RecipeRepoImpl();
 
     @Override
     public Recipe save(Recipe recipe) throws SQLException {
