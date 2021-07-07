@@ -5,13 +5,13 @@ import java.util.List;
 
 public interface GenericRepository<T, ID> {
 
-    T save(T t);
+    T save(T t) throws SQLException;
 
-    T update(T t);
+    T update(T t) throws SQLException;
 
-    List<T> findAll() throws SQLException;
+    List<T> getAll() throws SQLException;
 
-    T findById(ID id) throws SQLException;
+    T getById(ID id) throws SQLException;
 
-    void deleteById(ID id);
+    void deleteById(ID id) throws SQLException;
 }
