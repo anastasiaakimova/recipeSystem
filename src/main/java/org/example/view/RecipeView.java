@@ -106,8 +106,33 @@ public class RecipeView {
         }
     }
 
-    private void findRecipeByIngredientsSet() {
+    private void findRecipeByIngredientsSet() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        Set ingredientsSet = new HashSet<Ingredient>();
 
+        boolean go = true;
+        while (go) {
+            System.out.println("Enter recipe's ingredient, please: ");
+            System.out.println("If you don't want to add ingredient enter no. ");
+            go = isGo(scanner, ingredientsSet, go);
+        }
+        recipeService.findByIngredientsSet(ingredientsSet);
+    }
+
+    private boolean isGo(Scanner scanner, Set ingredientsSet, boolean go) {
+        String yesOrNo = scanner.nextLine();
+        switch (yesOrNo.toLowerCase()) {
+            case "no":
+                System.out.println("You choose do not add new ingredient");
+                go = false;
+                break;
+            default:
+                System.out.println("Enter name of ingredient :");
+                String ingredient = scanner.nextLine();
+                ingredientsSet.add(ingredient);
+                break;
+        }
+        return go;
     }
 
     private void addRecipe() throws SQLException {
@@ -129,24 +154,13 @@ public class RecipeView {
             while (go) {
                 System.out.println("Enter recipe's ingredient, please: ");
                 System.out.println("If you don't want to add ingredient enter no: ");
-                String yesOrNo = scanner.nextLine();
-                switch (yesOrNo.toLowerCase()) {
-                    case "no":
-                        System.out.println("You choose do not add new ingredient");
-                        go = false;
-                        break;
-                        default:
-                        System.out.println("Enter name of ingredient :");
-                        String ingredient = scanner.nextLine();
-                        ingredientsSet.add(ingredient);
-                        break;
-                }
+                go = isGo(scanner, ingredientsSet, go);
             }
-                recipeService.save(recipe);
-            } catch(InputMismatchException e){
-                System.out.println(e.getMessage());
-            }
+            recipeService.save(recipe);
+        } catch (InputMismatchException e) {
+            System.out.println(e.getMessage());
         }
+    }
 
     private void deleteRecipe() throws SQLException {
         Scanner scanner = new Scanner(System.in);
