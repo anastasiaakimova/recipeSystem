@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class RecipeView {
+    private MainView mainView;
 
     private RecipeServiceImpl recipeService = new RecipeServiceImpl();
-    
-    
+
     public void run() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         boolean go = true;
@@ -20,7 +20,9 @@ public class RecipeView {
         System.out.println("1. Show all recipe list");
         System.out.println("2. Find recipe by name");
         System.out.println("3. Find recipe by set of ingredients");
-        System.out.println("4. End");
+        System.out.println("4. Add recipe ");
+        System.out.println("5. Delete recipe ");
+        System.out.println("6. Back");
         while (go) {
             int number = scanner.nextInt();
             switch (number) {
@@ -34,14 +36,29 @@ public class RecipeView {
                     findRecipeByIngredientsSet();
                     break;
                 case 4:
-                    go = false;
+                    addRecipe();
+                    break;
+                case 5:
+                    deleteRecipe();
+                    break;
+                case 6:
+                    showMainMenu();
                     break;
                 default:
                     System.out.println("Wrong number");
-                    System.out.println("Enter number from 1 to 4, please");
-
+                    System.out.println("Enter number from 1 to 6, please");
             }
         }
+    }
+
+    private void deleteRecipe() {
+    }
+
+    private void addRecipe() {
+    }
+
+    private void showMainMenu() throws SQLException{
+        mainView.getInstance().run();
     }
 
     private void showAllRecipes() throws SQLException {
