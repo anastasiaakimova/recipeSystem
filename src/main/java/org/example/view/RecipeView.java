@@ -1,12 +1,11 @@
 package org.example.view;
 
+import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
 import org.example.service.impl.RecipeServiceImpl;
 
 import java.sql.SQLException;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class RecipeView {
     private MainView mainView;
@@ -92,6 +91,9 @@ public class RecipeView {
                     recipeService.update(recipe);
                     break;
                 case 2:
+                    Scanner scanner2 = new Scanner(System.in);
+                    System.out.println("Enter ingredients which you want to delete, please: ");
+                    //thinking
 
                     break;
                 case 3:
@@ -105,6 +107,7 @@ public class RecipeView {
     }
 
     private void findRecipeByIngredientsSet() {
+
     }
 
     private void addRecipe() throws SQLException {
@@ -120,15 +123,30 @@ public class RecipeView {
             String description = scanner.nextLine();
             recipe.setDescription(description);
 
-            System.out.println("Enter recipe's ingredients, please: ");
-            //thinking
+            Set ingredientsSet = new HashSet<Ingredient>();
 
-
-            recipeService.save(recipe);
-        } catch (InputMismatchException e) {
-            System.out.println(e.getMessage());
+            boolean go = true;
+            while (go) {
+                System.out.println("Enter recipe's ingredient, please: ");
+                System.out.println("If you don't want to add ingredient enter no: ");
+                String yesOrNo = scanner.nextLine();
+                switch (yesOrNo.toLowerCase()) {
+                    case "no":
+                        System.out.println("You choose do not add new ingredient");
+                        go = false;
+                        break;
+                        default:
+                        System.out.println("Enter name of ingredient :");
+                        String ingredient = scanner.nextLine();
+                        ingredientsSet.add(ingredient);
+                        break;
+                }
+            }
+                recipeService.save(recipe);
+            } catch(InputMismatchException e){
+                System.out.println(e.getMessage());
+            }
         }
-    }
 
     private void deleteRecipe() throws SQLException {
         Scanner scanner = new Scanner(System.in);
