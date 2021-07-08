@@ -4,6 +4,7 @@ import org.example.entity.Recipe;
 import org.example.service.impl.RecipeServiceImpl;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -61,7 +62,6 @@ public class RecipeView {
         System.out.println("Enter recipe's name, please: ");
         String name = scanner.nextLine();
 
-        // проверка на null
         try {
             if (recipeService.findByName(name) != null) {
                 System.out.println(recipeService.findByName(name).toString());
@@ -101,7 +101,27 @@ public class RecipeView {
     private void findRecipeByIngredientsSet() {
     }
 
-    private void addRecipe() {
+    private void addRecipe() throws SQLException {
+        try {
+            Scanner scanner = new Scanner(System.in);
+            Recipe recipe = new Recipe();
+
+            System.out.println("Enter recipe's name, please: ");
+            String name = scanner.nextLine();
+            recipe.setName(name);
+
+            System.out.println("Enter recipe's description, please: ");
+            String description = scanner.nextLine();
+            recipe.setDescription(description);
+
+            System.out.println("Enter recipe's ingredients, please: ");
+            //thinking
+
+
+            recipeService.save(recipe);
+        } catch (InputMismatchException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void deleteRecipe() throws SQLException {
