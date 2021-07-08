@@ -39,13 +39,12 @@ public class MainView {
                     break;
                 default:
                     System.out.println("Wrong number");
-                    System.out.println("Enter number from 1 to 4, please");
-
+                    System.out.println("Enter number from 1 to 3, please");
             }
         }
     }
 
-    public void showRecipeMenu() throws SQLException{
+    public void showRecipeMenu() throws SQLException {
         recipeView.run();
     }
 }
