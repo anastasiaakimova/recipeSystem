@@ -71,7 +71,10 @@ public class RecipeView {
         } catch (NullPointerException e) {
             System.out.println("There is no name");
         }
+
         findRecipeByName();
+
+        Recipe recipe = recipeService.findByName(name);
 
         System.out.println("You can edit description or delete some ingredients");
         System.out.println("1. Edit descriptions ");
@@ -82,7 +85,11 @@ public class RecipeView {
             int number = scanner.nextInt();
             switch (number) {
                 case 1:
-
+                    Scanner scanner1 = new Scanner(System.in);
+                    System.out.println("Enter new description, please: ");
+                    String newDescription = scanner1.nextLine();
+                    recipe.setDescription(newDescription);
+                    recipeService.update(recipe);
                     break;
                 case 2:
 
@@ -90,7 +97,6 @@ public class RecipeView {
                 case 3:
                     run();
                     break;
-
                 default:
                     System.out.println("Wrong number");
                     System.out.println("Enter number from 1 to 3, please");
