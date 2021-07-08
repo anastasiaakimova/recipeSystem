@@ -14,7 +14,6 @@ public class RecipeView {
 
     public void run() throws SQLException {
         Scanner scanner = new Scanner(System.in);
-        boolean go = true;
 
         System.out.println("Choose number to do operation, please: ");
         System.out.println("1. Show all recipe list");
@@ -23,7 +22,7 @@ public class RecipeView {
         System.out.println("4. Add recipe ");
         System.out.println("5. Delete recipe ");
         System.out.println("6. Back");
-        while (go) {
+        while (true) {
             int number = scanner.nextInt();
             switch (number) {
                 case 1:
@@ -49,16 +48,6 @@ public class RecipeView {
                     System.out.println("Enter number from 1 to 6, please");
             }
         }
-    }
-
-    private void deleteRecipe() {
-    }
-
-    private void addRecipe() {
-    }
-
-    private void showMainMenu() throws SQLException{
-        mainView.getInstance().run();
     }
 
     private void showAllRecipes() throws SQLException {
@@ -88,8 +77,8 @@ public class RecipeView {
         System.out.println("1. Edit descriptions ");
         System.out.println("2. Delete ingredients ");
         System.out.println("3. Back ");
-        boolean go = true;
-        while (go) {
+
+        while (true) {
             int number = scanner.nextInt();
             switch (number) {
                 case 1:
@@ -99,13 +88,12 @@ public class RecipeView {
 
                     break;
                 case 3:
-                    go = false;
+                    run();
                     break;
 
                 default:
                     System.out.println("Wrong number");
                     System.out.println("Enter number from 1 to 3, please");
-
             }
         }
     }
@@ -113,4 +101,18 @@ public class RecipeView {
     private void findRecipeByIngredientsSet() {
     }
 
+    private void addRecipe() {
+    }
+
+    private void deleteRecipe() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter recipe's name which you want to delete, please: ");
+        String name = scanner.nextLine();
+        Recipe recipe = recipeService.findByName(name);
+        recipeService.remove(recipe.getId());
+    }
+
+    private void showMainMenu() throws SQLException {
+        mainView.getInstance().run();
+    }
 }
