@@ -5,6 +5,7 @@ import org.example.entity.Recipe;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 public interface RecipeRepository extends GenericRepository<Recipe, Integer> {
     // get recipe by name
@@ -14,5 +15,5 @@ public interface RecipeRepository extends GenericRepository<Recipe, Integer> {
     Recipe viewIngredients() throws SQLException;
 
     // find recipes by ingredients
-    List<Recipe> findRecipesByIngredients(List<Ingredient> ingredient) throws SQLException;
+    List<Recipe> findRecipesByIngredients(Set<Ingredient> ingredient) throws SQLException;
 }

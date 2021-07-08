@@ -1,5 +1,6 @@
 package org.example.service.impl;
 
+import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
 import org.example.repository.RecipeRepository;
 import org.example.repository.impl.RecipeRepoImpl;
@@ -7,6 +8,7 @@ import org.example.service.RecipeService;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 public class RecipeServiceImpl implements RecipeService {
 
@@ -40,5 +42,10 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe findByName(String name) throws SQLException {
         return recipeRepository.getByName(name);
+    }
+
+    @Override
+    public Recipe findByIngredientsSet(Set<Ingredient> ingredient) throws SQLException {
+        return (Recipe) recipeRepository.findRecipesByIngredients(ingredient);
     }
 }

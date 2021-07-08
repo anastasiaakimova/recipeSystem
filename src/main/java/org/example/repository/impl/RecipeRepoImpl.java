@@ -8,10 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RecipeRepoImpl implements RecipeRepository {
 
@@ -105,21 +102,21 @@ public class RecipeRepoImpl implements RecipeRepository {
         while (resultSet.next()) {
             if (map.containsKey(resultSet.getString("recipeName"))) {
                 Ingredient ingredient = new Ingredient();
-                map.get(resultSet.getString("recipeName")).getRecipeIngredients().add(ingredient);
+    //            map.get(resultSet.getString("recipeName")).getRecipeIngredients().add(ingredient);
             } else {
                 Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
                 Ingredient ingredient = new Ingredient();
-                recipe.getRecipeIngredients().add(ingredient);
+     //           recipe.getRecipeIngredients().add(ingredient);
                 map.put(recipe.getName(), recipe);
             }
         }
-        map
+   //     map
         return null;
     }
 
     // метод показывает все возможные рецепты по заданному сету ингредиентов
     @Override
-    public List<Recipe> findRecipesByIngredients(List<Ingredient> ingredient) throws SQLException {
+    public List<Recipe> findRecipesByIngredients(Set<Ingredient> ingredient) throws SQLException {
         return null;
     }
 }
