@@ -17,6 +17,7 @@ public class RecipeRepoImpl implements RecipeRepository {
     ResultSet resultSet = null;
 
     // методы выводит все поля всех рецептов
+    //дописать вывод ингридиентов тоже
     @Override
     public List<Recipe> getAll() throws SQLException {
         List<Recipe> recipes = new ArrayList<Recipe>();
@@ -27,6 +28,8 @@ public class RecipeRepoImpl implements RecipeRepository {
             Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
             recipes.add(recipe);
         }
+        preparedStatement.close();
+        connection.close();
         return recipes;
     }
 
@@ -46,13 +49,22 @@ public class RecipeRepoImpl implements RecipeRepository {
     }
 
     // редактироание рецепта
+    // дописать апдейт ингридиентов тоже
     @Override
-    public Recipe update(Recipe recipe) {
-        return null;
+    public Recipe update(Recipe recipe) throws SQLException {
+        String query = "UPDATE recipe SET name = ?, description = ? WHERE id = ?";
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, recipe.getName());
+        preparedStatement.setString(2, recipe.getDescription());
+        preparedStatement.setInt(3, recipe.getId());
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        connection.close();
+        return recipe;
     }
 
     // метод выводит все поля рецептов по заданному id
-    //дописать
+    //дописать вывод ингридиентов тоже
     @Override
     public Recipe getById(Integer id) throws SQLException {
         String query = "SELECT * FROM recipe WHERE id = ?";
@@ -80,6 +92,7 @@ public class RecipeRepoImpl implements RecipeRepository {
     }
 
     // метода выводит все поля рецепта по заданному имени
+    // дописать
     @Override
     public Recipe getByName(String name) throws SQLException {
         String query = "SELECT * FROM recipe WHERE name = ?";
@@ -93,7 +106,8 @@ public class RecipeRepoImpl implements RecipeRepository {
             recipes.add(recipe);
         }
         //    Map<String, Recipe> map = new HashMap<>();
-
+        preparedStatement.close();
+        connection.close();
         return (Recipe) recipes;
     }
 
@@ -124,6 +138,9 @@ public class RecipeRepoImpl implements RecipeRepository {
             }
         }
         //     map
+        preparedStatement.close();
+        connection.close();
+
         return null;
     }
 
