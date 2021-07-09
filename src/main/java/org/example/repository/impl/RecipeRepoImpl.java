@@ -2,6 +2,7 @@ package org.example.repository.impl;
 
 import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
+import org.example.entity.RecipeIngredient;
 import org.example.repository.RecipeRepository;
 
 import java.sql.Connection;
@@ -16,16 +17,18 @@ public class RecipeRepoImpl implements RecipeRepository {
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
 
-    // методы выводит все поля всех рецептов
-    //дописать вывод ингридиентов тоже
+    // методы выводит все поля всех рецептов и их ингридиенты
     @Override
     public List<Recipe> getAll() throws SQLException {
         List<Recipe> recipes = new ArrayList<Recipe>();
-        String query = "SELECT * FROM recipe";
+        String query = "SELECT recipe.id, recipe.name " +
+                "AS recipeName, recipe.description, i.name AS ingredients, ri.requireamount " +
+                "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredients ri " +
+                "ON recipe.id = ri.id_recipe LEFT JOIN ingredients i on ri.id_ingredients = i.id";
         preparedStatement = connection.prepareStatement(query);
         resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
+            Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("description"), (List<RecipeIngredient>) resultSet.getArray("ingredients"));
             recipes.add(recipe);
         }
         preparedStatement.close();
