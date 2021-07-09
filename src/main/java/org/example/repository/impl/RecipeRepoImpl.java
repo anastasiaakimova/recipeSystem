@@ -17,7 +17,7 @@ public class RecipeRepoImpl implements RecipeRepository {
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
 
-    // методы выводит все поля всех рецептов и их ингридиенты
+    // методы выводит имя описание всех рецептов и их ингридиенты
     @Override
     public List<Recipe> getAll() throws SQLException {
         List<Recipe> recipes = new ArrayList<Recipe>();
@@ -66,19 +66,19 @@ public class RecipeRepoImpl implements RecipeRepository {
         return recipe;
     }
 
-    // метод выводит все поля рецептов по заданному id
-    //дописать вывод ингридиентов тоже
+    // метод выводит имя описание рецептов и их ингридиенты по заданному id
     @Override
     public Recipe getById(Integer id) throws SQLException {
-        String query = "SELECT * FROM recipe WHERE id = ?";
-        Recipe recipe = null;
+        String query = "SELECT recipe.id, recipe.name AS recipeName, recipe.description, i.name AS ingredients, ri.requireamount AS requiredAmount FROM recipe LEFT JOIN recipe_ingredients ri ON recipe.id = ri.id_recipe LEFT JOIN ingredients i on ri.id_ingredients = i.id WHERE recipe.id = ?";
+        Recipe recipe = new Recipe();
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, id);
         resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
-            Recipe newRecipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
-            recipe.setId(id);
+            Recipe newRecipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("description"), (List<RecipeIngredient>) resultSet.getArray("ingredients"));
+            newRecipe.setId(id);
+            recipe= newRecipe;
         }
         return recipe;
     }
