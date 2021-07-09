@@ -62,8 +62,11 @@ public class RecipeRepoImpl implements RecipeRepository {
 
     // удаление рецепта
     @Override
-    public void deleteById(Integer integer) {
-
+    public void deleteById(Integer id) throws SQLException {
+        String query = "DELETE * FROM recipe WHERE id = ?";
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        preparedStatement.executeUpdate();
     }
 
     // метода выводит все поля рецепта по заданному имени
