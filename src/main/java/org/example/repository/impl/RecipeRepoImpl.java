@@ -31,9 +31,18 @@ public class RecipeRepoImpl implements RecipeRepository {
     }
 
     // добавление рецепта
+    // дописать добавление ингридиентов????
     @Override
-    public Recipe save(Recipe recipe) {
-        return null;
+    public Recipe save(Recipe recipe) throws SQLException {
+        String query = "INSERT INTO recipe (id, name, description) VALUES(?,?,?))";
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, recipe.getId());
+        preparedStatement.setString(2, recipe.getName());
+        preparedStatement.setString(3, recipe.getDescription());
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        connection.close();
+        return recipe;
     }
 
     // редактироание рецепта
@@ -47,7 +56,6 @@ public class RecipeRepoImpl implements RecipeRepository {
     @Override
     public Recipe getById(Integer id) throws SQLException {
         String query = "SELECT * FROM recipe WHERE id = ?";
-
         Recipe recipe = null;
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, id);
@@ -67,6 +75,8 @@ public class RecipeRepoImpl implements RecipeRepository {
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, id);
         preparedStatement.executeUpdate();
+        preparedStatement.close();
+        connection.close();
     }
 
     // метода выводит все поля рецепта по заданному имени
@@ -105,15 +115,15 @@ public class RecipeRepoImpl implements RecipeRepository {
         while (resultSet.next()) {
             if (map.containsKey(resultSet.getString("recipeName"))) {
                 Ingredient ingredient = new Ingredient();
-    //            map.get(resultSet.getString("recipeName")).getRecipeIngredients().add(ingredient);
+                //            map.get(resultSet.getString("recipeName")).getRecipeIngredients().add(ingredient);
             } else {
                 Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
                 Ingredient ingredient = new Ingredient();
-     //           recipe.getRecipeIngredients().add(ingredient);
+                //           recipe.getRecipeIngredients().add(ingredient);
                 map.put(recipe.getName(), recipe);
             }
         }
-   //     map
+        //     map
         return null;
     }
 
