@@ -42,7 +42,7 @@ public class IngredientRepoImpl implements IngredientRepository {
 
     @Override
     public Ingredient getById(Integer integer) throws SQLException {
-        String query = "SELECT * FROM ingredient WHERE id = ?";
+        String query = "SELECT * FROM ingredients WHERE id = ?";
 
         Ingredient ingredient = null;
         preparedStatement = connection.prepareStatement(query);
