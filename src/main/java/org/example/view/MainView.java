@@ -7,9 +7,11 @@ public class MainView {
 
     private static MainView view;
     private RecipeView recipeView;
+    private IngredientView ingredientView;
 
     public MainView() {
         recipeView = new RecipeView();
+        ingredientView = new IngredientView();
     }
 
     public static MainView getInstance() {
@@ -33,6 +35,7 @@ public class MainView {
                     showRecipeMenu();
                     break;
                 case 2:
+                    showIngredientMenu();
                     break;
                 case 3:
                     go = false;
@@ -42,6 +45,10 @@ public class MainView {
                     System.out.println("Enter number from 1 to 3, please");
             }
         }
+    }
+
+    private void showIngredientMenu() throws SQLException {
+        ingredientView.run();
     }
 
     public void showRecipeMenu() throws SQLException {
