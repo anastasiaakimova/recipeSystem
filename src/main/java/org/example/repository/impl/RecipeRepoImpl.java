@@ -69,7 +69,12 @@ public class RecipeRepoImpl implements RecipeRepository {
     // метод выводит имя описание рецептов и их ингридиенты по заданному id
     @Override
     public Recipe getById(Integer id) throws SQLException {
-        String query = "SELECT recipe.id, recipe.name AS recipeName, recipe.description, i.name AS ingredients, ri.requireamount AS requiredAmount FROM recipe LEFT JOIN recipe_ingredients ri ON recipe.id = ri.id_recipe LEFT JOIN ingredients i on ri.id_ingredients = i.id WHERE recipe.id = ?";
+        String query = "SELECT recipe.id, recipe.name " +
+                "AS recipeName, recipe.description, i.name " +
+                "AS ingredients, ri.requireamount " +
+                "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredients ri " +
+                "ON recipe.id = ri.id_recipe LEFT JOIN ingredients i " +
+                "ON ri.id_ingredients = i.id WHERE recipe.id = ?";
         Recipe recipe = new Recipe();
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, id);
@@ -80,6 +85,8 @@ public class RecipeRepoImpl implements RecipeRepository {
             newRecipe.setId(id);
             recipe= newRecipe;
         }
+        preparedStatement.close();
+        connection.close();
         return recipe;
     }
 
@@ -94,18 +101,21 @@ public class RecipeRepoImpl implements RecipeRepository {
         connection.close();
     }
 
-    // метода выводит все поля рецепта по заданному имени
-    // дописать
+    // метода выводит имя описание рецептов и их ингридиенты по заданному имени
     @Override
     public Recipe getByName(String name) throws SQLException {
-        String query = "SELECT * FROM recipe WHERE name = ?";
+        String query = "SELECT recipe.id, recipe.name AS recipeName, recipe.description, i.name " +
+                "AS ingredients, ri.requireamount " +
+                "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredients ri " +
+                "ON recipe.id = ri.id_recipe LEFT JOIN ingredients i " +
+                "ON ri.id_ingredients = i.id WHERE recipe.name = ?";
         List<Recipe> recipes = new ArrayList<Recipe>();
 
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, name);
         resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
+            Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("description"), (List<RecipeIngredient>) resultSet.getArray("ingredients"));
             recipes.add(recipe);
         }
         //    Map<String, Recipe> map = new HashMap<>();
