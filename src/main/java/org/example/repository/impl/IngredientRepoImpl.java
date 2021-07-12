@@ -16,6 +16,7 @@ public class IngredientRepoImpl implements IngredientRepository {
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
 
+    // метод добавляет новый ингредиент
     @Override
     public Ingredient save(Ingredient ingredient) throws SQLException {
         String query = "INSERT INTO ingredient (id, name, calories) VALUES (?, ?, ?)";
@@ -29,6 +30,7 @@ public class IngredientRepoImpl implements IngredientRepository {
         return ingredient;
     }
 
+    // метод изменяет поля (имя и калории) ингридиента по заданному id
     @Override
     public Ingredient update(Ingredient ingredient) throws SQLException {
         String query = "UPDATE ingredient SET name = ?, calories = ? WHERE id = ?";
@@ -42,6 +44,7 @@ public class IngredientRepoImpl implements IngredientRepository {
         return ingredient;
     }
 
+    // метод выводит все поля всех рецептов
     @Override
     public List<Ingredient> getAll() throws SQLException {
         List<Ingredient> ingredients = new ArrayList<Ingredient>();
@@ -57,24 +60,34 @@ public class IngredientRepoImpl implements IngredientRepository {
         return ingredients;
     }
 
+    // метод выводит все поля ингредиента по заданному id
     @Override
     public Ingredient getById(Integer id) throws SQLException {
         String query = "SELECT * FROM ingredient WHERE id = ?";
 
-        Ingredient ingredient = null;
+        Ingredient ingredient = new Ingredient();
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, id);
         resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
             Ingredient newIngredient = new Ingredient(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getFloat("calories"));
-            //     ingredient.setId(id);
+            ingredient.setId(id);
+            ingredient = newIngredient;
         }
+        preparedStatement.close();
+        connection.close();
         return ingredient;
     }
 
+    // удаление ингредиента
     @Override
     public void deleteById(Integer id) throws SQLException {
-
+        String query = "DELETE * FROM ingredient WHERE id = ?";
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        connection.close();
     }
 }
