@@ -21,10 +21,11 @@ public class RecipeRepoImpl implements RecipeRepository {
     @Override
     public List<Recipe> getAll() throws SQLException {
         List<Recipe> recipes = new ArrayList<Recipe>();
-        String query = "SELECT recipe.id, recipe.name " +
-                "AS recipeName, recipe.description, i.name AS ingredients, ri.requireamount " +
-                "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredients ri " +
-                "ON recipe.id = ri.id_recipe LEFT JOIN ingredients i on ri.id_ingredients = i.id";
+        String query = "SELECT recipe.id, recipe.name AS recipeName, recipe.description, i.name\n" +
+                "                AS ingredients, ri.\"requiredAmount\"\n" +
+                "                AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri\n" +
+                "                ON recipe.id = ri.\"idRecipe\"\n" +
+                "                LEFT JOIN ingredient i on ri.\"idIngredient\" = i.id";
         preparedStatement = connection.prepareStatement(query);
         resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
@@ -69,12 +70,10 @@ public class RecipeRepoImpl implements RecipeRepository {
     // метод выводит имя описание рецептов и их ингридиенты по заданному id
     @Override
     public Recipe getById(Integer id) throws SQLException {
-        String query = "SELECT recipe.id, recipe.name " +
-                "AS recipeName, recipe.description, i.name " +
-                "AS ingredients, ri.requireamount " +
-                "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredients ri " +
-                "ON recipe.id = ri.id_recipe LEFT JOIN ingredients i " +
-                "ON ri.id_ingredients = i.id WHERE recipe.id = ?";
+        String query = "SELECT recipe.id, recipe.name  AS recipeName, recipe.description, i.name  AS ingredients, ri.\"requiredAmount\"\n" +
+                "                AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri\n" +
+                "                ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i\n" +
+                "                ON ri.\"idIngredient\" = i.id WHERE recipe.id = ?";
         Recipe recipe = new Recipe();
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, id);
@@ -83,7 +82,7 @@ public class RecipeRepoImpl implements RecipeRepository {
         while (resultSet.next()) {
             Recipe newRecipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("description"), (List<RecipeIngredient>) resultSet.getArray("ingredients"));
             newRecipe.setId(id);
-            recipe= newRecipe;
+            recipe = newRecipe;
         }
         preparedStatement.close();
         connection.close();
@@ -104,11 +103,11 @@ public class RecipeRepoImpl implements RecipeRepository {
     // метода выводит имя описание рецептов и их ингридиенты по заданному имени
     @Override
     public Recipe getByName(String name) throws SQLException {
-        String query = "SELECT recipe.id, recipe.name AS recipeName, recipe.description, i.name " +
-                "AS ingredients, ri.requireamount " +
-                "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredients ri " +
-                "ON recipe.id = ri.id_recipe LEFT JOIN ingredients i " +
-                "ON ri.id_ingredients = i.id WHERE recipe.name = ?";
+        String query = "SELECT recipe.id, recipe.name AS recipeName, recipe.description, i.name\n" +
+                "            AS ingredient, ri.\"requiredAmount\"\n" +
+                "                AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri\n" +
+                "            ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i\n" +
+                "                ON ri.\"idIngredient\" = i.id WHERE recipe.name = ?";
         List<Recipe> recipes = new ArrayList<Recipe>();
 
         preparedStatement = connection.prepareStatement(query);
