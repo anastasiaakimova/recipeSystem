@@ -41,7 +41,7 @@ public class RecipeRepoImpl implements RecipeRepository {
     // дописать добавление ингридиентов????
     @Override
     public Recipe save(Recipe recipe) throws SQLException {
-        String query = "INSERT INTO recipe (id, name, description) VALUES(?,?,?))";
+        String query = "INSERT INTO recipe (id, name, description) VALUES(?,?,?)";
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, recipe.getId());
         preparedStatement.setString(2, recipe.getName());
@@ -90,14 +90,16 @@ public class RecipeRepoImpl implements RecipeRepository {
     }
 
     // удаление рецепта
+
     @Override
-    public void deleteById(Integer id) throws SQLException {
-        String query = "DELETE * FROM recipe WHERE id = ?";
+    public void deleteByName(String name) throws SQLException {
+        String query = "DELETE * FROM recipe WHERE name = ?";
         preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setString(1, name);
         preparedStatement.executeUpdate();
         preparedStatement.close();
         connection.close();
+
     }
 
     // метода выводит имя описание рецептов и их ингридиенты по заданному имени
