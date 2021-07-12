@@ -19,6 +19,7 @@ CREATE TABLE recipe_ingredient
     id serial NOT NULL,
     "idRecipe" integer,
     "idIngredient" integer,
+    "requiredAmount" integer,
     PRIMARY KEY (id),
     CONSTRAINT "idRecipe" FOREIGN KEY ("idRecipe")
         REFERENCES recipe (id) MATCH SIMPLE
