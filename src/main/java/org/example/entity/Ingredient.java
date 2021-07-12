@@ -1,17 +1,14 @@
 package org.example.entity;
 
-import java.util.List;
-
 public class Ingredient {
-    private int id;
+    private Integer id;
     private String name;
-    private float calories;
-
+    private Float calories;
 
     public Ingredient() {
     }
 
-    public Ingredient(int id, String name, float calories) {
+    public Ingredient(Integer id, String name, Float calories) {
         this.id = id;
         this.name = name;
         this.calories = calories;
@@ -21,7 +18,7 @@ public class Ingredient {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -37,8 +34,13 @@ public class Ingredient {
         return calories;
     }
 
-    public void setCalories(float calories) {
+    public void setCalories(Float calories) {
         this.calories = calories;
     }
 
+    @Override
+    public String toString() {
+        return "name='" + name +
+                "calories=" + calories;
+    }
 }

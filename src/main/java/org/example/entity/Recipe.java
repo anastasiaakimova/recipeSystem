@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Recipe {
 
-    private int id;
+    private Integer id;
     private String name;
     private String description;
 
@@ -13,14 +13,14 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(int id, String name, String description, List<RecipeIngredient> recipeIngredients) {
+    public Recipe(Integer id, String name, String description, List<RecipeIngredient> recipeIngredients) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.recipeIngredients = recipeIngredients;
     }
 
-    public Recipe(int id, String name) {
+    public Recipe(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -29,7 +29,7 @@ public class Recipe {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -59,11 +59,8 @@ public class Recipe {
 
     @Override
     public String toString() {
-        return "Recipe{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", recipeIngredients=" + recipeIngredients +
-                '}';
+        return "name= " + name +
+                "description= " + description +
+                "recipeIngredients= " + recipeIngredients;
     }
 }
