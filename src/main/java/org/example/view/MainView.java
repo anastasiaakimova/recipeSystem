@@ -9,12 +9,12 @@ public class MainView {
     private RecipeView recipeView;
     private IngredientView ingredientView;
 
-    public MainView() {
+    public MainView() throws SQLException {
         recipeView = new RecipeView();
         ingredientView = new IngredientView();
     }
 
-    public static MainView getInstance() {
+    public static MainView getInstance() throws SQLException {
         if (view == null) {
             view = new MainView();
         }
