@@ -8,7 +8,7 @@ public class DbConnection {
 
     private static String username = "root";
     private static String password = "root";
-    private static String databaseURL = "jdbc:postgresql://localhost:5433/";
+    private static String databaseURL = "jdbc:postgresql://localhost:5433/recipeSystem";
     private static String driver = "org.postgresql.Driver";
 
     public static Connection getConnection() throws SQLException {
