@@ -12,6 +12,9 @@ public class RecipeView {
 
     private RecipeServiceImpl recipeService = new RecipeServiceImpl();
 
+    public RecipeView() throws SQLException {
+    }
+
     public void run() throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
@@ -166,8 +169,7 @@ public class RecipeView {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter recipe's name which you want to delete, please: ");
         String name = scanner.nextLine();
-        Recipe recipe = recipeService.findByName(name);
-        recipeService.remove(recipe.getId());
+        recipeService.remove(name);
     }
 
     private void showMainMenu() throws SQLException {
