@@ -34,7 +34,7 @@ public class IngredientRepoImpl implements IngredientRepository {
         String query = "UPDATE ingredient SET name = ?, calories = ? WHERE id = ?";
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, ingredient.getName());
-        preparedStatement.setString(2, ingredient.getCalories());
+        preparedStatement.setFloat(2, ingredient.getCalories());
         preparedStatement.setInt(3, ingredient.getId());
         preparedStatement.executeUpdate();
         preparedStatement.close();
