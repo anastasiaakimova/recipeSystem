@@ -81,11 +81,12 @@ public class IngredientRepoImpl implements IngredientRepository {
     }
 
     // удаление ингредиента
+
     @Override
-    public void deleteById(Integer id) throws SQLException {
-        String query = "DELETE * FROM ingredient WHERE id = ?";
+    public void deleteByName(String name) throws SQLException {
+        String query = "DELETE * FROM ingredient WHERE name = ?";
         preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setString(1, name);
         preparedStatement.executeUpdate();
         preparedStatement.close();
         connection.close();
