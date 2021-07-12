@@ -14,6 +14,9 @@ public class RecipeServiceImpl implements RecipeService {
 
     private RecipeRepository recipeRepository = new RecipeRepoImpl();
 
+    public RecipeServiceImpl() throws SQLException {
+    }
+
     @Override
     public Recipe save(Recipe recipe) throws SQLException {
         return recipeRepository.save(recipe);
@@ -35,8 +38,8 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public void remove(Integer id) throws SQLException {
-        recipeRepository.deleteById(id);
+    public void remove(String name) throws SQLException {
+        recipeRepository.deleteByName(name);
     }
 
     @Override
