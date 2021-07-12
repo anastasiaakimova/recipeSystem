@@ -32,3 +32,16 @@ CREATE TABLE recipe_ingredient
         ON DELETE NO ACTION
         NOT VALID
 );
+
+INSERT INTO recipe VALUES ('1', 'драники', 'Традиционное блюдо');
+INSERT INTO recipe VALUES ('2', 'блины', 'Очень вкусно');
+INSERT INTO recipe VALUES ('3','пицца', 'очень круто');
+
+
+INSERT INTO ingredient VALUES ('1','Картофель', '200');
+INSERT INTO ingredient VALUES ('2','Лук', '50');
+INSERT INTO ingredient VALUES ('3','Пеперони', '300');
+
+INSERT INTO recipe_ingredient VALUES ('1','1','1', '500');
+INSERT INTO recipe_ingredient VALUES ('2','1','2','30');
+
