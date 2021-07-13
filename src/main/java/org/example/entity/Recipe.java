@@ -8,16 +8,16 @@ public class Recipe {
     private String name;
     private String description;
 
-    private List<RecipeIngredient> recipeIngredients;
+    private List<Ingredient> ingredients;
 
     public Recipe() {
     }
 
-    public Recipe(Integer id, String name, String description, List<RecipeIngredient> recipeIngredients) {
+    public Recipe(Integer id, String name, String description, List<Ingredient> ingredients) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.recipeIngredients = recipeIngredients;
+        this.ingredients = ingredients;
     }
 
     public Recipe(Integer id, String name) {
@@ -49,18 +49,18 @@ public class Recipe {
         this.description = description;
     }
 
-    public List<RecipeIngredient> getRecipeIngredients() {
-        return recipeIngredients;
+    public List<Ingredient> getIngredients() {
+        return ingredients;
     }
 
-    public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
-        this.recipeIngredients = recipeIngredients;
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
     @Override
     public String toString() {
-        return "name= " + name +
-                "description= " + description +
-                "recipeIngredients= " + recipeIngredients;
+        return " name= " + name +
+                " description= " + description +
+                " recipeIngredients= " + ingredients;
     }
 }

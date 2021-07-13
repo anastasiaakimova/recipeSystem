@@ -40,7 +40,7 @@ public class Ingredient {
 
     @Override
     public String toString() {
-        return "name='" + name +
-                "calories=" + calories;
+        return " name: " + name +
+                " calories: " + calories;
     }
 }
