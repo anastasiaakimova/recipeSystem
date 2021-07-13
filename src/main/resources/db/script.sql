@@ -33,6 +33,11 @@ CREATE TABLE recipe_ingredient
         NOT VALID
 );
 
+ALTER TABLE recipe ADD CONSTRAINT name_unique UNIQUE (name);
+
+ALTER TABLE ingredient ADD CONSTRAINT ingredient_name_unique UNIQUE (name);
+
+
 INSERT INTO recipe VALUES ('1', 'драники', 'Традиционное блюдо');
 INSERT INTO recipe VALUES ('2', 'блины', 'Очень вкусно');
 INSERT INTO recipe VALUES ('3','пицца', 'очень круто');
