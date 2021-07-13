@@ -55,11 +55,11 @@ public class RecipeRepoImpl implements RecipeRepository {
     @Override
     public Recipe update(Recipe recipe) throws SQLException {
         Connection connection = DbConnection.getConnection();
-        String query = "UPDATE recipe SET name = ?, description = ? WHERE id = ?";
+        String query = "UPDATE recipe SET name = ?, description = ? WHERE name = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, recipe.getName());
         preparedStatement.setString(2, recipe.getDescription());
-        preparedStatement.setInt(3, recipe.getId());
+        preparedStatement.setString(3, recipe.getName());
         preparedStatement.executeUpdate();
         preparedStatement.close();
         connection.close();
