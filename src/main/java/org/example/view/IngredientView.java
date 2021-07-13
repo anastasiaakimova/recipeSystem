@@ -46,7 +46,7 @@ public class IngredientView {
     }
 
     private void showMainMenu() throws SQLException {
-        mainView.getInstance().run();
+        MainView.getInstance().run();
     }
 
     private void deleteIngredient() throws SQLException {

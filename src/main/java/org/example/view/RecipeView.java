@@ -16,7 +16,6 @@ public class RecipeView {
     }
 
     public void run() throws SQLException {
-        Scanner scanner = new Scanner(System.in);
 
         System.out.println("Choose number to do operation, please: ");
         System.out.println("1. Show all recipe list");
@@ -25,8 +24,10 @@ public class RecipeView {
         System.out.println("4. Add recipe ");
         System.out.println("5. Delete recipe ");
         System.out.println("6. Back");
+
+        Scanner scanner = new Scanner(System.in);
+        int number = scanner.nextInt();
         while (true) {
-            int number = scanner.nextInt();
             switch (number) {
                 case 1:
                     showAllRecipes();
@@ -173,6 +174,6 @@ public class RecipeView {
     }
 
     private void showMainMenu() throws SQLException {
-        mainView.getInstance().run();
+        MainView.getInstance().run();
     }
 }

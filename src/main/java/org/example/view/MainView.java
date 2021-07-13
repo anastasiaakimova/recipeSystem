@@ -22,15 +22,15 @@ public class MainView {
     }
 
     public void run() throws SQLException {
-        boolean go = true;
-        do {
-            Scanner scanner = new Scanner(System.in);
 
-            System.out.println("Please select a number to select an option: ");
-            System.out.println("1. Recipes");
-            System.out.println("2. Ingredients");
-            System.out.println("3. Exit");
-            int number = scanner.nextInt();
+        System.out.println("Please select a number to select an option: ");
+        System.out.println("1. Recipes");
+        System.out.println("2. Ingredients");
+        System.out.println("3. Exit");
+
+        Scanner scanner = new Scanner(System.in);
+        int number = scanner.nextInt();
+        while (true) {
             switch (number) {
                 case 1:
                     showRecipeMenu();
@@ -39,14 +39,15 @@ public class MainView {
                     showIngredientMenu();
                     break;
                 case 3:
-                    go = false;
+                    System.out.println("Thank you! See you! Goodbye!");
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Wrong number");
                     System.out.println("Enter number from 1 to 3, please");
             }
         }
-        while (go);
+
     }
 
     private void showIngredientMenu() throws SQLException {
