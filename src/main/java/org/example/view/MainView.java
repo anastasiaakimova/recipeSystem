@@ -22,13 +22,14 @@ public class MainView {
     }
 
     public void run() throws SQLException {
-        Scanner scanner = new Scanner(System.in);
         boolean go = true;
-        System.out.println("Please select a number to select an option: ");
-        System.out.println("1. Recipes");
-        System.out.println("2. Ingredients");
-        System.out.println("3. Exit");
-        while (go) {
+        do {
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Please select a number to select an option: ");
+            System.out.println("1. Recipes");
+            System.out.println("2. Ingredients");
+            System.out.println("3. Exit");
             int number = scanner.nextInt();
             switch (number) {
                 case 1:
@@ -45,6 +46,7 @@ public class MainView {
                     System.out.println("Enter number from 1 to 3, please");
             }
         }
+        while (go);
     }
 
     private void showIngredientMenu() throws SQLException {
