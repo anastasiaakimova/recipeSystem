@@ -2,7 +2,6 @@ package org.example.repository.impl;
 
 import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
-import org.example.entity.RecipeIngredient;
 import org.example.repository.RecipeRepository;
 import org.example.util.DbConnection;
 
@@ -14,7 +13,7 @@ import java.util.*;
 
 public class RecipeRepoImpl implements RecipeRepository {
 
-    // методы выводит имя описание всех рецептов и их ингридиенты
+    // методы выводит имя описание всех рецептов и их ингридиенты и требуемое количество
     @Override
     public List<Recipe> getAll() throws SQLException {
         Connection connection = DbConnection.getConnection();
@@ -26,10 +25,33 @@ public class RecipeRepoImpl implements RecipeRepository {
                 "LEFT JOIN ingredient i on ri.\"idIngredient\" = i.id";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
+
+        Map<String, Recipe> map = new HashMap<>();
+
+
+        ////// thinking
+        while (resultSet.next()) {
+            if (map.containsKey(resultSet.getString("recipeName"))) {
+                Ingredient ingredient = new Ingredient();
+                map.get(resultSet.getString("recipeName")).getIngredients().add(ingredient);
+            } else {
+                Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("recipeName"));
+                Ingredient ingredient = new Ingredient();
+                recipe.getIngredients().add(ingredient);
+                map.put(recipe.getName(), recipe);
+            }
+        }
+
+        ////
+
         while (resultSet.next()) {
             Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("recipeName"), resultSet.getString("description"), Collections.EMPTY_LIST);
             recipes.add(recipe);
         }
+
+        ////
+
+
         preparedStatement.close();
         connection.close();
         return recipes;
@@ -80,7 +102,7 @@ public class RecipeRepoImpl implements RecipeRepository {
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
-            Recipe newRecipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("description"), (List<RecipeIngredient>) resultSet.getArray("ingredients"));
+            Recipe newRecipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("description"), Collections.EMPTY_LIST);
             newRecipe.setId(id);
             recipe = newRecipe;
         }
@@ -112,13 +134,13 @@ public class RecipeRepoImpl implements RecipeRepository {
                 "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri\n" +
                 "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i\n" +
                 "ON ri.\"idIngredient\" = i.id WHERE recipe.name = ?";
-        List<Recipe> recipes = new ArrayList<Recipe>();
+        List<Recipe> recipes = new ArrayList<>();
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, name);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("description"), (List<RecipeIngredient>) resultSet.getArray("ingredients"));
+            Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("recipeName"), resultSet.getString("description"), Collections.EMPTY_LIST);
             recipes.add(recipe);
         }
         //    Map<String, Recipe> map = new HashMap<>();
@@ -127,32 +149,31 @@ public class RecipeRepoImpl implements RecipeRepository {
         return (Recipe) recipes;
     }
 
-    //метод показывает все ингредиенты заданного рецепта по id
+    //метод показывает все ингредиенты заданного рецепта по name
 
     @Override
     public Recipe viewIngredients() throws SQLException {
         Connection connection = DbConnection.getConnection();
 
-        //подправить
         String query = "SELECT recipe.id, recipe.name " +
-                "AS recipeName, recipe.description, i.name " +
-                "AS ingredients, ri.requireamount " +
-                "AS requiredAmount FROM recipe\n" +
-                "RIGHT JOIN recipe_ingredients ri on recipe.id = ri.id_recipe\n" +
-                "LEFT JOIN ingredients i on ri.id_ingredients = i.id;";
+                "AS recipeName, recipe.description, i.name AS ingredients, ri.\"requiredAmount\" " +
+                "AS requiredAmount FROM recipe RIGHT JOIN recipe_ingredient ri on recipe.id = ri.\"idRecipe\" " +
+                "LEFT JOIN ingredient i on ri.\"idIngredient\" = i.id WHERE recipe.name = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
+      //  preparedStatement.setString(1, recipe.getName());
         ResultSet resultSet = preparedStatement.executeQuery();
+
 
         Map<String, Recipe> map = new HashMap<>();
 
         while (resultSet.next()) {
             if (map.containsKey(resultSet.getString("recipeName"))) {
                 Ingredient ingredient = new Ingredient();
-                //            map.get(resultSet.getString("recipeName")).getRecipeIngredients().add(ingredient);
+                map.get(resultSet.getString("recipeName")).getIngredients().add(ingredient);
             } else {
                 Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
                 Ingredient ingredient = new Ingredient();
-                //           recipe.getRecipeIngredients().add(ingredient);
+                recipe.getIngredients().add(ingredient);
                 map.put(recipe.getName(), recipe);
             }
         }
