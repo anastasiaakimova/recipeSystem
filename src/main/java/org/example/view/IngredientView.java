@@ -13,14 +13,15 @@ public class IngredientView {
 
     public void run() throws SQLException {
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Choose number to do operation, please: ");
-        System.out.println("1. Show all ingredients");
-        System.out.println("2. Add new ingredient");
-        System.out.println("3. Update ingredient");
-        System.out.println("4. Delete ingredient");
-        System.out.println("5. Back ");
         while (true) {
+            System.out.println("---------------------------------------");
+            System.out.println("Choose number to do operation, please: ");
+            System.out.println("1. Show all ingredients");
+            System.out.println("2. Add new ingredient");
+            System.out.println("3. Update ingredient");
+            System.out.println("4. Delete ingredient");
+            System.out.println("5. Back ");
+            System.out.println("---------------------------------------");
             int number = scanner.nextInt();
             switch (number) {
                 case 1:
@@ -56,10 +57,39 @@ public class IngredientView {
         ingredientService.remove(name);
     }
 
+    // добавить проверку нового имени!!!!!!!!!
     private void updateIngredient() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter ingredient's name, which you want to edit, please: ");
+        String name = scanner.nextLine();
+        Ingredient ingredient = ingredientService.getByName(name);
+
+        System.out.println("Enter new ingredient's name, please: ");
+        String newName = scanner.nextLine();
+        ingredient.setName(newName);
+
+        System.out.println("Enter new ingredient's calories, please: ");
+        Float calories = scanner.nextFloat();
+        ingredient.setCalories(calories);
+        ingredientService.update(ingredient);
+        System.out.println("Your ingredient was updated! ");
+
     }
 
+    // Добавить проверку id ингридиента и имени !!!!!1
     private void addNewIngredient() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        Ingredient ingredient = new Ingredient();
+
+        System.out.println("Enter ingredient's name, please: ");
+        String name = scanner.nextLine();
+        ingredient.setName(name);
+
+        System.out.println("Enter ingredient's calories, please: ");
+        Float calories = scanner.nextFloat();
+        ingredient.setCalories(calories);
+        ingredientService.save(ingredient);
+        System.out.println("Your new ingredient was added! ");
     }
 
     private void showAllIngredients() throws SQLException {
