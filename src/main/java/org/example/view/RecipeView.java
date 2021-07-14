@@ -2,6 +2,8 @@ package org.example.view;
 
 import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
+import org.example.entity.RecipeIngredient;
+import org.example.service.impl.RecipeIngredientServiceImpl;
 import org.example.service.impl.RecipeServiceImpl;
 
 import java.sql.SQLException;
@@ -11,6 +13,8 @@ public class RecipeView {
     private MainView mainView;
 
     private RecipeServiceImpl recipeService = new RecipeServiceImpl();
+    RecipeIngredientServiceImpl recipeIngredientService = new RecipeIngredientServiceImpl();
+
 
     public RecipeView() throws SQLException {
     }
@@ -143,6 +147,7 @@ public class RecipeView {
         try {
             Scanner scanner = new Scanner(System.in);
             Recipe recipe = new Recipe();
+            RecipeIngredient recipeIngredient = new RecipeIngredient();
 
             System.out.println("Enter recipe's name, please: ");
             String name = scanner.nextLine();
@@ -160,7 +165,9 @@ public class RecipeView {
                 System.out.println("If you don't want to add ingredient enter no: ");
                 go = isGo(scanner, ingredientsSet, go);
             }
-            recipeService.save(recipe);
+            recipeIngredient.setRecipe(recipe);
+            recipeIngredient.setIngredient(ingredientsSet);
+            recipeIngredientService.save(recipeIngredient);
         } catch (InputMismatchException e) {
             System.out.println(e.getMessage());
         }
