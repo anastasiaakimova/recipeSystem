@@ -1,6 +1,6 @@
 package org.example.entity;
 
-public class Ingredient {
+public class Ingredient{
     private Integer id;
     private String name;
     private Float calories;
