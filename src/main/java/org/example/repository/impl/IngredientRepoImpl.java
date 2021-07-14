@@ -90,4 +90,22 @@ public class IngredientRepoImpl implements IngredientRepository {
         preparedStatement.close();
         connection.close();
     }
+
+    @Override
+    public Ingredient getByName(String name) throws SQLException{
+        Connection connection = DbConnection.getConnection();
+        String query = "SELECT * FROM ingredient WHERE name = ?";
+        Ingredient ingredient = new Ingredient();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, name);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            Ingredient newIngredient = new Ingredient(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getFloat("calories"));
+            ingredient.setName(name);
+            ingredient = newIngredient;
+        }
+        preparedStatement.close();
+        connection.close();
+        return ingredient;
+    }
 }

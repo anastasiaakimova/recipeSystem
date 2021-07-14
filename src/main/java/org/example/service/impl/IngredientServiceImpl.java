@@ -36,4 +36,9 @@ public class IngredientServiceImpl implements IngredientService {
     public void remove(String name) throws SQLException {
         ingredientRepository.deleteByName(name);
     }
+
+    @Override
+    public Ingredient getByName(String name) throws SQLException {
+        return ingredientRepository.getByName(name);
+    }
 }
