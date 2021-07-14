@@ -1,5 +1,7 @@
 package org.example.entity;
 
+import java.util.Set;
+
 public class RecipeIngredient {
     private Recipe recipe;
     private Ingredient ingredient;
@@ -26,8 +28,8 @@ public class RecipeIngredient {
         return ingredient;
     }
 
-    public void setIngredient(Ingredient ingredient) {
-        this.ingredient = ingredient;
+    public void setIngredient(Set<Ingredient> ingredient) {
+        this.ingredient = (Ingredient) ingredient;
     }
 
     public int getRequiredAmount() {
