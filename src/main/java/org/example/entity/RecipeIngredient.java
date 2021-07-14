@@ -1,33 +1,33 @@
 package org.example.entity;
 
 public class RecipeIngredient {
-    private Integer recipeId;
-    private Integer ingredientId;
+    private Recipe recipe;
+    private Ingredient ingredient;
     private Integer requiredAmount;
 
     public RecipeIngredient() {
     }
 
-    public RecipeIngredient(Integer recipeId, Integer ingredientId, Integer requiredAmount) {
-        this.recipeId = recipeId;
-        this.ingredientId = ingredientId;
+    public RecipeIngredient(Recipe recipe, Ingredient ingredient, Integer requiredAmount) {
+        this.recipe = recipe;
+        this.ingredient = ingredient;
         this.requiredAmount = requiredAmount;
     }
 
-    public int getRecipeId() {
-        return recipeId;
+    public Recipe getRecipe() {
+        return recipe;
     }
 
-    public void setRecipeId(Integer recipeId) {
-        this.recipeId = recipeId;
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 
-    public int getIngredientId() {
-        return ingredientId;
+    public Ingredient getIngredient() {
+        return ingredient;
     }
 
-    public void setIngredientId(Integer ingredientId) {
-        this.ingredientId = ingredientId;
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 
     public int getRequiredAmount() {
