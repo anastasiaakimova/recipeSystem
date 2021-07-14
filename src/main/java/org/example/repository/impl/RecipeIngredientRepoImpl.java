@@ -26,7 +26,7 @@ public class RecipeIngredientRepoImpl implements GenericRepository<RecipeIngredi
 
         //проверка на существование ингредиента
 
-        if (recipeIngredient.getIngredient() != null) {
+        if (recipeIngredient.getIngredient() == null) {
 
             String query3 = "INSERT INTO ingredient (name, calories) VALUES (?, ?)";
             PreparedStatement preparedStatement2 = connection.prepareStatement(query3);
