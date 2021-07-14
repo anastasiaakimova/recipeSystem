@@ -35,22 +35,14 @@ public class RecipeRepoImpl implements RecipeRepository {
                 Ingredient ingredient = new Ingredient();
                 map.get(resultSet.getString("recipeName")).getIngredients().add(ingredient);
             } else {
-                Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("recipeName"));
+                Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("recipeName"), resultSet.getString("description"), Collections.EMPTY_LIST);
                 Ingredient ingredient = new Ingredient();
                 recipe.getIngredients().add(ingredient);
                 map.put(recipe.getName(), recipe);
+                ///////
+                recipes.add(recipe);
             }
         }
-
-        ////
-
-        while (resultSet.next()) {
-            Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("recipeName"), resultSet.getString("description"), Collections.EMPTY_LIST);
-            recipes.add(recipe);
-        }
-
-        ////
-
 
         preparedStatement.close();
         connection.close();
@@ -58,17 +50,40 @@ public class RecipeRepoImpl implements RecipeRepository {
     }
 
     // добавление рецепта
-    // дописать добавление ингридиентов????
+    // переписать класс recipeIngredient??? и переписать этот метод под него
     @Override
     public Recipe save(Recipe recipe) throws SQLException {
-        Connection connection = DbConnection.getConnection();
-        String query = "INSERT INTO recipe (name, description) VALUES(?,?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, recipe.getName());
-        preparedStatement.setString(2, recipe.getDescription());
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-        connection.close();
+//        Connection connection = DbConnection.getConnection();
+//        connection.setAutoCommit(false);
+//        String query = "INSERT INTO recipe (name, description) VALUES(?,?)";
+//        String query2 = "INSERT INTO recipe_ingredient (\"idRecipe\", \"idIngredient\", \"requiredAmount\") VALUES( ?, ?, ?)";
+//
+//        PreparedStatement preparedStatement = connection.prepareStatement(query);
+//        preparedStatement.setString(1, recipe.getName());
+//        preparedStatement.setString(2, recipe.getDescription());
+//
+//        PreparedStatement preparedStatement1 = connection.prepareStatement(query2);
+//
+//        //проверка на существование ингредиента
+//
+//        if (idIngredient != null) {
+//
+//        } else
+//
+//            preparedStatement1.setInt(1, recipe.getId());
+//        preparedStatement1.setInt(2, viewIngredients().getId());
+//        preparedStatement1.setInt(3, requiredAmount);
+//
+//
+//        preparedStatement.executeUpdate();
+//        preparedStatement1.executeUpdate();
+//
+//        connection.commit();
+//        preparedStatement.close();
+//
+//        preparedStatement1.close();
+//
+//        connection.close();
         return recipe;
     }
 
@@ -160,7 +175,7 @@ public class RecipeRepoImpl implements RecipeRepository {
                 "AS requiredAmount FROM recipe RIGHT JOIN recipe_ingredient ri on recipe.id = ri.\"idRecipe\" " +
                 "LEFT JOIN ingredient i on ri.\"idIngredient\" = i.id WHERE recipe.name = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-      //  preparedStatement.setString(1, recipe.getName());
+        //  preparedStatement.setString(1, recipe.getName());
         ResultSet resultSet = preparedStatement.executeQuery();
 
 
