@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 public class IngredientView {
     private IngredientServiceImpl ingredientService = new IngredientServiceImpl();
-    MainView mainView;
 
     public void run() throws SQLException {
         Scanner scanner = new Scanner(System.in);
@@ -57,14 +56,11 @@ public class IngredientView {
         ingredientService.remove(name);
     }
 
-    // добавить проверку нового имени!!!!!!!!!
     private void updateIngredient() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter ingredient's name, which you want to edit, please: ");
         String name = scanner.nextLine();
         Ingredient ingredient = ingredientService.getByName(name);
-
-        //   if (ingredient.getName().equalsIgnoreCase(ingredientService.getByName(name).getName()))
 
         System.out.println("Enter new ingredient's name, please: ");
         String newName = scanner.nextLine();
@@ -74,8 +70,6 @@ public class IngredientView {
         Float calories = scanner.nextFloat();
         ingredient.setCalories(calories);
         ingredientService.update(ingredient);
-        System.out.println("Your ingredient was updated! ");
-
     }
 
     private void addNewIngredient(){

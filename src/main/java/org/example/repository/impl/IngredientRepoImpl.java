@@ -24,7 +24,11 @@ public class IngredientRepoImpl implements IngredientRepository {
             preparedStatement.executeUpdate();
             System.out.println("Your new ingredient was added! ");
         } catch (SQLException e) {
-            System.out.println("This ingredient already exists! ");
+            if(e.getMessage().contains("ingredient_unique_name")) {
+                System.out.println("This ingredient already exists! ");
+            } else {
+                System.out.println("Something went wrong" + e.getMessage());
+            }
             System.out.println("Please, choose some other option");
         }
         return ingredient;
@@ -96,6 +100,7 @@ public class IngredientRepoImpl implements IngredientRepository {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
+            System.out.println("Ingredient was deleted!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
