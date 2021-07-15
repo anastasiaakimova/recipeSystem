@@ -11,14 +11,15 @@ public class DbConnection {
     private static String databaseURL = "jdbc:postgresql://localhost:5433/recipeSystem";
     private static String driver = "org.postgresql.Driver";
 
-    public static Connection getConnection() throws SQLException {
+    public static Connection getConnection() {
 
         Connection myConnection = null;
         try {
             myConnection = DriverManager.getConnection(databaseURL, username, password);
             Class.forName(driver);
             System.out.println("Connected to the PostgreSQL server successfully.");
-        } catch (ClassNotFoundException ex) {
+            return myConnection;
+        } catch (ClassNotFoundException | SQLException ex) {
             System.out.println("Error: unable to load driver class!");
             System.exit(1);
         }
