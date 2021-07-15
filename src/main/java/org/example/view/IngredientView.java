@@ -64,6 +64,8 @@ public class IngredientView {
         String name = scanner.nextLine();
         Ingredient ingredient = ingredientService.getByName(name);
 
+        //   if (ingredient.getName().equalsIgnoreCase(ingredientService.getByName(name).getName()))
+
         System.out.println("Enter new ingredient's name, please: ");
         String newName = scanner.nextLine();
         ingredient.setName(newName);
@@ -76,20 +78,23 @@ public class IngredientView {
 
     }
 
-    // Добавить проверку id ингридиента и имени !!!!!1
-    private void addNewIngredient() throws SQLException {
-        Scanner scanner = new Scanner(System.in);
-        Ingredient ingredient = new Ingredient();
+    private void addNewIngredient(){
+        try {
+            Scanner scanner = new Scanner(System.in);
+            Ingredient ingredient = new Ingredient();
 
-        System.out.println("Enter ingredient's name, please: ");
-        String name = scanner.nextLine();
-        ingredient.setName(name);
+            System.out.println("Enter ingredient's name, please: ");
+            String name = scanner.nextLine();
+            ingredient.setName(name);
+            System.out.println("Enter ingredient's calories, please: ");
+            Float calories = scanner.nextFloat();
+            ingredient.setCalories(calories);
 
-        System.out.println("Enter ingredient's calories, please: ");
-        Float calories = scanner.nextFloat();
-        ingredient.setCalories(calories);
-        ingredientService.save(ingredient);
-        System.out.println("Your new ingredient was added! ");
+            ingredientService.save(ingredient);
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     private void showAllIngredients() throws SQLException {

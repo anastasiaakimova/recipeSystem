@@ -15,15 +15,18 @@ public class IngredientRepoImpl implements IngredientRepository {
 
     // метод добавляет новый ингредиент
     @Override
-    public Ingredient save(Ingredient ingredient) throws SQLException {
+    public Ingredient save(Ingredient ingredient) {
         Connection connection = DbConnection.getConnection();
         String query = "INSERT INTO ingredient (name, calories) VALUES ( ?, ?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, ingredient.getName());
-        preparedStatement.setFloat(2, ingredient.getCalories());
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-        connection.close();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, ingredient.getName());
+            preparedStatement.setFloat(2, ingredient.getCalories());
+            preparedStatement.executeUpdate();
+            System.out.println("Your new ingredient was added! ");
+        } catch (SQLException e) {
+            System.out.println("This ingredient already exists! ");
+            System.out.println("Please, choose some other option");
+        }
         return ingredient;
     }
 
@@ -32,13 +35,14 @@ public class IngredientRepoImpl implements IngredientRepository {
     public Ingredient update(Ingredient ingredient) throws SQLException {
         Connection connection = DbConnection.getConnection();
         String query = "UPDATE ingredient SET name = ?, calories = ? WHERE name = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, ingredient.getName());
-        preparedStatement.setFloat(2, ingredient.getCalories());
-        preparedStatement.setString(3, ingredient.getName());
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-        connection.close();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, ingredient.getName());
+            preparedStatement.setFloat(2, ingredient.getCalories());
+            preparedStatement.setString(3, ingredient.getName());
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+
+        }
         return ingredient;
     }
 
@@ -83,7 +87,7 @@ public class IngredientRepoImpl implements IngredientRepository {
     @Override
     public void deleteByName(String name) throws SQLException {
         Connection connection = DbConnection.getConnection();
-        String query = "DELETE * FROM ingredient WHERE name = ?";
+        String query = "DELETE FROM ingredient WHERE name = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, name);
         preparedStatement.executeUpdate();
@@ -92,7 +96,7 @@ public class IngredientRepoImpl implements IngredientRepository {
     }
 
     @Override
-    public Ingredient getByName(String name) throws SQLException{
+    public Ingredient getByName(String name) throws SQLException {
         Connection connection = DbConnection.getConnection();
         String query = "SELECT * FROM ingredient WHERE name = ?";
         Ingredient ingredient = new Ingredient();
