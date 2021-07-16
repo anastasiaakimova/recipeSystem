@@ -3,23 +3,18 @@ package org.example.view;
 import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
 import org.example.entity.RecipeIngredient;
-import org.example.service.impl.RecipeIngredientServiceImpl;
 import org.example.service.impl.RecipeServiceImpl;
 
 import java.sql.SQLException;
 import java.util.*;
 
 public class RecipeView {
-    private MainView mainView;
-
     private RecipeServiceImpl recipeService = new RecipeServiceImpl();
-    RecipeIngredientServiceImpl recipeIngredientService = new RecipeIngredientServiceImpl();
-
 
     public RecipeView() throws SQLException {
     }
 
-    public void run(){
+    public void run() {
         Scanner scanner = new Scanner(System.in);
         try {
             while (true) {
@@ -148,6 +143,7 @@ public class RecipeView {
         return go;
     }
 
+    // исправить
     private void addRecipe() throws SQLException {
         try {
             Scanner scanner = new Scanner(System.in);
@@ -170,9 +166,10 @@ public class RecipeView {
                 System.out.println("If you don't want to add ingredient enter no: ");
                 go = isGo(scanner, ingredientsSet, go);
             }
-            recipeIngredient.setRecipe(recipe);
-            recipeIngredient.setIngredient(ingredientsSet);
-            recipeIngredientService.save(recipeIngredient);
+
+            // дописать  добавление ингредиента
+
+            recipeService.save(recipe);
         } catch (InputMismatchException e) {
             System.out.println(e.getMessage());
         }
