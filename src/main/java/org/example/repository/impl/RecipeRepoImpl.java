@@ -80,7 +80,7 @@ public class RecipeRepoImpl implements RecipeRepository {
     public Recipe update(Recipe recipe) {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "UPDATE recipe SET name = ?, description = ? WHERE name = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query));
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, recipe.getName());
             preparedStatement.setString(2, recipe.getDescription());
             preparedStatement.setString(3, recipe.getName());
@@ -100,7 +100,7 @@ public class RecipeRepoImpl implements RecipeRepository {
                     "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri\n" +
                     "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i\n" +
                     "ON ri.\"idIngredient\" = i.id WHERE recipe.id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query));
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
