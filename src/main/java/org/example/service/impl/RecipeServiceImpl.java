@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class RecipeServiceImpl implements RecipeService {
 
-    private RecipeRepository recipeRepository = new RecipeRepoImpl();
+    private RecipeRepoImpl recipeRepository = new RecipeRepoImpl();
 
     public RecipeServiceImpl() throws SQLException {
     }

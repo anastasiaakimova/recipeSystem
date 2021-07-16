@@ -10,7 +10,7 @@ import java.util.List;
 
 public class IngredientServiceImpl implements IngredientService {
 
-    private IngredientRepository ingredientRepository = new IngredientRepoImpl();
+    private IngredientRepoImpl ingredientRepository = new IngredientRepoImpl();
 
     @Override
     public Ingredient save(Ingredient ingredient) throws SQLException {

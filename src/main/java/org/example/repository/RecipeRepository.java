@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
-public interface RecipeRepository extends GenericRepository<Recipe, Integer> {
+public interface RecipeRepository{
     // get recipe by name
     Recipe getByName(String name) throws SQLException;
 
