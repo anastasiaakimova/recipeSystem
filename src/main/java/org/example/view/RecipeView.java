@@ -20,41 +20,46 @@ public class RecipeView {
     }
 
     public void run() throws SQLException {
-
-        System.out.println("Choose number to do operation, please: ");
-        System.out.println("1. Show all recipe list");
-        System.out.println("2. Find recipe by name");
-        System.out.println("3. Find recipe by set of ingredients");
-        System.out.println("4. Add recipe ");
-        System.out.println("5. Delete recipe ");
-        System.out.println("6. Back");
-
         Scanner scanner = new Scanner(System.in);
-        int number = scanner.nextInt();
-        while (true) {
-            switch (number) {
-                case 1:
-                    showAllRecipes();
-                    break;
-                case 2:
-                    findRecipeByName();
-                    break;
-                case 3:
-                    findRecipeByIngredientsSet();
-                    break;
-                case 4:
-                    addRecipe();
-                    break;
-                case 5:
-                    deleteRecipe();
-                    break;
-                case 6:
-                    showMainMenu();
-                    break;
-                default:
-                    System.out.println("Wrong number");
-                    System.out.println("Enter number from 1 to 6, please");
+        try {
+            while (true) {
+                System.out.println("---------------------------------------");
+                System.out.println("Choose number to do operation, please: ");
+                System.out.println("1. Show all recipe list");
+                System.out.println("2. Find recipe by name");
+                System.out.println("3. Find recipe by set of ingredients");
+                System.out.println("4. Add recipe ");
+                System.out.println("5. Delete recipe ");
+                System.out.println("6. Back");
+                System.out.println("---------------------------------------");
+                int number = scanner.nextInt();
+                switch (number) {
+                    case 1:
+                        showAllRecipes();
+                        break;
+                    case 2:
+                        findRecipeByName();
+                        break;
+                    case 3:
+                        findRecipeByIngredientsSet();
+                        break;
+                    case 4:
+                        addRecipe();
+                        break;
+                    case 5:
+                        deleteRecipe();
+                        break;
+                    case 6:
+                        showMainMenu();
+                        break;
+                    default:
+                        System.out.println("Wrong number");
+                        System.out.println("Enter number from 1 to 6, please");
+                }
             }
+        } catch (InputMismatchException | SQLException e) {
+            System.out.println("You entered something wrong! ");
+            run();
         }
     }
 
