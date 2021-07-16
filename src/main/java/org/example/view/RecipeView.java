@@ -19,7 +19,7 @@ public class RecipeView {
     public RecipeView() throws SQLException {
     }
 
-    public void run() throws SQLException {
+    public void run(){
         Scanner scanner = new Scanner(System.in);
         try {
             while (true) {
