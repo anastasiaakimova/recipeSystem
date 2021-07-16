@@ -3,6 +3,7 @@ package org.example.repository.impl;
 import org.example.entity.Ingredient;
 import org.example.repository.IngredientRepository;
 import org.example.util.DbConnection;
+import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +25,7 @@ public class IngredientRepoImpl implements IngredientRepository {
             preparedStatement.executeUpdate();
             System.out.println("Your new ingredient was added! ");
         } catch (SQLException e) {
-            if(e.getMessage().contains("ingredient_unique_name")) {
+            if (e.getMessage().contains("ingredient_unique_name")) {
                 System.out.println("This ingredient already exists! ");
             } else {
                 System.out.println("Something went wrong" + e.getMessage());
@@ -41,9 +42,10 @@ public class IngredientRepoImpl implements IngredientRepository {
         Connection connection = DbConnection.getConnection();
         String query = "UPDATE ingredient SET name = ?, calories = ? WHERE name = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(3, ingredient.getName());
             preparedStatement.setString(1, ingredient.getName());
             preparedStatement.setFloat(2, ingredient.getCalories());
-            preparedStatement.setString(3, ingredient.getName());
+
             preparedStatement.executeUpdate();
             System.out.println("Ingredient was updated! ");
         } catch (SQLException e) {
@@ -66,7 +68,8 @@ public class IngredientRepoImpl implements IngredientRepository {
                 ingredients.add(ingredient);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Something went wrong!");
+            ;
         }
         return ingredients;
     }
@@ -87,7 +90,7 @@ public class IngredientRepoImpl implements IngredientRepository {
                 ingredient = newIngredient;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("You wrote something wrong!");
         }
         return ingredient;
     }
@@ -102,7 +105,7 @@ public class IngredientRepoImpl implements IngredientRepository {
             preparedStatement.executeUpdate();
             System.out.println("Ingredient was deleted!");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("This ingredient used in some recipe");
         }
     }
 
@@ -120,7 +123,7 @@ public class IngredientRepoImpl implements IngredientRepository {
                 ingredient = newIngredient;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("You wrote something wrong!");
         }
         return ingredient;
     }
