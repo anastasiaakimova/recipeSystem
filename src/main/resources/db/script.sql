@@ -37,6 +37,7 @@ ALTER TABLE recipe ADD CONSTRAINT name_unique UNIQUE (name);
 
 CREATE UNIQUE INDEX ingredient_unique_name ON ingredient (LOWER(name));
 
+CREATE UNIQUE INDEX recipe_unique_name ON recipe (LOWER(name));
 
 INSERT INTO recipe VALUES ('1', 'драники', 'Традиционное блюдо');
 INSERT INTO recipe VALUES ('2', 'блины', 'Очень вкусно');
