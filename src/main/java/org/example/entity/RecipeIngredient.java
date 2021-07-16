@@ -1,35 +1,43 @@
 package org.example.entity;
 
-import java.util.Set;
-
 public class RecipeIngredient {
-    private Recipe recipe;
-    private Ingredient ingredient;
+    private Integer id;
+    private String name;
+    private Float calories;
     private Integer requiredAmount;
 
     public RecipeIngredient() {
     }
 
-    public RecipeIngredient(Recipe recipe, Ingredient ingredient, Integer requiredAmount) {
-        this.recipe = recipe;
-        this.ingredient = ingredient;
+    public RecipeIngredient(Integer id, String name, Float calories, Integer requiredAmount) {
+        this.id = id;
+        this.name = name;
+        this.calories = calories;
         this.requiredAmount = requiredAmount;
     }
 
-    public Recipe getRecipe() {
-        return recipe;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Ingredient getIngredient() {
-        return ingredient;
+    public String getName() {
+        return name;
     }
 
-    public void setIngredient(Set<Ingredient> ingredient) {
-        this.ingredient = (Ingredient) ingredient;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Float getCalories() {
+        return calories;
+    }
+
+    public void setCalories(Float calories) {
+        this.calories = calories;
     }
 
     public int getRequiredAmount() {
