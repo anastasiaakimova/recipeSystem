@@ -1,6 +1,6 @@
 package org.example.entity;
 
-public class RecipeIngredient {
+public class RecipeIngredient extends Ingredient {
     private Integer id;
     private String name;
     private Float calories;
@@ -16,7 +16,7 @@ public class RecipeIngredient {
         this.requiredAmount = requiredAmount;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -32,7 +32,7 @@ public class RecipeIngredient {
         this.name = name;
     }
 
-    public Float getCalories() {
+    public float getCalories() {
         return calories;
     }
 
@@ -46,5 +46,12 @@ public class RecipeIngredient {
 
     public void setRequiredAmount(Integer requiredAmount) {
         this.requiredAmount = requiredAmount;
+    }
+
+    @Override
+    public String toString() {
+        return "name: " + name +
+                ", calories: " + calories +
+                ", requiredAmount: " + requiredAmount;
     }
 }
