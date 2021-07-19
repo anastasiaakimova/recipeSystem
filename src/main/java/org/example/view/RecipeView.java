@@ -59,9 +59,8 @@ public class RecipeView {
     }
 
     private void showAllRecipes() throws SQLException {
-        List<Recipe> recipes = recipeService.getAll();
-        System.out.println("List of all recipes: ");
-        recipes.forEach(recipe1 -> System.out.println(recipe1.toString()));
+        Map<String, Recipe> recipes = recipeService.getAll();
+        recipes.forEach((k, v) -> System.out.println(recipes));
     }
 
     private void findRecipeByName() throws SQLException {
