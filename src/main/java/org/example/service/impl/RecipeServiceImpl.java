@@ -2,12 +2,11 @@ package org.example.service.impl;
 
 import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
-import org.example.repository.RecipeRepository;
 import org.example.repository.impl.RecipeRepoImpl;
 import org.example.service.RecipeService;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class RecipeServiceImpl implements RecipeService {
@@ -17,27 +16,27 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeServiceImpl() throws SQLException {
     }
 
-    @Override
+
     public Recipe save(Recipe recipe) throws SQLException {
         return recipeRepository.save(recipe);
     }
 
-    @Override
+
     public Recipe update(Recipe recipe) throws SQLException {
         return recipeRepository.update(recipe);
     }
 
-    @Override
-    public List<Recipe> getAll() throws SQLException {
+
+    public Map<String, Recipe> getAll() throws SQLException {
         return recipeRepository.getAll();
     }
 
-    @Override
+
     public Recipe getById(Integer id) throws SQLException {
         return recipeRepository.getById(id);
     }
 
-    @Override
+
     public void remove(String name) throws SQLException {
         recipeRepository.deleteByName(name);
     }
