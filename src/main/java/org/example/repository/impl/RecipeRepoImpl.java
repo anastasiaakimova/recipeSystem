@@ -2,6 +2,7 @@ package org.example.repository.impl;
 
 import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
+import org.example.entity.RecipeIngredient;
 import org.example.repository.RecipeRepository;
 import org.example.util.DbConnection;
 
@@ -15,40 +16,52 @@ public class RecipeRepoImpl implements RecipeRepository {
 
     // методы выводит имя описание всех рецептов и их ингридиенты и требуемое количество
 
-    public List<Recipe> getAll() {
-        List<Recipe> recipes = new ArrayList<>();
+    public Map<String, Recipe> getAll() {
+
+        Map<String, Recipe> map = new HashMap<>();
         try (Connection connection = DbConnection.getConnection()) {
-            String query = "SELECT recipe.id, recipe.name AS \"recipeName\", recipe.description, i.name " +
-                    "AS ingredients, ri.\"requiredAmount\" " +
-                    "AS \"requiredAmount\" FROM recipe LEFT JOIN recipe_ingredient ri " +
-                    "ON recipe.id = ri.\"idRecipe\" " +
-                    "LEFT JOIN ingredient i on ri.\"idIngredient\" = i.id";
+            String query = "SELECT recipe.id, recipe.name " +
+                    "AS \"recipeName\", recipe.description, i.name AS ingredientName, i.calories " +
+                    "AS calories,  ri.\"requiredAmount\" AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri " +
+                    "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i on ri.\"idIngredient\" = i.id\n";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            Map<String, Recipe> map = new HashMap<>();
-
-            ////// thinking
+            System.out.println("List of all recipes: ");
             while (resultSet.next()) {
+                Recipe recipe = new Recipe();
+
                 if (!map.containsKey(resultSet.getString("recipeName"))) {
-                    Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("recipeName"), resultSet.getString("description"), (List<Ingredient>) resultSet.getArray(String.valueOf(new ArrayList<>())));
-                    Ingredient ingredient = new Ingredient();
-                    recipe.getIngredients().add(ingredient);
+
+                    recipe.setId(resultSet.getInt("id"));
+                    recipe.setName(resultSet.getString("recipeName"));
+                    recipe.setDescription(resultSet.getString("description"));
+                    recipe.setIngredients(new ArrayList<>());
                     map.put(recipe.getName(), recipe);
-                    ///////
-                    recipes.add(recipe);
+
+                    }
+
+                //работает не корректно
+                RecipeIngredient ingredient = new RecipeIngredient();
+
+                ingredient.setId(resultSet.getInt("id"));
+                ingredient.setName(resultSet.getString("ingredientName"));
+                ingredient.setCalories(resultSet.getFloat("calories"));
+                ingredient.setRequiredAmount(resultSet.getInt("requiredAmount"));
+                recipe.getIngredients().add(ingredient);
                 }
-            }
-        } catch (SQLException e) {
-            System.out.println("Something went wrong!");
+
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Something went wrong! " + e.getMessage());
         }
-        return recipes;
+
+        return map;
     }
 
     // добавление рецепта
     // переписать класс recipeIngredient??? и переписать этот метод под него
 
-    public Recipe save(Recipe recipe) throws SQLException {
+    public Recipe save(Recipe recipe) {
         try (Connection connection = DbConnection.getConnection()) {
             connection.setAutoCommit(false);
             String query = "INSERT INTO recipe (name, description) VALUES(?,?)";
@@ -167,15 +180,15 @@ public class RecipeRepoImpl implements RecipeRepository {
             Map<String, Recipe> map = new HashMap<>();
 
             while (resultSet.next()) {
-                if (map.containsKey(resultSet.getString("recipeName"))) {
-                    Ingredient ingredient = new Ingredient();
-                    map.get(resultSet.getString("recipeName")).getIngredients().add(ingredient);
-                } else {
-                    Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
-                    Ingredient ingredient = new Ingredient();
-                    recipe.getIngredients().add(ingredient);
-                    map.put(recipe.getName(), recipe);
-                }
+//                if (map.containsKey(resultSet.getString("recipeName"))) {
+//                    Ingredient ingredient = new Ingredient();
+//                    map.get(resultSet.getString("recipeName")).getIngredients().add(ingredient);
+//                } else {
+//                    Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"));
+//                    Ingredient ingredient = new Ingredient();
+//                    recipe.getIngredients().add(ingredient);
+//                    map.put(recipe.getName(), recipe);
+//                }
             }
             //     map
         } catch (SQLException e) {
@@ -186,7 +199,7 @@ public class RecipeRepoImpl implements RecipeRepository {
 
     // метод показывает все возможные рецепты по заданному сету ингредиентов
 
-    public List<Recipe> findRecipesByIngredients(Set<Ingredient> ingredient) throws SQLException {
+    public List<Recipe> findRecipesByIngredients(Set<Ingredient> ingredient) {
         try (Connection connection = DbConnection.getConnection()) {
         } catch (SQLException e) {
             System.out.println("Something went wrong!");
