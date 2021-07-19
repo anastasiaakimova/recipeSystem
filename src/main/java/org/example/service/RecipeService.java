@@ -6,7 +6,7 @@ import org.example.entity.Recipe;
 import java.sql.SQLException;
 import java.util.Set;
 
-public interface RecipeService extends GenericService <Recipe, Integer>{
+public interface RecipeService{
     Recipe findByName(String name) throws SQLException;
     Recipe findByIngredientsSet(Set<Ingredient> ingredient) throws  SQLException;
 }
