@@ -2,12 +2,11 @@ package org.example.service.impl;
 
 import org.example.entity.Ingredient;
 import org.example.repository.impl.IngredientRepoImpl;
-import org.example.service.IngredientService;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class IngredientServiceImpl implements IngredientService {
+public class IngredientServiceImpl{
 
     private IngredientRepoImpl ingredientRepository = new IngredientRepoImpl();
 
@@ -17,27 +16,27 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
 
-    public Ingredient update(Ingredient ingredient) throws SQLException {
+    public Ingredient update(Ingredient ingredient){
         return ingredientRepository.update(ingredient);
     }
 
 
-    public List<Ingredient> getAll() throws SQLException {
+    public List<Ingredient> getAll(){
         return ingredientRepository.getAll();
     }
 
 
-    public Ingredient getById(Integer id) throws SQLException {
+    public Ingredient getById(Integer id){
         return ingredientRepository.getById(id);
     }
 
 
-    public void remove(String name) throws SQLException {
+    public void remove(String name){
         ingredientRepository.deleteByName(name);
     }
 
 
-    public Ingredient getByName(String name) throws SQLException {
+    public Ingredient getByName(String name){
         return ingredientRepository.getByName(name);
     }
 }
