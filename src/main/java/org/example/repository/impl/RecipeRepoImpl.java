@@ -109,30 +109,6 @@ public class RecipeRepoImpl implements RecipeRepository {
         return recipe;
     }
 
-    // метод выводит имя описание рецептов и их ингридиенты по заданному id
-
-    public Recipe getById(Integer id) {
-        Recipe recipe = new Recipe();
-//        try (Connection connection = DbConnection.getConnection()) {
-//            String query = "SELECT recipe.id, recipe.name  AS recipeName, recipe.description, i.name  AS ingredients, ri.\"requiredAmount\"\n" +
-//                    "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri\n" +
-//                    "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i\n" +
-//                    "ON ri.\"idIngredient\" = i.id WHERE recipe.id = ?";
-//            PreparedStatement preparedStatement = connection.prepareStatement(query);
-//            preparedStatement.setInt(1, id);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//
-//            while (resultSet.next()) {
-//                Recipe newRecipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("description"), Collections.EMPTY_LIST);
-//                newRecipe.setId(id);
-//                recipe = newRecipe;
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("Something went wrong!");
-//        }
-        return recipe;
-    }
-
     // удаление рецепта
     public void deleteByName(String name) {
         try (Connection connection = DbConnection.getConnection()) {
