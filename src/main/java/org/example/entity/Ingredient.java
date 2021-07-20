@@ -1,6 +1,6 @@
 package org.example.entity;
 
-public class Ingredient{
+public class Ingredient {
     private Integer id;
     private String name;
     private Float calories;
@@ -40,7 +40,7 @@ public class Ingredient{
 
     @Override
     public String toString() {
-        return " name: " + name +
+        return "\n" + " name: " + name +
                 " calories: " + calories;
     }
 }
