@@ -23,15 +23,17 @@ public class RecipeRepoImpl implements RecipeRepository {
             String query = "SELECT recipe.id, recipe.name " +
                     "AS \"recipeName\", recipe.description, i.name AS ingredientName, i.calories " +
                     "AS calories,  ri.\"requiredAmount\" AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri " +
-                    "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i on ri.\"idIngredient\" = i.id\n";
+                    "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i on ri.\"idIngredient\" = i.id";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             System.out.println("List of all recipes: ");
+            Recipe recipe = null;
+
             while (resultSet.next()) {
-                Recipe recipe = new Recipe();
 
                 if (!map.containsKey(resultSet.getString("recipeName"))) {
+                    recipe = new Recipe();
 
                     recipe.setId(resultSet.getInt("id"));
                     recipe.setName(resultSet.getString("recipeName"));
@@ -39,7 +41,7 @@ public class RecipeRepoImpl implements RecipeRepository {
                     recipe.setIngredients(new ArrayList<>());
                     map.put(recipe.getName(), recipe);
 
-                    }
+                }
 
                 //работает не корректно
                 RecipeIngredient ingredient = new RecipeIngredient();
@@ -49,7 +51,7 @@ public class RecipeRepoImpl implements RecipeRepository {
                 ingredient.setCalories(resultSet.getFloat("calories"));
                 ingredient.setRequiredAmount(resultSet.getInt("requiredAmount"));
                 recipe.getIngredients().add(ingredient);
-                }
+            }
 
         } catch (SQLException | NullPointerException e) {
             System.out.println("Something went wrong! " + e.getMessage());
@@ -59,11 +61,12 @@ public class RecipeRepoImpl implements RecipeRepository {
     }
 
     // добавление рецепта
-    // переписать класс recipeIngredient??? и переписать этот метод под него
+
 
     public Recipe save(Recipe recipe) {
         try (Connection connection = DbConnection.getConnection()) {
             connection.setAutoCommit(false);
+
             String query = "INSERT INTO recipe (name, description) VALUES(?,?)";
             String query2 = "INSERT INTO recipe_ingredient (\"idRecipe\", \"idIngredient\", \"requiredAmount\") VALUES( ?, ?, ?)";
 
@@ -73,16 +76,18 @@ public class RecipeRepoImpl implements RecipeRepository {
 
             PreparedStatement preparedStatement1 = connection.prepareStatement(query2);
 
+            RecipeIngredient recipeIngredient = new RecipeIngredient();
+
             preparedStatement1.setInt(1, recipe.getId());
-            preparedStatement1.setInt(2, viewIngredients().getId());
-            //     preparedStatement1.setInt(3, requiredAmount);
+            // preparedStatement1.setInt(2, recipeIngredient().getId());
+            preparedStatement1.setInt(3, recipeIngredient.getRequiredAmount());
 
             preparedStatement.executeUpdate();
             preparedStatement1.executeUpdate();
 
             connection.commit();
-        } catch (SQLException e) {
-            System.out.println("Something went wrong");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Something went wrong! " + e.getMessage());
         }
         return recipe;
     }
@@ -108,36 +113,38 @@ public class RecipeRepoImpl implements RecipeRepository {
 
     public Recipe getById(Integer id) {
         Recipe recipe = new Recipe();
-        try (Connection connection = DbConnection.getConnection()) {
-            String query = "SELECT recipe.id, recipe.name  AS recipeName, recipe.description, i.name  AS ingredients, ri.\"requiredAmount\"\n" +
-                    "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri\n" +
-                    "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i\n" +
-                    "ON ri.\"idIngredient\" = i.id WHERE recipe.id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Recipe newRecipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("description"), Collections.EMPTY_LIST);
-                newRecipe.setId(id);
-                recipe = newRecipe;
-            }
-        } catch (SQLException e) {
-            System.out.println("Something went wrong!");
-        }
+//        try (Connection connection = DbConnection.getConnection()) {
+//            String query = "SELECT recipe.id, recipe.name  AS recipeName, recipe.description, i.name  AS ingredients, ri.\"requiredAmount\"\n" +
+//                    "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri\n" +
+//                    "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i\n" +
+//                    "ON ri.\"idIngredient\" = i.id WHERE recipe.id = ?";
+//            PreparedStatement preparedStatement = connection.prepareStatement(query);
+//            preparedStatement.setInt(1, id);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//
+//            while (resultSet.next()) {
+//                Recipe newRecipe = new Recipe(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("description"), Collections.EMPTY_LIST);
+//                newRecipe.setId(id);
+//                recipe = newRecipe;
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("Something went wrong!");
+//        }
         return recipe;
     }
 
     // удаление рецепта
-
     public void deleteByName(String name) {
         try (Connection connection = DbConnection.getConnection()) {
-            String query = "DELETE * FROM recipe WHERE name = ?";
+            String query = "DELETE FROM recipe USING recipe_ingredient " +
+                    "WHERE recipe_ingredient.\"idRecipe\" = recipe.id AND recipe.name = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
+            System.out.println("Recipe was successfully deleted! ");
         } catch (SQLException e) {
-            System.out.println("Something went wrong!");
+            System.out.println("Something went wrong! " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
