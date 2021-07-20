@@ -7,8 +7,6 @@ public class Recipe {
     private Integer id;
     private String name;
     private String description;
-
-   // private List<Ingredient> ingredients;
     private List<RecipeIngredient> ingredients;
 
     public Recipe() {
@@ -60,7 +58,9 @@ public class Recipe {
 
     @Override
     public String toString() {
-        return " description: " + description +
-                " recipeIngredients: " + ingredients;
+        return "______________________________" + "\n" +
+                " name: " + name + "\n" +
+                " description: " + description + "\n" +
+                " ingredients: " + ingredients + "\n";
     }
 }

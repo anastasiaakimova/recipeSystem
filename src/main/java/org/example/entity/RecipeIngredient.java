@@ -50,8 +50,8 @@ public class RecipeIngredient extends Ingredient {
 
     @Override
     public String toString() {
-        return "name: " + name +
+        return "\n" + " name: " + name +
                 ", calories: " + calories +
-                ", requiredAmount: " + requiredAmount;
+                ", required amount: " + requiredAmount;
     }
 }
