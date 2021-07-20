@@ -6,37 +6,27 @@ import org.example.repository.impl.IngredientRepoImpl;
 import java.sql.SQLException;
 import java.util.List;
 
-public class IngredientServiceImpl{
+public class IngredientServiceImpl {
 
     private IngredientRepoImpl ingredientRepository = new IngredientRepoImpl();
-
 
     public Ingredient save(Ingredient ingredient) throws SQLException {
         return ingredientRepository.save(ingredient);
     }
 
-
-    public Ingredient update(Ingredient ingredient){
+    public Ingredient update(Ingredient ingredient) {
         return ingredientRepository.update(ingredient);
     }
 
-
-    public List<Ingredient> getAll(){
+    public List<Ingredient> getAll() {
         return ingredientRepository.getAll();
     }
 
-
-    public Ingredient getById(Integer id){
-        return ingredientRepository.getById(id);
-    }
-
-
-    public void remove(String name){
+    public void remove(String name) {
         ingredientRepository.deleteByName(name);
     }
 
-
-    public Ingredient getByName(String name){
+    public Ingredient getByName(String name) {
         return ingredientRepository.getByName(name);
     }
 }

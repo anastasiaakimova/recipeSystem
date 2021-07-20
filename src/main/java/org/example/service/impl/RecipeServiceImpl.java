@@ -20,7 +20,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
 
-    public Recipe update(Recipe recipe) {
+    public Map<String, Recipe> update(Map<String, Recipe> recipe) {
         return recipeRepository.update(recipe);
     }
 
