@@ -95,18 +95,20 @@ public class RecipeRepoImpl implements RecipeRepository {
     // редактироание рецепта
     // дописать апдейт ингридиентов тоже
 
-    public Recipe update(Recipe recipe) {
+    public Map<String, Recipe> update(Map<String, Recipe> recipe1) {
+        Map<String, Recipe> map = new HashMap<>();
+        Recipe recipe = new Recipe();
         try (Connection connection = DbConnection.getConnection()) {
-            String query = "UPDATE recipe SET name = ?, description = ? WHERE name = ?";
+            String query = "UPDATE recipe SET name = ?, description = ? WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, recipe.getName());
             preparedStatement.setString(2, recipe.getDescription());
-            preparedStatement.setString(3, recipe.getName());
+            preparedStatement.setInt(3, recipe.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Something went wrong!");
         }
-        return recipe;
+        return map;
     }
 
     // удаление рецепта
