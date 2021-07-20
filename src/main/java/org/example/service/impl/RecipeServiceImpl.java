@@ -5,7 +5,6 @@ import org.example.entity.Recipe;
 import org.example.repository.impl.RecipeRepoImpl;
 import org.example.service.RecipeService;
 
-import java.sql.SQLException;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,8 +33,8 @@ public class RecipeServiceImpl implements RecipeService {
         recipeRepository.deleteByName(name);
     }
 
-    @Override
-    public Recipe findByName(String name) {
+
+    public Map<String, Recipe> findByName(String name) {
         return recipeRepository.getByName(name);
     }
 

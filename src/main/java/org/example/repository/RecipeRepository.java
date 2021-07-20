@@ -5,11 +5,12 @@ import org.example.entity.Recipe;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface RecipeRepository{
     // get recipe by name
-    Recipe getByName(String name) throws SQLException;
+    Map<String, Recipe> getByName(String name) throws SQLException;
 
     // get recipe's ingredients
     Recipe viewIngredients() throws SQLException;

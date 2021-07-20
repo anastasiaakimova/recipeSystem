@@ -4,9 +4,10 @@ import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
 
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Set;
 
 public interface RecipeService{
-    Recipe findByName(String name) throws SQLException;
+    Map<String, Recipe> findByName(String name) throws SQLException;
     Recipe findByIngredientsSet(Set<Ingredient> ingredient) throws  SQLException;
 }

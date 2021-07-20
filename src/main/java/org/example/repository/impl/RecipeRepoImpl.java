@@ -125,27 +125,47 @@ public class RecipeRepoImpl implements RecipeRepository {
     }
 
     // метода выводит имя описание рецептов и их ингридиенты по заданному имени
+    public Map<String, Recipe> getByName(String name) {
+        Map<String, Recipe> map = new HashMap<>();
 
-    public Recipe getByName(String name) {
-        List<Recipe> recipes = new ArrayList<>();
         try (Connection connection = DbConnection.getConnection()) {
             String query = "SELECT recipe.id, recipe.name AS recipeName, recipe.description, i.name\n" +
-                    "AS ingredient, ri.\"requiredAmount\"\n" +
+                    "AS ingredientName, i.calories AS calories, ri.\"requiredAmount\"\n" +
                     "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri\n" +
                     "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i\n" +
                     "ON ri.\"idIngredient\" = i.id WHERE recipe.name = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
+
+            Recipe recipe = null;
+
             while (resultSet.next()) {
-                Recipe recipe = new Recipe(resultSet.getInt("id"), resultSet.getString("recipeName"), resultSet.getString("description"), Collections.EMPTY_LIST);
-                recipes.add(recipe);
-                //    Map<String, Recipe> map = new HashMap<>();
+                if (!map.containsKey(resultSet.getString("recipeName"))) {
+                    recipe = new Recipe();
+
+                    recipe.setId(resultSet.getInt("id"));
+                    recipe.setName(resultSet.getString("recipeName"));
+                    recipe.setDescription(resultSet.getString("description"));
+                    recipe.setIngredients(new ArrayList<>());
+                    map.put(recipe.getName(), recipe);
+                }
+
+                //работает не корректно
+                RecipeIngredient ingredient = new RecipeIngredient();
+
+                ingredient.setId(resultSet.getInt("id"));
+                ingredient.setName(resultSet.getString("ingredientName"));
+                ingredient.setCalories(resultSet.getFloat("calories"));
+                ingredient.setRequiredAmount(resultSet.getInt("requiredAmount"));
+                recipe.getIngredients().add(ingredient);
+
             }
         } catch (SQLException e) {
-            System.out.println("Something went wrong!");
+            System.out.println("Something went wrong!" + e.getMessage());
+            e.printStackTrace();
         }
-        return (Recipe) recipes;
+        return map;
     }
 
     //метод показывает все ингредиенты заданного рецепта по name
