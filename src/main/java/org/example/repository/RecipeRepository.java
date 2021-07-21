@@ -12,9 +12,6 @@ public interface RecipeRepository{
     // get recipe by name
     Map<String, Recipe> getByName(String name) throws SQLException;
 
-    // get recipe's ingredients
-    Recipe viewIngredients() throws SQLException;
-
     // find recipes by ingredients
     List<Recipe> findRecipesByIngredients(Set<Ingredient> ingredient) throws SQLException;
 }

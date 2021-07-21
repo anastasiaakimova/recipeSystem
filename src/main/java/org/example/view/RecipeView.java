@@ -75,8 +75,8 @@ public class RecipeView {
             if (!recipe.isEmpty()) {
                 System.out.println(recipe.values());
 
-
                 while (true) {
+                    System.out.println("--------------------------------------------------------------------");
                     System.out.println("You can edit name and description or add and delete some ingredients");
                     System.out.println("1. Edit name and descriptions ");
                     System.out.println("2. Delete ingredients ");
@@ -84,9 +84,10 @@ public class RecipeView {
                     System.out.println("4. Back ");
                     int number = scanner.nextInt();
 // доделать
+                    List<RecipeIngredient> ingredients = new LinkedList<>();
+                    Recipe recipe1 = recipe.get(name);
                     switch (number) {
                         case 1:
-                            Recipe recipe1 = recipe.get(name);
                             Scanner scanner1 = new Scanner(System.in);
                             System.out.println("Enter new name, please: ");
                             String newName = scanner1.nextLine();
@@ -95,19 +96,30 @@ public class RecipeView {
                             System.out.println("Enter new description, please: ");
                             String newDescription = scanner1.nextLine();
                             recipe1.setDescription(newDescription);
-
                             recipeService.update(recipe1);
-                            System.out.println("Your recipe was successfully edited!");
                             break;
                         case 2:
-                            System.out.println("Enter ingredients which you want to delete, please: ");
-                            //thinking
+
+                        //    System.out.println("Enter ingredient's name which you want to delete, please: ");
 
                             break;
                         case 3:
-                            System.out.println("Enter ingredients which you want to add, please: ");
+                            RecipeIngredient ingredient = new RecipeIngredient();
+                            Scanner scanner2 = new Scanner(System.in);
                             System.out.println("You can add only this ingredients: " + ingredientService.getAll());
+                            System.out.println("-------------------------------------------------------------------");
+                            System.out.println("Enter ingredients which you want to add, please: ");
+                            String ingName = scanner2.nextLine();
+                            ingredient.setName(ingName);
 
+                            System.out.println("Enter required amount, please: ");
+                            int requiredAmount = scanner2.nextInt();
+                            ingredient.setRequiredAmount(requiredAmount);
+
+                            ingredients.add(ingredient);
+                            recipe1.setIngredients(ingredients);
+
+                    //        System.out.println("Your ingredient was successfully added! ");
                             break;
                         case 4:
                             run();
@@ -115,7 +127,10 @@ public class RecipeView {
                         default:
                             System.out.println("Wrong number");
                             System.out.println("Enter number from 1 to 4, please");
+
                     }
+
+                    System.out.println("Your recipe was successfully edited!");
                 }
 
             } else {
@@ -156,7 +171,8 @@ public class RecipeView {
         return go;
     }
 
-    // исправить
+    // добавление рецепта работает
+    //дописать добавление ингридиентов
     private void addRecipe() throws SQLException {
         try {
             Scanner scanner = new Scanner(System.in);
@@ -172,19 +188,31 @@ public class RecipeView {
 
             System.out.println("Ingredients, which you can add: " + ingredientService.getAll());
 
-            Set ingredientsSet = new HashSet<Ingredient>();
+            List<RecipeIngredient> ingredients = new LinkedList<>();
 
+            // RecipeIngredient ingredient = null;
             boolean go = true;
             while (go) {
+                Scanner scanner1 = new Scanner(System.in);
                 System.out.println("1. Enter recipe's ingredient ");
                 System.out.println("2. Back");
                 int yesOrNo = scanner.nextInt();
                 switch (yesOrNo) {
                     case 1:
-                        System.out.println("Enter name of ingredient :");
-                        String ingredient = scanner.nextLine();
-                        ingredientsSet.add(ingredient);
+                        RecipeIngredient ingredient = new RecipeIngredient();
+                        System.out.println("Enter ingredient's name: ");
+                        String ingName = scanner1.nextLine();
+                        ingredient.setName(ingName);
+
+                        System.out.println("Enter required amount, please: ");
+                        int requiredAmount = scanner1.nextInt();
+                        ingredient.setRequiredAmount(requiredAmount);
+
+                        ingredients.add(ingredient);
+                        recipe.setIngredients(ingredients);
+                        System.out.println("Your ingredient was successfully added! ");
                         break;
+
                     case 2:
                         System.out.println("You choose do not add new ingredient");
                         go = false;
@@ -195,9 +223,10 @@ public class RecipeView {
                 }
             }
 
-            // дописать  добавление ингредиента
-
+          //  recipeService.addIngredient(recipe, ingredients);
             recipeService.save(recipe);
+
+            System.out.println("Your recipe was successfully added! ");
         } catch (InputMismatchException e) {
             System.out.println("Something went wrong! " + e.getMessage());
         }
