@@ -75,33 +75,29 @@ public class RecipeView {
             if (!recipe.isEmpty()) {
                 System.out.println(recipe.values());
 
-                System.out.println("You can edit name and description or add and delete some ingredients");
-                System.out.println("1. Edit name and descriptions ");
-                System.out.println("2. Delete ingredients ");
-                System.out.println("3. Add ingredients ");
-                System.out.println("3. Back ");
-
-// доделать
 
                 while (true) {
+                    System.out.println("You can edit name and description or add and delete some ingredients");
+                    System.out.println("1. Edit name and descriptions ");
+                    System.out.println("2. Delete ingredients ");
+                    System.out.println("3. Add ingredients ");
+                    System.out.println("4. Back ");
                     int number = scanner.nextInt();
+// доделать
                     switch (number) {
                         case 1:
-                            Recipe recipe1 = new Recipe();
+                            Recipe recipe1 = recipe.get(name);
                             Scanner scanner1 = new Scanner(System.in);
                             System.out.println("Enter new name, please: ");
                             String newName = scanner1.nextLine();
                             recipe1.setName(newName);
 
                             System.out.println("Enter new description, please: ");
-
                             String newDescription = scanner1.nextLine();
                             recipe1.setDescription(newDescription);
 
-
-                            recipe.put(newName, recipe1);
-                            recipe.put(newDescription, recipe1);
-                            recipeService.update(recipe);
+                            recipeService.update(recipe1);
+                            System.out.println("Your recipe was successfully edited!");
                             break;
                         case 2:
                             System.out.println("Enter ingredients which you want to delete, please: ");
