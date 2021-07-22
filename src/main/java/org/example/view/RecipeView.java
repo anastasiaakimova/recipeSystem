@@ -96,7 +96,9 @@ public class RecipeView {
                             System.out.println("Enter new description, please: ");
                             String newDescription = scanner1.nextLine();
                             recipe1.setDescription(newDescription);
-                            recipeService.update(recipe1);
+
+                            recipe.replace(name, recipe1);
+                            recipeService.update(recipe);
                             break;
                         case 2:
 
@@ -118,6 +120,9 @@ public class RecipeView {
 
                             ingredients.add(ingredient);
                             recipe1.setIngredients(ingredients);
+
+                            recipe.replace(name, recipe1);
+                            recipeService.update(recipe);
 
                             //        System.out.println("Your ingredient was successfully added! ");
                             break;
