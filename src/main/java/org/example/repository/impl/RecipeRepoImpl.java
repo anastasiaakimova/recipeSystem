@@ -6,6 +6,7 @@ import org.example.entity.RecipeIngredient;
 import org.example.repository.RecipeRepository;
 import org.example.util.DbConnection;
 
+import javax.swing.text.html.parser.Entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,59 +57,60 @@ public class RecipeRepoImpl implements RecipeRepository {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "INSERT INTO recipe (name, description) VALUES(?,?)";
             String query2 = "INSERT INTO recipe_ingredient (\"idRecipe\", \"idIngredient\", \"requiredAmount\") VALUES( ?, ?, ?)";
+            String query3 = "SELECT id FROM recipe WHERE name = ?";
+            String query4 = "SELECT id FROM ingredient WHERE name = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, recipe.getName());
             preparedStatement.setString(2, recipe.getDescription());
             preparedStatement.executeUpdate();
 
+            PreparedStatement pSt2 = connection.prepareStatement(query3);
+            pSt2.setString(1, recipe.getName());
+            ResultSet resultSet = pSt2.executeQuery();
+            while (resultSet.next()) {
+                recipe.setId(resultSet.getInt("id"));
+            }
+
+            PreparedStatement pSt3 = connection.prepareStatement(query4);
             PreparedStatement pSt1 = connection.prepareStatement(query2);
 
-            pSt1.setInt(1, recipe.getId());
-            // не работает корректно
-            pSt1.setInt(2, recipe.getIngredients().stream().findAny().get().getId());
-            pSt1.setInt(3, recipe.getIngredients().stream().findAny().get().getRequiredAmount());
+            List<RecipeIngredient> ingredients = recipe.getIngredients();
+     //       connection.setAutoCommit(false);
 
-            pSt1.executeUpdate();
+
+            for (RecipeIngredient ingredient : ingredients) {
+
+                pSt3.setString(1, ingredient.getName());
+                ResultSet resultSet1 = pSt3.executeQuery();
+                while (resultSet1.next()) {
+                    ingredient.setId(resultSet1.getInt("id"));
+                }
+
+                pSt1.setInt(1, recipe.getId());
+                //  id null т.к.recipeIngr мы создаем новый
+                pSt1.setInt(2, ingredient.getId());
+                pSt1.setInt(3, ingredient.getRequiredAmount());
+    //            pSt1.addBatch(query2);
+                pSt1.executeUpdate();
+
+            }
+
+    //        pSt1.executeBatch();
+    //        connection.commit();
 
         } catch (SQLException | NullPointerException e) {
             if (e.getMessage().contains("name_unique")) {
                 System.out.println("This recipe already exists! ");
+                e.printStackTrace();
             } else {
                 System.out.println("Something went wrong! " + e.getMessage());
                 e.printStackTrace();
             }
         }
+
+        System.out.println("Your recipe was successfully added! ");
         return recipe;
-    }
-
-    public Recipe addIngredient(Recipe recipe, List<RecipeIngredient> ingredient) {
-        try (Connection connection = DbConnection.getConnection()) {
-            String query = "INSERT INTO recipe_ingredient (\"idRecipe\", \"idIngredient\", \"requiredAmount\") VALUES( ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, recipe.getId());
-            //        preparedStatement.setInt(2, ingredient.get().getId());
-            //      preparedStatement.setInt(3, ingredient.get().getRequiredAmount());
-            preparedStatement.executeUpdate();
-        } catch (SQLException | NullPointerException e) {
-            System.out.println("Something went wrong! " + e.getMessage());
-            e.printStackTrace();
-        }
-        return recipe;
-
-    }
-
-    public RecipeIngredient deleteIngredient(RecipeIngredient recipeIngredient) {
-        try (Connection connection = DbConnection.getConnection()) {
-            String query = "DELETE FROM recipe_ingredient WHERE \"idIngredient\" = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, recipeIngredient.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException | NullPointerException e) {
-            System.out.println("Something went wrong! " + e.getMessage());
-            e.printStackTrace();
-        }
-        return recipeIngredient;
     }
 
     // редактироание рецепта

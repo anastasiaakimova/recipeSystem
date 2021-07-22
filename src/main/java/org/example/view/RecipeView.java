@@ -97,8 +97,7 @@ public class RecipeView {
                             String newDescription = scanner1.nextLine();
                             recipe1.setDescription(newDescription);
 
-                            recipe.replace(name, recipe1);
-                            recipeService.update(recipe);
+                            recipeService.update(recipe1);
                             break;
                         case 2:
 
@@ -121,8 +120,8 @@ public class RecipeView {
                             ingredients.add(ingredient);
                             recipe1.setIngredients(ingredients);
 
-                            recipe.replace(name, recipe1);
-                            recipeService.update(recipe);
+
+                            recipeService.update(recipe1);
 
                             //        System.out.println("Your ingredient was successfully added! ");
                             break;
@@ -181,16 +180,15 @@ public class RecipeView {
     private void addRecipe() throws SQLException {
         try {
             Scanner scanner = new Scanner(System.in);
-            Map<String, Recipe> recipe = new HashMap<>();
-            Recipe recipe1 = new Recipe();
+            Recipe recipe = new Recipe();
 
             System.out.println("Enter recipe's name, please: ");
             String name = scanner.nextLine();
-            recipe1.setName(name);
+            recipe.setName(name);
 
             System.out.println("Enter recipe's description, please: ");
             String description = scanner.nextLine();
-            recipe1.setDescription(description);
+            recipe.setDescription(description);
             System.out.println("Ingredients, which you can add: " + ingredientService.getAll());
 
             List<RecipeIngredient> ingredients = new LinkedList<>();
@@ -206,6 +204,9 @@ public class RecipeView {
                         RecipeIngredient ingredient = new RecipeIngredient();
                         System.out.println("Enter ingredient's name: ");
                         String ingName = scanner1.nextLine();
+
+                        //проверяем на существование и если существует заполняем айди
+
                         ingredient.setName(ingName);
                         System.out.println("Enter required amount, please: ");
 
@@ -213,11 +214,11 @@ public class RecipeView {
                         ingredient.setRequiredAmount(requiredAmount);
                         ingredients.add(ingredient);
 
-                        recipe1.setIngredients(ingredients);
+
                         System.out.println("Your ingredient was successfully added! ");
                         break;
                     case 2:
-                        System.out.println("You choose do not add new ingredient");
+                        System.out.println("You choose do not add an ingredient");
                         go = false;
                         break;
                     default:
@@ -225,9 +226,9 @@ public class RecipeView {
                         System.out.println("Enter number from 1 to 2, please");
                 }
             }
-            recipe.put(name, recipe1);
+
+            recipe.setIngredients(ingredients);
             recipeService.save(recipe);
-            System.out.println("Your recipe was successfully added! ");
         } catch (InputMismatchException e) {
             System.out.println("Something went wrong! " + e.getMessage());
         }

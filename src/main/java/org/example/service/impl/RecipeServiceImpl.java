@@ -2,11 +2,9 @@ package org.example.service.impl;
 
 import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
-import org.example.entity.RecipeIngredient;
 import org.example.repository.impl.RecipeRepoImpl;
 import org.example.service.RecipeService;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,17 +15,17 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeServiceImpl() {
     }
 
-    public Map<String, Recipe>  save(Map<String, Recipe> recipe) {
+    public Recipe save(Recipe recipe) {
         return recipeRepository.save(recipe);
     }
 
-    public Recipe addIngredient(Recipe recipe, List<RecipeIngredient> ingredient){
-        return recipeRepository.addIngredient(recipe, ingredient);}
+//    public Recipe addIngredient(Recipe recipe, List<RecipeIngredient> ingredient){
+//        return recipeRepository.addIngredient(recipe, ingredient);}
+//
+//    public RecipeIngredient RecipeIngredient (RecipeIngredient recipeIngredient){
+//        return recipeRepository.deleteIngredient(recipeIngredient); }
 
-    public RecipeIngredient RecipeIngredient (RecipeIngredient recipeIngredient){
-        return recipeRepository.deleteIngredient(recipeIngredient); }
-
-    public Map<String, Recipe> update(Map<String, Recipe> recipe) {
+    public Recipe update(Recipe recipe) {
         return recipeRepository.update(recipe);
     }
 
