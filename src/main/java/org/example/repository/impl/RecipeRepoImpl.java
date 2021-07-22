@@ -76,8 +76,6 @@ public class RecipeRepoImpl implements RecipeRepository {
             PreparedStatement pSt1 = connection.prepareStatement(query2);
 
             List<RecipeIngredient> ingredients = recipe.getIngredients();
-     //       connection.setAutoCommit(false);
-
 
             for (RecipeIngredient ingredient : ingredients) {
 
@@ -87,17 +85,14 @@ public class RecipeRepoImpl implements RecipeRepository {
                     ingredient.setId(resultSet1.getInt("id"));
                 }
 
+                connection.setAutoCommit(false);
                 pSt1.setInt(1, recipe.getId());
-                //  id null т.к.recipeIngr мы создаем новый
                 pSt1.setInt(2, ingredient.getId());
                 pSt1.setInt(3, ingredient.getRequiredAmount());
-    //            pSt1.addBatch(query2);
-                pSt1.executeUpdate();
-
+                pSt1.addBatch();
             }
-
-    //        pSt1.executeBatch();
-    //        connection.commit();
+            pSt1.executeBatch();
+            connection.commit();
 
         } catch (SQLException | NullPointerException e) {
             if (e.getMessage().contains("name_unique")) {
