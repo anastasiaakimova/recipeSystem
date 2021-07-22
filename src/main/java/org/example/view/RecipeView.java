@@ -113,6 +113,14 @@ public class RecipeView {
                             String ingName = scanner2.nextLine();
                             ingredient.setName(ingName);
 
+                            Ingredient dbIngredient = ingredientService.getByName(ingName);
+/////////////////????????????????????
+                            if (ingredient != dbIngredient) {
+                                System.out.println("This ingredient doesn't exist! ");
+                            }
+
+                            ingredient.setId(dbIngredient.getId());
+
                             System.out.println("Enter required amount, please: ");
                             int requiredAmount = scanner2.nextInt();
                             ingredient.setRequiredAmount(requiredAmount);
@@ -120,10 +128,7 @@ public class RecipeView {
                             ingredients.add(ingredient);
                             recipe1.setIngredients(ingredients);
 
-
                             recipeService.update(recipe1);
-
-                            //        System.out.println("Your ingredient was successfully added! ");
                             break;
                         case 4:
                             run();
@@ -204,12 +209,21 @@ public class RecipeView {
                         RecipeIngredient ingredient = new RecipeIngredient();
                         System.out.println("Enter ingredient's name: ");
                         String ingName = scanner1.nextLine();
+                        ingredient.setName(ingName);
 
                         //проверяем на существование и если существует заполняем айди
 
-                        ingredient.setName(ingName);
-                        System.out.println("Enter required amount, please: ");
+/////////////???????????????????????????????????????????????????????????????????????????????????????????
 
+                        Ingredient dbIngredient = ingredientService.getByName(ingName);
+
+                        if (ingredient.equals(dbIngredient)) {
+                           System.out.println("This ingredient doesn't exist! ");
+                        }
+
+                        ingredient.setId(dbIngredient.getId());
+
+                        System.out.println("Enter required amount, please: ");
                         int requiredAmount = scanner1.nextInt();
                         ingredient.setRequiredAmount(requiredAmount);
                         ingredients.add(ingredient);

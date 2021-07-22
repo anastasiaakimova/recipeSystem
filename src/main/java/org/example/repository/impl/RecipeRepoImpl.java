@@ -79,11 +79,11 @@ public class RecipeRepoImpl implements RecipeRepository {
 
             for (RecipeIngredient ingredient : ingredients) {
 
-                pSt3.setString(1, ingredient.getName());
-                ResultSet resultSet1 = pSt3.executeQuery();
-                while (resultSet1.next()) {
-                    ingredient.setId(resultSet1.getInt("id"));
-                }
+//                pSt3.setString(1, ingredient.getName());
+//                ResultSet resultSet1 = pSt3.executeQuery();
+//                while (resultSet1.next()) {
+//                    ingredient.setId(resultSet1.getInt("id"));
+//                }
 
                 connection.setAutoCommit(false);
                 pSt1.setInt(1, recipe.getId());
@@ -113,11 +113,31 @@ public class RecipeRepoImpl implements RecipeRepository {
     public Recipe update(Recipe recipe) {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "UPDATE recipe SET name = ?, description = ? WHERE id = ?";
+
+            String query2 = "INSERT INTO recipe_ingredient (\"idRecipe\", \"idIngredient\", \"requiredAmount\") VALUES( ?, ?, ?)";
+
+
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, recipe.getName());
             preparedStatement.setString(2, recipe.getDescription());
             preparedStatement.setInt(3, recipe.getId());
             preparedStatement.executeUpdate();
+
+            PreparedStatement pSt1 = connection.prepareStatement(query2);
+
+            List<RecipeIngredient> ingredients = recipe.getIngredients();
+
+            for (RecipeIngredient ingredient : ingredients) {
+
+                connection.setAutoCommit(false);
+                pSt1.setInt(1, recipe.getId());
+                pSt1.setInt(2, ingredient.getId());
+                pSt1.setInt(3, ingredient.getRequiredAmount());
+                pSt1.addBatch();
+            }
+            pSt1.executeBatch();
+            connection.commit();
+
         } catch (SQLException | NullPointerException e) {
             System.out.println("Something went wrong!" + e.getMessage());
         }
