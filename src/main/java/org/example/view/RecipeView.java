@@ -13,7 +13,7 @@ public class RecipeView {
     private RecipeServiceImpl recipeService = new RecipeServiceImpl();
     private IngredientServiceImpl ingredientService = new IngredientServiceImpl();
 
-    public RecipeView() throws SQLException {
+    public RecipeView() {
     }
 
     public void run() {
@@ -38,7 +38,7 @@ public class RecipeView {
                         findRecipeByName();
                         break;
                     case 3:
-                        findRecipeByIngredientsSet();
+                        //         findRecipeByIngredientsSet();
                         break;
                     case 4:
                         addRecipe();
@@ -100,7 +100,7 @@ public class RecipeView {
                             break;
                         case 2:
 
-                        //    System.out.println("Enter ingredient's name which you want to delete, please: ");
+                            //    System.out.println("Enter ingredient's name which you want to delete, please: ");
 
                             break;
                         case 3:
@@ -119,7 +119,7 @@ public class RecipeView {
                             ingredients.add(ingredient);
                             recipe1.setIngredients(ingredients);
 
-                    //        System.out.println("Your ingredient was successfully added! ");
+                            //        System.out.println("Your ingredient was successfully added! ");
                             break;
                         case 4:
                             run();
@@ -142,55 +142,54 @@ public class RecipeView {
 
     }
 
-    private void findRecipeByIngredientsSet() throws SQLException {
-        Scanner scanner = new Scanner(System.in);
-        Set ingredientsSet = new HashSet<Ingredient>();
-
-        boolean go = true;
-        while (go) {
-            System.out.println("Enter recipe's ingredient, please: ");
-            System.out.println("If you don't want to add ingredient enter no. ");
-            go = isGo(scanner, ingredientsSet, go);
-        }
-        recipeService.findByIngredientsSet(ingredientsSet);
-    }
-
-    private boolean isGo(Scanner scanner, Set ingredientsSet, boolean go) {
-        String yesOrNo = scanner.nextLine();
-        switch (yesOrNo.toLowerCase()) {
-            case "no":
-                System.out.println("You choose do not add new ingredient");
-                go = false;
-                break;
-            default:
-                System.out.println("Enter name of ingredient :");
-                String ingredient = scanner.nextLine();
-                ingredientsSet.add(ingredient);
-                break;
-        }
-        return go;
-    }
+//    private void findRecipeByIngredientsSet() throws SQLException {
+//        Scanner scanner = new Scanner(System.in);
+//        Set ingredientsSet = new HashSet<Ingredient>();
+//
+//        boolean go = true;
+//        while (go) {
+//            System.out.println("Enter recipe's ingredient, please: ");
+//            System.out.println("If you don't want to add ingredient enter no. ");
+//            go = isGo(scanner, ingredientsSet, go);
+//        }
+//        recipeService.findByIngredientsSet(ingredientsSet);
+//    }
+//
+//    private boolean isGo(Scanner scanner, Set ingredientsSet, boolean go) {
+//        String yesOrNo = scanner.nextLine();
+//        switch (yesOrNo.toLowerCase()) {
+//            case "no":
+//                System.out.println("You choose do not add new ingredient");
+//                go = false;
+//                break;
+//            default:
+//                System.out.println("Enter name of ingredient :");
+//                String ingredient = scanner.nextLine();
+//                ingredientsSet.add(ingredient);
+//                break;
+//        }
+//        return go;
+//    }
 
     // добавление рецепта работает
     //дописать добавление ингридиентов
     private void addRecipe() throws SQLException {
         try {
             Scanner scanner = new Scanner(System.in);
-            Recipe recipe = new Recipe();
+            Map<String, Recipe> recipe = new HashMap<>();
+            Recipe recipe1 = new Recipe();
 
             System.out.println("Enter recipe's name, please: ");
             String name = scanner.nextLine();
-            recipe.setName(name);
+            recipe1.setName(name);
 
             System.out.println("Enter recipe's description, please: ");
             String description = scanner.nextLine();
-            recipe.setDescription(description);
-
+            recipe1.setDescription(description);
             System.out.println("Ingredients, which you can add: " + ingredientService.getAll());
 
             List<RecipeIngredient> ingredients = new LinkedList<>();
 
-            // RecipeIngredient ingredient = null;
             boolean go = true;
             while (go) {
                 Scanner scanner1 = new Scanner(System.in);
@@ -203,16 +202,15 @@ public class RecipeView {
                         System.out.println("Enter ingredient's name: ");
                         String ingName = scanner1.nextLine();
                         ingredient.setName(ingName);
-
                         System.out.println("Enter required amount, please: ");
+
                         int requiredAmount = scanner1.nextInt();
                         ingredient.setRequiredAmount(requiredAmount);
-
                         ingredients.add(ingredient);
-                        recipe.setIngredients(ingredients);
+
+                        recipe1.setIngredients(ingredients);
                         System.out.println("Your ingredient was successfully added! ");
                         break;
-
                     case 2:
                         System.out.println("You choose do not add new ingredient");
                         go = false;
@@ -222,10 +220,8 @@ public class RecipeView {
                         System.out.println("Enter number from 1 to 2, please");
                 }
             }
-
-          //  recipeService.addIngredient(recipe, ingredients);
+            recipe.put(name, recipe1);
             recipeService.save(recipe);
-
             System.out.println("Your recipe was successfully added! ");
         } catch (InputMismatchException e) {
             System.out.println("Something went wrong! " + e.getMessage());
