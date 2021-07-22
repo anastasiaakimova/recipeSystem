@@ -17,7 +17,7 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeServiceImpl() {
     }
 
-    public Recipe save(Recipe recipe) {
+    public Map<String, Recipe>  save(Map<String, Recipe> recipe) {
         return recipeRepository.save(recipe);
     }
 
@@ -27,7 +27,7 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeIngredient RecipeIngredient (RecipeIngredient recipeIngredient){
         return recipeRepository.deleteIngredient(recipeIngredient); }
 
-    public Recipe update(Recipe recipe) {
+    public Map<String, Recipe> update(Map<String, Recipe> recipe) {
         return recipeRepository.update(recipe);
     }
 
