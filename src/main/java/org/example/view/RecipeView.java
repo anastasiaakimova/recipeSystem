@@ -35,7 +35,7 @@ public class RecipeView {
                         showAllRecipes();
                         break;
                     case 2:
-                        findRecipeByName();
+                        updateRecipe();
                         break;
                     case 3:
                         //         findRecipeByIngredientsSet();
@@ -65,7 +65,11 @@ public class RecipeView {
         recipes.forEach((k, v) -> System.out.println(v));
     }
 
-    private void findRecipeByName() throws SQLException {
+//////////////////////////////////
+//     дописать case 4
+//////////////////////////
+
+    private void updateRecipe() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter recipe's name, please: ");
         String name = scanner.nextLine();
@@ -80,26 +84,33 @@ public class RecipeView {
                 while (true) {
                     System.out.println("--------------------------------------------------------------------");
                     System.out.println("You can edit name and description or add and delete some ingredients");
-                    System.out.println("1. Edit name and descriptions ");
-                    System.out.println("2. Delete ingredients ");
-                    System.out.println("3. Add ingredients ");
-                    System.out.println("4. Back ");
+                    System.out.println("1. Edit name ");
+                    System.out.println("2. Edit descriptions ");
+                    System.out.println("3. Delete ingredients ");
+                    System.out.println("4. Add ingredients ");
+                    System.out.println("5. Back ");
                     int number = scanner.nextInt();
                     Recipe recipe1 = recipe.get(name);
                     switch (number) {
                         case 1:
-                            Scanner scanner1 = new Scanner(System.in);
+                            Scanner scanner0 = new Scanner(System.in);
                             System.out.println("Enter new name, please: ");
-                            String newName = scanner1.nextLine();
+                            String newName = scanner0.nextLine();
                             recipe1.setName(newName);
 
-                            System.out.println("Enter new description, please: ");
-                            String newDescription = scanner1.nextLine();
-                            recipe1.setDescription(newDescription);
-                            recipeService.update(recipe1);
+                            recipeService.updateName(recipe1);
                             System.out.println("Your recipe was successfully edited!");
                             break;
                         case 2:
+                            Scanner scanner1 = new Scanner(System.in);
+                            System.out.println("Enter new description, please: ");
+                            String newDescription = scanner1.nextLine();
+                            recipe1.setDescription(newDescription);
+
+                            recipeService.updateDescription(recipe1);
+                            System.out.println("Your recipe was successfully edited!");
+                            break;
+                        case 3:
                             Scanner scanner2 = new Scanner(System.in);
                             System.out.println("Enter ingredient's name which you want to delete, please: ");
                             String deleteName = scanner2.nextLine();
@@ -111,13 +122,14 @@ public class RecipeView {
 
                             Map<String, Recipe> newRecipe = recipeService.findByName(name);
                             System.out.println(newRecipe.values());
-
                             break;
-                        case 3:
+                        case 4:
                             Scanner scanner3 = new Scanner(System.in);
+                            System.out.println("Enter ingredients which you want to add, please: ");
+                            System.out.println("-------------------------------------------------------------------");
                             System.out.println("You can add only this ingredients: " + ingredientService.getAll());
                             System.out.println("-------------------------------------------------------------------");
-                            System.out.println("Enter ingredients which you want to add, please: ");
+
                             String ingName = scanner3.nextLine();
                             ingredient.setName(ingName);
 
@@ -131,11 +143,11 @@ public class RecipeView {
                             List<RecipeIngredient> ingredients = new LinkedList<>();
 
                             ingredients.add(ingredient);
-                            recipe1.setIngredients(ingredients);
-                            recipeService.update(recipe1);
+
+                            recipeService.updateIngredients(recipe1, ingredients);
                             System.out.println("Your recipe was successfully edited!");
                             break;
-                        case 4:
+                        case 5:
                             run();
                             break;
                         default:
