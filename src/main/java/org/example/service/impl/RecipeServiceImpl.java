@@ -3,16 +3,18 @@ package org.example.service.impl;
 import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
 import org.example.entity.RecipeIngredient;
+import org.example.repository.impl.IngredientRepoImpl;
 import org.example.repository.impl.RecipeRepoImpl;
-import org.example.service.RecipeService;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class RecipeServiceImpl implements RecipeService {
+public class RecipeServiceImpl{
 
     private RecipeRepoImpl recipeRepository = new RecipeRepoImpl();
+
+    private IngredientRepoImpl ingredientRepo = new IngredientRepoImpl();
 
     public RecipeServiceImpl() {
     }
@@ -36,7 +38,7 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeRepository.updateDescription(recipe);
     }
 
-    public Recipe updateIngredients (Recipe recipe, List <RecipeIngredient> ingredients) {
+    public Recipe updateIngredients(Recipe recipe, List<RecipeIngredient> ingredients) {
         return recipeRepository.updateIngredients(recipe, ingredients);
     }
 
@@ -53,8 +55,47 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeRepository.getByName(name);
     }
 
-    @Override
-    public Recipe findByIngredientsSet(Set<Ingredient> ingredient) {
-        return (Recipe) recipeRepository.findRecipesByIngredients(ingredient);
+
+
+    ////////////////////////////////////////////////////////////////////////
+    public List<Map <String, Recipe>> findByIngredientsSet(Recipe recipe, List <RecipeIngredient> ingredients) {
+        Stream<RecipeIngredient> stream = ingredients.stream();
+        if (recipe != null){
+            stream = stream.filter(recipeIngredient -> recipe.equals(recipeIngredient.getName()));
+
+        }
+        return stream.map(ingredients -> {
+            Map<String, Recipe> map = new LinkedHashMap<>();
+            map.put();
+            return map;
+
+        }).collect(Collectors.toList());
+
+//        RecipeIngredient ingredient = null;
+//
+//        List<Recipe> recipes = new ArrayList<>();
+//
+//
+//
+//
+//        recipes.stream()
+//                .filter(Objects::nonNull)
+//                .filter(recipe -> !recipe.getName().isEmpty() && recipe.getIngredients().contains(ingredient.getName()) )
+//                .forEach(System.out::println);
+//        return recipes;
+    }
+
+    public Recipe sortByCalories() {
+
+        return null;
+    }
+
+    public Recipe sortByMaxCalories() {
+        return null;
+
+    }
+
+    public Recipe sortByMinCalories() {
+        return null;
     }
 }

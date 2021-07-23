@@ -38,7 +38,7 @@ public class RecipeView {
                         updateRecipe();
                         break;
                     case 3:
-                        //         findRecipeByIngredientsSet();
+                        findRecipeByIngredientsSet();
                         break;
                     case 4:
                         addRecipe();
@@ -170,34 +170,46 @@ public class RecipeView {
 
     }
 
-//    private void findRecipeByIngredientsSet() throws SQLException {
-//        Scanner scanner = new Scanner(System.in);
-//        Set ingredientsSet = new HashSet<Ingredient>();
-//
-//        boolean go = true;
-//        while (go) {
-//            System.out.println("Enter recipe's ingredient, please: ");
-//            System.out.println("If you don't want to add ingredient enter no. ");
-//            go = isGo(scanner, ingredientsSet, go);
-//        }
-//        recipeService.findByIngredientsSet(ingredientsSet);
-//    }
-//
-//    private boolean isGo(Scanner scanner, Set ingredientsSet, boolean go) {
-//        String yesOrNo = scanner.nextLine();
-//        switch (yesOrNo.toLowerCase()) {
-//            case "no":
-//                System.out.println("You choose do not add new ingredient");
-//                go = false;
-//                break;
-//            default:
-//                System.out.println("Enter name of ingredient :");
-//                String ingredient = scanner.nextLine();
-//                ingredientsSet.add(ingredient);
-//                break;
-//        }
-//        return go;
-//    }
+    private void findRecipeByIngredientsSet() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        RecipeIngredient ingredient = new RecipeIngredient();
+        List<RecipeIngredient> ingredients = new LinkedList<>();
+        Ingredient dbIngredient;
+        boolean go = true;
+        while (go) {
+            System.out.println("1. Enter ingredient ");
+            System.out.println("2. Back ");
+
+            int number = scanner.nextInt();
+            switch (number) {
+                case 1:
+                    Scanner scanner1 = new Scanner(System.in);
+                    System.out.println("Ingredients which you can enter: " + ingredientService.getAll());
+                    System.out.println("Enter name of ingredient :");
+                    String name = scanner1.nextLine();
+                    ingredient.setName(name);
+
+                    dbIngredient = ingredientService.getByName(name);
+                    ingredient.setId(dbIngredient.getId());
+
+                    System.out.println("Enter required amount of ingredient :");
+                    int requiredAmount = scanner.nextInt();
+                    ingredient.setRequiredAmount(requiredAmount);
+
+                    ingredients.add(ingredient);
+                    break;
+                case 2:
+                    System.out.println("You choose do not add new ingredient");
+                    go = false;
+                    break;
+                default:
+                    System.out.println("Wrong number!");
+                    System.out.println("Enter number from 1 to 2, please");
+                    break;
+            }
+        }
+        //recipeService.findByIngredientsSet(ingredients);
+    }
 
     // добавление рецепта работает
     private void addRecipe() throws SQLException {
