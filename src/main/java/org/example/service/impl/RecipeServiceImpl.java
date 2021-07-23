@@ -2,6 +2,7 @@ package org.example.service.impl;
 
 import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
+import org.example.entity.RecipeIngredient;
 import org.example.repository.impl.RecipeRepoImpl;
 import org.example.service.RecipeService;
 
@@ -18,12 +19,8 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe save(Recipe recipe) {
         return recipeRepository.save(recipe);
     }
-
-//    public Recipe addIngredient(Recipe recipe, List<RecipeIngredient> ingredient){
-//        return recipeRepository.addIngredient(recipe, ingredient);}
-//
-//    public RecipeIngredient RecipeIngredient (RecipeIngredient recipeIngredient){
-//        return recipeRepository.deleteIngredient(recipeIngredient); }
+    public RecipeIngredient deleteIngredient (RecipeIngredient recipeIngredient){
+        return recipeRepository.deleteIngredient(recipeIngredient); }
 
     public Recipe update(Recipe recipe) {
         return recipeRepository.update(recipe);

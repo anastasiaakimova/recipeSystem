@@ -69,6 +69,8 @@ public class RecipeView {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter recipe's name, please: ");
         String name = scanner.nextLine();
+        Ingredient dbIngredient = new Ingredient();
+        RecipeIngredient ingredient = new RecipeIngredient();
 
         try {
             Map<String, Recipe> recipe = recipeService.findByName(name);
@@ -83,7 +85,6 @@ public class RecipeView {
                     System.out.println("3. Add ingredients ");
                     System.out.println("4. Back ");
                     int number = scanner.nextInt();
-// доделать
                     List<RecipeIngredient> ingredients = new LinkedList<>();
                     Recipe recipe1 = recipe.get(name);
                     switch (number) {
@@ -96,58 +97,59 @@ public class RecipeView {
                             System.out.println("Enter new description, please: ");
                             String newDescription = scanner1.nextLine();
                             recipe1.setDescription(newDescription);
-
                             recipeService.update(recipe1);
+                            System.out.println("Your recipe was successfully edited!");
                             break;
                         case 2:
+                            Scanner scanner2 = new Scanner(System.in);
+                            System.out.println("Enter ingredient's name which you want to delete, please: ");
+                            String deleteName = scanner2.nextLine();
 
-                            //    System.out.println("Enter ingredient's name which you want to delete, please: ");
-
+                            dbIngredient = ingredientService.getByName(deleteName);
+                            ingredient.setId(dbIngredient.getId());
+                            recipeService.deleteIngredient(ingredient);
+                            System.out.println("Your recipe was successfully edited!");
                             break;
                         case 3:
-                            RecipeIngredient ingredient = new RecipeIngredient();
-                            Scanner scanner2 = new Scanner(System.in);
+                            Scanner scanner3 = new Scanner(System.in);
                             System.out.println("You can add only this ingredients: " + ingredientService.getAll());
                             System.out.println("-------------------------------------------------------------------");
                             System.out.println("Enter ingredients which you want to add, please: ");
-                            String ingName = scanner2.nextLine();
+                            String ingName = scanner3.nextLine();
                             ingredient.setName(ingName);
 
-                            Ingredient dbIngredient = ingredientService.getByName(ingName);
-/////////////////????????????????????
-                            if (ingredient != dbIngredient) {
-                                System.out.println("This ingredient doesn't exist! ");
-                            }
-
+                            dbIngredient = ingredientService.getByName(ingName);
                             ingredient.setId(dbIngredient.getId());
 
                             System.out.println("Enter required amount, please: ");
-                            int requiredAmount = scanner2.nextInt();
+                            int requiredAmount = scanner3.nextInt();
                             ingredient.setRequiredAmount(requiredAmount);
 
                             ingredients.add(ingredient);
                             recipe1.setIngredients(ingredients);
-
                             recipeService.update(recipe1);
+                            System.out.println("Your recipe was successfully edited!");
                             break;
                         case 4:
                             run();
                             break;
                         default:
-                            System.out.println("Wrong number");
+                            System.out.println("Wrong number!");
                             System.out.println("Enter number from 1 to 4, please");
-
                     }
-
-                    System.out.println("Your recipe was successfully edited!");
                 }
 
             } else {
                 System.out.println("This name doesn't exist");
             }
         } catch (NullPointerException e) {
-            System.out.println("There is no name");
+
+            if (!ingredient.equals(dbIngredient)) {
+                System.out.println("This ingredient doesn't exist! ");
+            } else
+                System.out.println("There is no name");
         }
+
 
     }
 
@@ -181,12 +183,12 @@ public class RecipeView {
 //    }
 
     // добавление рецепта работает
-    //дописать добавление ингридиентов
     private void addRecipe() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        Recipe recipe = new Recipe();
+        RecipeIngredient ingredient = new RecipeIngredient();
+        Ingredient dbIngredient = new Ingredient();
         try {
-            Scanner scanner = new Scanner(System.in);
-            Recipe recipe = new Recipe();
-
             System.out.println("Enter recipe's name, please: ");
             String name = scanner.nextLine();
             recipe.setName(name);
@@ -206,28 +208,17 @@ public class RecipeView {
                 int yesOrNo = scanner.nextInt();
                 switch (yesOrNo) {
                     case 1:
-                        RecipeIngredient ingredient = new RecipeIngredient();
                         System.out.println("Enter ingredient's name: ");
                         String ingName = scanner1.nextLine();
                         ingredient.setName(ingName);
 
-                        //проверяем на существование и если существует заполняем айди
-
-/////////////???????????????????????????????????????????????????????????????????????????????????????????
-
-                        Ingredient dbIngredient = ingredientService.getByName(ingName);
-
-                        if (ingredient.equals(dbIngredient)) {
-                           System.out.println("This ingredient doesn't exist! ");
-                        }
-
+                        dbIngredient = ingredientService.getByName(ingName);
                         ingredient.setId(dbIngredient.getId());
 
                         System.out.println("Enter required amount, please: ");
                         int requiredAmount = scanner1.nextInt();
                         ingredient.setRequiredAmount(requiredAmount);
                         ingredients.add(ingredient);
-
 
                         System.out.println("Your ingredient was successfully added! ");
                         break;
@@ -243,8 +234,11 @@ public class RecipeView {
 
             recipe.setIngredients(ingredients);
             recipeService.save(recipe);
-        } catch (InputMismatchException e) {
-            System.out.println("Something went wrong! " + e.getMessage());
+        } catch (InputMismatchException | NullPointerException e) {
+            if (!ingredient.equals(dbIngredient)) {
+                System.out.println("This ingredient doesn't exist! ");
+            } else
+                System.out.println("There is no name");
         }
     }
 

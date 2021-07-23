@@ -6,7 +6,6 @@ import org.example.entity.RecipeIngredient;
 import org.example.repository.RecipeRepository;
 import org.example.util.DbConnection;
 
-import javax.swing.text.html.parser.Entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -97,25 +96,20 @@ public class RecipeRepoImpl implements RecipeRepository {
         } catch (SQLException | NullPointerException e) {
             if (e.getMessage().contains("name_unique")) {
                 System.out.println("This recipe already exists! ");
-                e.printStackTrace();
             } else {
                 System.out.println("Something went wrong! " + e.getMessage());
-                e.printStackTrace();
             }
         }
-
         System.out.println("Your recipe was successfully added! ");
         return recipe;
     }
 
     // редактироание рецепта
-    // дописать апдейт ингридиентов тоже
     public Recipe update(Recipe recipe) {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "UPDATE recipe SET name = ?, description = ? WHERE id = ?";
 
             String query2 = "INSERT INTO recipe_ingredient (\"idRecipe\", \"idIngredient\", \"requiredAmount\") VALUES( ?, ?, ?)";
-
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, recipe.getName());
@@ -142,6 +136,19 @@ public class RecipeRepoImpl implements RecipeRepository {
             System.out.println("Something went wrong!" + e.getMessage());
         }
         return recipe;
+    }
+
+    // удаление ингридиента из рецепта
+    public RecipeIngredient deleteIngredient(RecipeIngredient recipeIngredient) {
+        try (Connection connection = DbConnection.getConnection()) {
+            String query = "DELETE FROM recipe_ingredient WHERE \"idIngredient\" = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, recipeIngredient.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Something went wrong! " + e.getMessage());
+        }
+        return recipeIngredient;
     }
 
     // удаление рецепта
