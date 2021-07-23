@@ -23,7 +23,7 @@ public class RecipeView {
                 System.out.println("---------------------------------------");
                 System.out.println("Choose number to do operation, please: ");
                 System.out.println("1. Show all recipe list");
-                System.out.println("2. Find recipe by name");
+                System.out.println("2. Update recipe ");
                 System.out.println("3. Find recipe by set of ingredients");
                 System.out.println("4. Add recipe ");
                 System.out.println("5. Delete recipe ");
@@ -85,7 +85,6 @@ public class RecipeView {
                     System.out.println("3. Add ingredients ");
                     System.out.println("4. Back ");
                     int number = scanner.nextInt();
-                    List<RecipeIngredient> ingredients = new LinkedList<>();
                     Recipe recipe1 = recipe.get(name);
                     switch (number) {
                         case 1:
@@ -109,6 +108,10 @@ public class RecipeView {
                             ingredient.setId(dbIngredient.getId());
                             recipeService.deleteIngredient(ingredient);
                             System.out.println("Your recipe was successfully edited!");
+
+                            Map<String, Recipe> newRecipe = recipeService.findByName(name);
+                            System.out.println(newRecipe.values());
+
                             break;
                         case 3:
                             Scanner scanner3 = new Scanner(System.in);
@@ -124,6 +127,8 @@ public class RecipeView {
                             System.out.println("Enter required amount, please: ");
                             int requiredAmount = scanner3.nextInt();
                             ingredient.setRequiredAmount(requiredAmount);
+
+                            List<RecipeIngredient> ingredients = new LinkedList<>();
 
                             ingredients.add(ingredient);
                             recipe1.setIngredients(ingredients);
@@ -186,7 +191,6 @@ public class RecipeView {
     private void addRecipe() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         Recipe recipe = new Recipe();
-        RecipeIngredient ingredient = new RecipeIngredient();
         Ingredient dbIngredient = new Ingredient();
         try {
             System.out.println("Enter recipe's name, please: ");
@@ -208,19 +212,28 @@ public class RecipeView {
                 int yesOrNo = scanner.nextInt();
                 switch (yesOrNo) {
                     case 1:
-                        System.out.println("Enter ingredient's name: ");
-                        String ingName = scanner1.nextLine();
-                        ingredient.setName(ingName);
+                        RecipeIngredient ingredient = new RecipeIngredient();
+                        try {
+                            System.out.println("Enter ingredient's name: ");
+                            String ingName = scanner1.nextLine();
+                            ingredient.setName(ingName);
 
-                        dbIngredient = ingredientService.getByName(ingName);
-                        ingredient.setId(dbIngredient.getId());
+                            dbIngredient = ingredientService.getByName(ingName);
+                            ingredient.setId(dbIngredient.getId());
 
-                        System.out.println("Enter required amount, please: ");
-                        int requiredAmount = scanner1.nextInt();
-                        ingredient.setRequiredAmount(requiredAmount);
-                        ingredients.add(ingredient);
+                            System.out.println("Enter required amount, please: ");
+                            int requiredAmount = scanner1.nextInt();
+                            ingredient.setRequiredAmount(requiredAmount);
 
-                        System.out.println("Your ingredient was successfully added! ");
+                            ingredients.add(ingredient);
+                            recipe.setIngredients(ingredients);
+
+                            System.out.println("Your ingredient was successfully added! ");
+                        } catch (NullPointerException e) {
+                            if (ingredient.equals(dbIngredient)) {
+                                System.out.println("This ingredient doesn't exist! ");
+                            }
+                        }
                         break;
                     case 2:
                         System.out.println("You choose do not add an ingredient");
@@ -232,15 +245,12 @@ public class RecipeView {
                 }
             }
 
-            recipe.setIngredients(ingredients);
             recipeService.save(recipe);
         } catch (InputMismatchException | NullPointerException e) {
-            if (!ingredient.equals(dbIngredient)) {
-                System.out.println("This ingredient doesn't exist! ");
-            } else
-                System.out.println("There is no name");
+            System.out.println("There is no name");
         }
     }
+
 
     private void deleteRecipe() throws SQLException {
         Scanner scanner = new Scanner(System.in);

@@ -22,6 +22,9 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeIngredient deleteIngredient (RecipeIngredient recipeIngredient){
         return recipeRepository.deleteIngredient(recipeIngredient); }
 
+//    public Recipe deleteIngredient (Recipe recipe){
+//        return recipeRepository.deleteIngredient(recipe); }
+
     public Recipe update(Recipe recipe) {
         return recipeRepository.update(recipe);
     }

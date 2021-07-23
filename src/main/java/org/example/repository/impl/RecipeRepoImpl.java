@@ -143,6 +143,8 @@ public class RecipeRepoImpl implements RecipeRepository {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "DELETE FROM recipe_ingredient WHERE \"idIngredient\" = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+
             preparedStatement.setInt(1, recipeIngredient.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException | NullPointerException e) {
