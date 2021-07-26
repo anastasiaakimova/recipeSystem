@@ -27,7 +27,10 @@ public class RecipeView {
                 System.out.println("3. Find recipe by set of ingredients");
                 System.out.println("4. Add recipe ");
                 System.out.println("5. Delete recipe ");
-                System.out.println("6. Back");
+                System.out.println("6. Sort recipes by calories ");
+                System.out.println("7. Sort recipes by max calories ");
+                System.out.println("8. Sort recipes by min calories ");
+                System.out.println("9. Back");
                 System.out.println("---------------------------------------");
                 int number = scanner.nextInt();
                 switch (number) {
@@ -47,6 +50,13 @@ public class RecipeView {
                         deleteRecipe();
                         break;
                     case 6:
+                        sortByCalories();
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        break;
+                    case 9:
                         showMainMenu();
                         break;
                     default:
@@ -167,7 +177,6 @@ public class RecipeView {
                 System.out.println("There is no name");
         }
 
-
     }
 
     private void findRecipeByIngredientsSet() throws SQLException {
@@ -208,7 +217,13 @@ public class RecipeView {
                     break;
             }
         }
-        //recipeService.findByIngredientsSet(ingredients);
+        recipeService.findByIngredientsSet(ingredients);
+    }
+
+    private void sortByCalories() throws SQLException{
+        Map<String, Recipe> recipe = recipeService.getAll();
+        recipeService.sortByCalories(recipe);
+        recipe.forEach((k, v) -> System.out.println(v));
     }
 
     // добавление рецепта работает
