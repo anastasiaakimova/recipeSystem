@@ -28,9 +28,8 @@ public class RecipeView {
                 System.out.println("4. Add recipe ");
                 System.out.println("5. Delete recipe ");
                 System.out.println("6. Sort recipes by calories ");
-                System.out.println("7. Sort recipes by max calories ");
-                System.out.println("8. Sort recipes by min calories ");
-                System.out.println("9. Back");
+                System.out.println("7. Sort recipes by range calories ");
+                System.out.println("8. Back");
                 System.out.println("---------------------------------------");
                 int number = scanner.nextInt();
                 switch (number) {
@@ -55,8 +54,6 @@ public class RecipeView {
                     case 7:
                         break;
                     case 8:
-                        break;
-                    case 9:
                         showMainMenu();
                         break;
                     default:
