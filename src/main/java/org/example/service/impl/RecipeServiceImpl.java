@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class RecipeServiceImpl{
+public class RecipeServiceImpl {
 
     private RecipeRepoImpl recipeRepository = new RecipeRepoImpl();
 
@@ -56,27 +56,30 @@ public class RecipeServiceImpl{
     }
 
 
+    public List<Map<String, Recipe>> findByIngredientsSet(List<RecipeIngredient> ingredients) {
+        Map<String, Recipe> recipes = recipeRepository.getAll();
 
-    ////////////////////////////////////////////////////////////////////////
-    public List<Map <String, Recipe>> findByIngredientsSet(Recipe recipe, List <RecipeIngredient> ingredients) {
-        Stream<RecipeIngredient> stream = ingredients.stream();
-        if (recipe != null){
-            stream = stream.filter(recipeIngredient -> recipe.equals(recipeIngredient.getName()));
+            Recipe recipe = new Recipe();
+//??????????????????????????
 
-        }
-        return stream.map(ingredients -> {
-            Map<String, Recipe> map = new LinkedHashMap<>();
-            map.put();
-            return map;
+            Stream<RecipeIngredient> stream = ingredients.stream();
+            if (recipe != null) {
+                stream = stream.filter(recipeIngredient -> recipe.equals(recipeIngredient.getName()));
 
-        }).collect(Collectors.toList());
+            }
+            return stream.map(ingredient -> {
+                Map<String, Recipe> map = new LinkedHashMap<>();
+                map.put(recipe.getName(), recipe);
+                return map;
+
+            }).collect(Collectors.toList());
+
+
+        ////////////
 
 //        RecipeIngredient ingredient = null;
 //
 //        List<Recipe> recipes = new ArrayList<>();
-//
-//
-//
 //
 //        recipes.stream()
 //                .filter(Objects::nonNull)
@@ -85,17 +88,23 @@ public class RecipeServiceImpl{
 //        return recipes;
     }
 
-    public Recipe sortByCalories() {
+    public Map <String, Recipe> sortByCalories(Map<String, Recipe> recipes){
 
-        return null;
+        Optional<Recipe> recipeOptional = recipes.entrySet().stream()
+                .mapToInt(Ingredient::getCalories)
+                .sum()
+                .sorted();
+
+//        recipes.map.entrySet().stream().map(recipe -> recipe.getIngredients()).mapToDouble(recipeIngredients -> )
+//                .sum()
+//                .sorted();
+
+        return recipes;
     }
 
-    public Recipe sortByMaxCalories() {
+    public Recipe sortByRangeCalories() {
         return null;
 
     }
 
-    public Recipe sortByMinCalories() {
-        return null;
-    }
 }
