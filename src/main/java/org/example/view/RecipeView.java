@@ -52,6 +52,7 @@ public class RecipeView {
                         sortByCalories();
                         break;
                     case 7:
+                        sortByRangeOfCalories();
                         break;
                     case 8:
                         showMainMenu();
@@ -68,8 +69,8 @@ public class RecipeView {
     }
 
     private void showAllRecipes() throws SQLException {
-        Map<String, Recipe> recipes = recipeService.getAll();
-        recipes.forEach((k, v) -> System.out.println(v));
+        List<Recipe> recipes = recipeService.getAll();
+        recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }
 
 //////////////////////////////////
@@ -84,9 +85,9 @@ public class RecipeView {
         RecipeIngredient ingredient = new RecipeIngredient();
 
         try {
-            Map<String, Recipe> recipe = recipeService.findByName(name);
-            if (!recipe.isEmpty()) {
-                System.out.println(recipe.values());
+            Recipe recipe = recipeService.findByName(name);
+            if (recipe != null) {
+                System.out.println(recipe);
 
                 while (true) {
                     System.out.println("--------------------------------------------------------------------");
@@ -97,24 +98,23 @@ public class RecipeView {
                     System.out.println("4. Add ingredients ");
                     System.out.println("5. Back ");
                     int number = scanner.nextInt();
-                    Recipe recipe1 = recipe.get(name);
                     switch (number) {
                         case 1:
                             Scanner scanner0 = new Scanner(System.in);
                             System.out.println("Enter new name, please: ");
                             String newName = scanner0.nextLine();
-                            recipe1.setName(newName);
+                            recipe.setName(newName);
 
-                            recipeService.updateName(recipe1);
+                            recipeService.updateName(recipe);
                             System.out.println("Your recipe was successfully edited!");
                             break;
                         case 2:
                             Scanner scanner1 = new Scanner(System.in);
                             System.out.println("Enter new description, please: ");
                             String newDescription = scanner1.nextLine();
-                            recipe1.setDescription(newDescription);
+                            recipe.setDescription(newDescription);
 
-                            recipeService.updateDescription(recipe1);
+                            recipeService.updateDescription(recipe);
                             System.out.println("Your recipe was successfully edited!");
                             break;
                         case 3:
@@ -127,8 +127,8 @@ public class RecipeView {
                             recipeService.deleteIngredient(ingredient);
                             System.out.println("Your recipe was successfully edited!");
 
-                            Map<String, Recipe> newRecipe = recipeService.findByName(name);
-                            System.out.println(newRecipe.values());
+                            Recipe newRecipe = recipeService.findByName(name);
+                            System.out.println(newRecipe);
                             break;
                         case 4:
                             Scanner scanner3 = new Scanner(System.in);
@@ -151,7 +151,7 @@ public class RecipeView {
 
                             ingredients.add(ingredient);
 
-                            recipeService.updateIngredients(recipe1, ingredients);
+                            recipeService.updateIngredients(recipe, ingredients);
                             System.out.println("Your recipe was successfully edited!");
                             break;
                         case 5:
@@ -217,10 +217,23 @@ public class RecipeView {
         recipeService.findByIngredientsSet(ingredients);
     }
 
-    private void sortByCalories() throws SQLException{
-        Map<String, Recipe> recipe = recipeService.getAll();
-        recipeService.sortByCalories(recipe);
-        recipe.forEach((k, v) -> System.out.println(v));
+    //сортировка по калорийности
+    private void sortByCalories() throws SQLException {
+        List<Recipe> recipes = recipeService.getAll();
+
+       recipes.forEach(recipe-> System.out.println(recipe.toString()));
+    }
+
+    //сортировка по диапазону
+    private void sortByRangeOfCalories() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter min number of range: ");
+        Double min = scanner.nextDouble();
+
+        System.out.println("Enter max number of range: ");
+        Double max = scanner.nextDouble();
+
+        recipeService.sortByRangeCalories(min, max);
     }
 
     // добавление рецепта работает

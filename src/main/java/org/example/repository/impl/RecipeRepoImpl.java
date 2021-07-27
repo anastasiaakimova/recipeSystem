@@ -1,21 +1,22 @@
 package org.example.repository.impl;
 
-import org.example.entity.Ingredient;
 import org.example.entity.Recipe;
 import org.example.entity.RecipeIngredient;
-import org.example.repository.RecipeRepository;
 import org.example.util.DbConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class RecipeRepoImpl implements RecipeRepository {
+public class RecipeRepoImpl {
 
     // методы выводит имя описание всех рецептов и их ингридиенты и требуемое количество
-    public Map<String, Recipe> getAll() {
+    public List <Recipe> getAll() {
         Map<String, Recipe> map = new HashMap<>();
         try (Connection connection = DbConnection.getConnection()) {
             String query = "SELECT recipe.id, recipe.name " +
@@ -40,7 +41,7 @@ public class RecipeRepoImpl implements RecipeRepository {
                 RecipeIngredient ingredient = new RecipeIngredient();
                 ingredient.setId(resultSet.getInt("id"));
                 ingredient.setName(resultSet.getString("ingredientName"));
-                ingredient.setCalories(resultSet.getFloat("calories"));
+                ingredient.setCalories(resultSet.getDouble("calories"));
                 ingredient.setRequiredAmount(resultSet.getInt("requiredAmount"));
                 recipe.getIngredients().add(ingredient);
             }
@@ -48,7 +49,9 @@ public class RecipeRepoImpl implements RecipeRepository {
         } catch (SQLException | NullPointerException e) {
             System.out.println("Something went wrong! " + e.getMessage());
         }
-        return map;
+        List<Recipe> result = new ArrayList<>(map.values());
+
+        return result;
     }
 
     // добавление рецепта
@@ -189,9 +192,9 @@ public class RecipeRepoImpl implements RecipeRepository {
     }
 
     // метода выводит имя описание рецептов и их ингридиенты по заданному имени
-    public Map<String, Recipe> getByName(String name) {
-        Map<String, Recipe> map = new HashMap<>();
+    public Recipe getByName(String name) {
 
+        Recipe recipe = null;
         try (Connection connection = DbConnection.getConnection()) {
             String query = "SELECT recipe.id, recipe.name AS recipeName, recipe.description, i.name\n" +
                     "AS ingredientName, i.calories AS calories, ri.\"requiredAmount\"\n" +
@@ -202,36 +205,25 @@ public class RecipeRepoImpl implements RecipeRepository {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            Recipe recipe = null;
+            recipe  = new Recipe();
             while (resultSet.next()) {
-                if (!map.containsKey(resultSet.getString("recipeName"))) {
-                    recipe = new Recipe();
-
+                if(recipe.getName() == null){
                     recipe.setId(resultSet.getInt("id"));
                     recipe.setName(resultSet.getString("recipeName"));
                     recipe.setDescription(resultSet.getString("description"));
                     recipe.setIngredients(new ArrayList<>());
-                    map.put(recipe.getName(), recipe);
                 }
                 RecipeIngredient ingredient = new RecipeIngredient();
                 ingredient.setId(resultSet.getInt("id"));
                 ingredient.setName(resultSet.getString("ingredientName"));
-                ingredient.setCalories(resultSet.getFloat("calories"));
+                ingredient.setCalories(resultSet.getDouble("calories"));
                 ingredient.setRequiredAmount(resultSet.getInt("requiredAmount"));
                 recipe.getIngredients().add(ingredient);
             }
         } catch (SQLException e) {
             System.out.println("Something went wrong!" + e.getMessage());
         }
-        return map;
+        return recipe;
     }
 
-    // метод показывает все возможные рецепты по заданному сету ингредиентов
-    public List<Recipe> findRecipesByIngredients(Set<Ingredient> ingredient) {
-        try (Connection connection = DbConnection.getConnection()) {
-        } catch (SQLException e) {
-            System.out.println("Something went wrong!");
-        }
-        return null;
-    }
 }
