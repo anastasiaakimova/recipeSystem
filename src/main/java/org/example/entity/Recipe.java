@@ -56,6 +56,10 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
+    public Double getRecipeCalories(){
+        return getIngredients().stream().map(i -> i.getCalories()/100 * i.getRequiredAmount()).reduce(0., (a, b) -> a+b);
+    }
+
     @Override
     public String toString() {
         return " name: " + name + "\n" +
