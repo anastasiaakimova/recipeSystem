@@ -19,7 +19,7 @@ public class IngredientRepoImpl implements IngredientRepository {
             String query = "INSERT INTO ingredient (name, calories) VALUES ( ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, ingredient.getName());
-            preparedStatement.setFloat(2, ingredient.getCalories());
+            preparedStatement.setDouble(2, ingredient.getCalories());
             preparedStatement.executeUpdate();
             System.out.println("Your new ingredient was added! ");
         } catch (SQLException e) {
@@ -40,7 +40,7 @@ public class IngredientRepoImpl implements IngredientRepository {
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, ingredient.getName());
-            preparedStatement.setFloat(2, ingredient.getCalories());
+            preparedStatement.setDouble(2, ingredient.getCalories());
             preparedStatement.setInt(3, ingredient.getId());
             preparedStatement.executeUpdate();
             System.out.println("Ingredient was updated! ");
@@ -61,7 +61,7 @@ public class IngredientRepoImpl implements IngredientRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Ingredient ingredient = new Ingredient(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getFloat("calories"));
+                Ingredient ingredient = new Ingredient(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getDouble("calories"));
                 ingredients.add(ingredient);
             }
         } catch (SQLException e) {
@@ -80,7 +80,7 @@ public class IngredientRepoImpl implements IngredientRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                Ingredient newIngredient = new Ingredient(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getFloat("calories"));
+                Ingredient newIngredient = new Ingredient(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getDouble("calories"));
                 ingredient.setId(id);
                 ingredient = newIngredient;
             }
@@ -111,7 +111,7 @@ public class IngredientRepoImpl implements IngredientRepository {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Ingredient newIngredient = new Ingredient(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getFloat("calories"));
+                Ingredient newIngredient = new Ingredient(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getDouble("calories"));
                 ingredient.setName(name);
                 ingredient = newIngredient;
             }

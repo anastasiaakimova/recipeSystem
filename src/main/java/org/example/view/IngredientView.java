@@ -73,7 +73,7 @@ public class IngredientView {
         ingredient.setName(newName);
 
         System.out.println("Enter new ingredient's calories, please: ");
-        Float calories = scanner.nextFloat();
+        Double calories = scanner.nextDouble();
         ingredient.setCalories(calories);
         ingredientService.update(ingredient);
     }
@@ -87,7 +87,7 @@ public class IngredientView {
             String name = scanner.nextLine();
             ingredient.setName(name);
             System.out.println("Enter ingredient's calories, please: ");
-            Float calories = scanner.nextFloat();
+            Double calories = scanner.nextDouble();
             ingredient.setCalories(calories);
 
             ingredientService.save(ingredient);
