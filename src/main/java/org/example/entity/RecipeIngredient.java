@@ -3,13 +3,13 @@ package org.example.entity;
 public class RecipeIngredient extends Ingredient {
     private Integer id;
     private String name;
-    private Float calories;
+    private Double calories;
     private Integer requiredAmount;
 
     public RecipeIngredient() {
     }
 
-    public RecipeIngredient(Integer id, String name, Float calories, Integer requiredAmount) {
+    public RecipeIngredient(Integer id, String name, Double calories, Integer requiredAmount) {
         this.id = id;
         this.name = name;
         this.calories = calories;
@@ -32,11 +32,11 @@ public class RecipeIngredient extends Ingredient {
         this.name = name;
     }
 
-    public float getCalories() {
+    public Double getCalories() {
         return calories;
     }
 
-    public void setCalories(Float calories) {
+    public void setCalories(Double calories) {
         this.calories = calories;
     }
 
