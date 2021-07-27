@@ -1,7 +1,6 @@
 package org.example.repository.impl;
 
 import org.example.entity.Ingredient;
-import org.example.repository.IngredientRepository;
 import org.example.util.DbConnection;
 
 import java.sql.Connection;
@@ -11,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientRepoImpl implements IngredientRepository {
+public class IngredientRepoImpl {
 
     // метод добавляет новый ингредиент
     public Ingredient save(Ingredient ingredient) {

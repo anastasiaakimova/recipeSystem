@@ -219,9 +219,9 @@ public class RecipeView {
 
     //сортировка по калорийности
     private void sortByCalories() throws SQLException {
-        List<Recipe> recipes = recipeService.getAll();
+        List<Recipe> recipes = recipeService.sortByCalories();
 
-       recipes.forEach(recipe-> System.out.println(recipe.toString()));
+        recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }
 
     //сортировка по диапазону
@@ -233,7 +233,9 @@ public class RecipeView {
         System.out.println("Enter max number of range: ");
         Double max = scanner.nextDouble();
 
-        recipeService.sortByRangeCalories(min, max);
+        List<Recipe> recipes = recipeService.sortByRangeCalories(min, max);
+        recipes.forEach(recipe -> System.out.println(recipe.toString()));
+
     }
 
     // добавление рецепта работает

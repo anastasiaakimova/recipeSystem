@@ -5,6 +5,7 @@ import org.example.entity.RecipeIngredient;
 import org.example.repository.impl.IngredientRepoImpl;
 import org.example.repository.impl.RecipeRepoImpl;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -71,16 +72,8 @@ public class RecipeServiceImpl {
     //  отсортировать рецепты по калорийности
     public List<Recipe> sortByCalories() {
         List<Recipe> recipes = recipeRepository.getAll();
-        return recipes.stream().sorted((recipe, t1) -> {
-
-            recipe.getRecipeCalories();
-        }
-        return false;
-        return true;
-
-        )
+        return recipes.stream().sorted(Comparator.comparing(recipe -> recipe.getRecipeCalories()))
         .collect(Collectors.toList());
-
 
     }
 
