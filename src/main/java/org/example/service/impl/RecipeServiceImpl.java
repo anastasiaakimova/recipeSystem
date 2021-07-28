@@ -56,24 +56,42 @@ public class RecipeServiceImpl {
 
         List<Recipe> recipes = recipeRepository.getAll();
 
+
         return recipes.stream()
                 .filter(Objects::nonNull)
+                .filter(recipe -> !recipe.getIngredients().isEmpty())
                 .filter(recipe -> {
-                    if (recipe.getIngredients().contains(ingredients)){
-
-                        return false;
-
-                    }return true;
+                    if (ingredients.equals(recipe.getIngredients()))
+                        return true;
+                    return false;
                 })
+
+                        /*{
+                    if (ingredients.stream().equals(recipe.getIngredients().stream().filter(ingredient -> ingredients.contains(ingredient)))) //recipe.getIngredients().stream().anyMatch(ingredient -> ingredients.contains(ingredient))
+                        return true;
+                    return true;
+                }*/
+                        //////////////////////////////
+
+        // recipe.getIngredients().stream().filter(ingredient -> ingredients.contains(ingredient))
+                        /*{
+                    if (!recipe.getIngredients().stream()){
+                        return true;
+                    }
+                    return true;
+                }*/
+
+
                 .collect(Collectors.toList());
 
     }
+
 
     //  отсортировать рецепты по калорийности
     public List<Recipe> sortByCalories() {
         List<Recipe> recipes = recipeRepository.getAll();
         return recipes.stream().sorted(Comparator.comparing(recipe -> recipe.getRecipeCalories()))
-        .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
     }
 

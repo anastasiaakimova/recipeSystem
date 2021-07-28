@@ -70,6 +70,7 @@ public class RecipeView {
 
     private void showAllRecipes() throws SQLException {
         List<Recipe> recipes = recipeService.getAll();
+        System.out.println("List of all recipes: ");
         recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }
 
@@ -197,6 +198,7 @@ public class RecipeView {
 
                     dbIngredient = ingredientService.getByName(name);
                     ingredient.setId(dbIngredient.getId());
+                    ingredient.setCalories(dbIngredient.getCalories());
 
                     System.out.println("Enter required amount of ingredient :");
                     int requiredAmount = scanner.nextInt();
@@ -214,7 +216,8 @@ public class RecipeView {
                     break;
             }
         }
-        recipeService.findByIngredientsSet(ingredients);
+        List <Recipe> recipes = recipeService.findByIngredientsSet(ingredients);
+        recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }
 
     //сортировка по калорийности

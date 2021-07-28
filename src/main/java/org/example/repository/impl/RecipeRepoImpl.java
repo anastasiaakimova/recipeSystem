@@ -26,7 +26,6 @@ public class RecipeRepoImpl {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            System.out.println("List of all recipes: ");
             Recipe recipe = null;
 
             while (resultSet.next()) {
