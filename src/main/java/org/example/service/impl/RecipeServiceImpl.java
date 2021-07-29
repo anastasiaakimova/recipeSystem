@@ -36,7 +36,7 @@ public class RecipeServiceImpl {
     }
 
     public Recipe updateIngredients(Recipe recipe, List<RecipeIngredient> ingredients) {
-        return recipeRepository.updateIngredients(recipe, ingredients);
+        return recipeRepository.addIngredients(recipe, ingredients);
     }
 
     public List<Recipe> getAll() {

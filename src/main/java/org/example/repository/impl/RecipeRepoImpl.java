@@ -16,7 +16,7 @@ import java.util.Map;
 public class RecipeRepoImpl {
 
     // методы выводит имя описание всех рецептов и их ингридиенты и требуемое количество
-    public List <Recipe> getAll() {
+    public List<Recipe> getAll() {
         Map<String, Recipe> map = new HashMap<>();
         try (Connection connection = DbConnection.getConnection()) {
             String query = "SELECT recipe.id, recipe.name " +
@@ -111,7 +111,6 @@ public class RecipeRepoImpl {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "UPDATE recipe SET name = ? WHERE id = ?";
 
-
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, recipe.getName());
             preparedStatement.setInt(2, recipe.getId());
@@ -139,13 +138,12 @@ public class RecipeRepoImpl {
         return recipe;
     }
 
-
     //редактирование ингридиентов рецепта
-    public Recipe updateIngredients(Recipe recipe, List<RecipeIngredient> ingredients) {
+    public Recipe addIngredients(Recipe recipe, List<RecipeIngredient> ingredients) {
         try (Connection connection = DbConnection.getConnection()) {
-            String query = "UPDATE recipe_ingredient SET  \"idIngredient\" =?,  \"requiredAmount\" = ? WHERE \"idRecipe\" = ?";
+            String query = "INSERT INTO recipe_ingredient  (\"idIngredient\", \"requiredAmount\", \"idRecipe\") VALUES (?, ?, ? )";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-           // List<RecipeIngredient> ingredients = recipe.getIngredients();
+
             for (RecipeIngredient ingredient : ingredients) {
                 connection.setAutoCommit(false);
                 preparedStatement.setInt(1, ingredient.getId());
@@ -204,9 +202,9 @@ public class RecipeRepoImpl {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            recipe  = new Recipe();
+            recipe = new Recipe();
             while (resultSet.next()) {
-                if(recipe.getName() == null){
+                if (recipe.getName() == null) {
                     recipe.setId(resultSet.getInt("id"));
                     recipe.setName(resultSet.getString("recipeName"));
                     recipe.setDescription(resultSet.getString("description"));

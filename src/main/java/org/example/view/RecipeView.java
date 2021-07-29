@@ -74,10 +74,6 @@ public class RecipeView {
         recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }
 
-//////////////////////////////////
-//     дописать case 4
-//////////////////////////
-
     private void updateRecipe() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter recipe's name, please: ");
@@ -143,6 +139,7 @@ public class RecipeView {
 
                             dbIngredient = ingredientService.getByName(ingName);
                             ingredient.setId(dbIngredient.getId());
+                            ingredient.setCalories(dbIngredient.getCalories());
 
                             System.out.println("Enter required amount, please: ");
                             int requiredAmount = scanner3.nextInt();
@@ -153,6 +150,7 @@ public class RecipeView {
                             ingredients.add(ingredient);
 
                             recipeService.updateIngredients(recipe, ingredients);
+                            System.out.println(recipeService.findByName(name));
                             System.out.println("Your recipe was successfully edited!");
                             break;
                         case 5:
@@ -189,23 +187,33 @@ public class RecipeView {
             int number = scanner.nextInt();
             switch (number) {
                 case 1:
-                    RecipeIngredient ingredient = new RecipeIngredient();
-                    Scanner scanner1 = new Scanner(System.in);
-                    System.out.println("Ingredients which you can enter: " + ingredientService.getAll());
-                    System.out.println("Enter name of ingredient :");
-                    String name = scanner1.nextLine();
-                    ingredient.setName(name);
+                    try {
+                        RecipeIngredient ingredient = new RecipeIngredient();
+                        Scanner scanner1 = new Scanner(System.in);
+                        System.out.println("Ingredients which you can enter: " + ingredientService.getAll());
 
-                    dbIngredient = ingredientService.getByName(name);
-                    ingredient.setId(dbIngredient.getId());
-                    ingredient.setCalories(dbIngredient.getCalories());
+                        System.out.println("Enter name of ingredient :");
+                        String name = scanner1.nextLine();
+                        ingredient.setName(name);
 
-                    System.out.println("Enter required amount of ingredient :");
-                    int requiredAmount = scanner.nextInt();
-                    ingredient.setRequiredAmount(requiredAmount);
+                        dbIngredient = ingredientService.getByName(name);
+                        ingredient.setId(dbIngredient.getId());
+                        ingredient.setCalories(dbIngredient.getCalories());
 
-                    ingredients.add(ingredient);
-                    break;
+                        System.out.println("Enter required amount of ingredient :");
+                        int requiredAmount = scanner.nextInt();
+                        ingredient.setRequiredAmount(requiredAmount);
+
+                        ingredients.add(ingredient);
+                        break;
+
+                    } catch (NullPointerException e) {
+                        System.out.println("This name doesn't exist! Try another: ");
+                        break;
+                    } catch (InputMismatchException e) {
+                        System.out.println("This is invalid meaning! Try another: ");
+                        break;
+                    }
                 case 2:
                     System.out.println("You choose do not add new ingredient");
                     go = false;
@@ -216,7 +224,7 @@ public class RecipeView {
                     break;
             }
         }
-        List <Recipe> recipes = recipeService.findByIngredientsSet(ingredients);
+        List<Recipe> recipes = recipeService.findByIngredientsSet(ingredients);
         System.out.println("List of recipes: ");
         recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }
