@@ -53,39 +53,29 @@ public class RecipeServiceImpl {
 
     // найти рецепты по заданному списку и количеству ингредиентов
     public List<Recipe> findByIngredientsSet(List<RecipeIngredient> ingredients) {
-
         List<Recipe> recipes = recipeRepository.getAll();
-
 
         return recipes.stream()
                 .filter(Objects::nonNull)
-                .filter(recipe -> !recipe.getIngredients().isEmpty())
                 .filter(recipe -> {
-                    if (ingredients.equals(recipe.getIngredients()))
-                        return true;
-                    return false;
-                })
-
-                        /*{
-                    if (ingredients.stream().equals(recipe.getIngredients().stream().filter(ingredient -> ingredients.contains(ingredient)))) //recipe.getIngredients().stream().anyMatch(ingredient -> ingredients.contains(ingredient))
-                        return true;
-                    return true;
-                }*/
-                        //////////////////////////////
-
-        // recipe.getIngredients().stream().filter(ingredient -> ingredients.contains(ingredient))
-                        /*{
-                    if (!recipe.getIngredients().stream()){
-                        return true;
-                    }
-                    return true;
-                }*/
-
-
+                            for (RecipeIngredient ingredient : recipe.getIngredients()) {
+                                for (RecipeIngredient ingredient1 : ingredients) {
+                                    if (!(ingredient.getName().equals(ingredient1.getName())
+                                            && ingredient.getRequiredAmount() <= ingredient1.getRequiredAmount())) {
+                                        return false;
+                                    }
+                                    if (recipe.getIngredients().size() == ingredients.size()) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                                return true;
+                            }
+                            return true;
+                        }
+                )
                 .collect(Collectors.toList());
-
     }
-
 
     //  отсортировать рецепты по калорийности
     public List<Recipe> sortByCalories() {

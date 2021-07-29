@@ -179,7 +179,6 @@ public class RecipeView {
 
     private void findRecipeByIngredientsSet() throws SQLException {
         Scanner scanner = new Scanner(System.in);
-        RecipeIngredient ingredient = new RecipeIngredient();
         List<RecipeIngredient> ingredients = new LinkedList<>();
         Ingredient dbIngredient;
         boolean go = true;
@@ -190,6 +189,7 @@ public class RecipeView {
             int number = scanner.nextInt();
             switch (number) {
                 case 1:
+                    RecipeIngredient ingredient = new RecipeIngredient();
                     Scanner scanner1 = new Scanner(System.in);
                     System.out.println("Ingredients which you can enter: " + ingredientService.getAll());
                     System.out.println("Enter name of ingredient :");
@@ -217,6 +217,7 @@ public class RecipeView {
             }
         }
         List <Recipe> recipes = recipeService.findByIngredientsSet(ingredients);
+        System.out.println("List of recipes: ");
         recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }
 
