@@ -197,6 +197,9 @@ public class RecipeView {
                         ingredient.setName(name);
 
                         dbIngredient = ingredientService.getByName(name);
+//                        if (ingredient !=dbIngredient){
+//                            System.out.println("This name doesn't exist! ");
+//                        }
                         ingredient.setId(dbIngredient.getId());
                         ingredient.setCalories(dbIngredient.getCalories());
 
@@ -207,9 +210,10 @@ public class RecipeView {
                         ingredients.add(ingredient);
                         break;
 
+
                     } catch (NullPointerException e) {
                         System.out.println("This name doesn't exist! Try another: ");
-                        break;
+                          break;
                     } catch (InputMismatchException e) {
                         System.out.println("This is invalid meaning! Try another: ");
                         break;
@@ -225,6 +229,9 @@ public class RecipeView {
             }
         }
         List<Recipe> recipes = recipeService.findByIngredientsSet(ingredients);
+        if (recipes.isEmpty()) {
+            System.out.println("Recipes doesn't exist!");
+        } else
         System.out.println("List of recipes: ");
         recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }

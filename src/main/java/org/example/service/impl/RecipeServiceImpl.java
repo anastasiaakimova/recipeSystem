@@ -58,19 +58,24 @@ public class RecipeServiceImpl {
         return recipes.stream()
                 .filter(Objects::nonNull)
                 .filter(recipe -> {
-                            for (RecipeIngredient ingredient : recipe.getIngredients()) {
-                                for (RecipeIngredient ingredient1 : ingredients) {
-                                    if (!(ingredient.getName().equals(ingredient1.getName())
-                                            && ingredient.getRequiredAmount() <= ingredient1.getRequiredAmount())) {
+//                            try {
+                                for (RecipeIngredient ingredient : recipe.getIngredients()) {
+                                    for (RecipeIngredient ingredient1 : ingredients) {
+                                        if (!(ingredient.getName().equals(ingredient1.getName())
+                                                && ingredient.getRequiredAmount() <= ingredient1.getRequiredAmount())) {
+                                            return false;
+                                        }
+                                        if (recipe.getIngredients().size() == ingredients.size()) {
+                                            return true;
+                                        }
                                         return false;
                                     }
-                                    if (recipe.getIngredients().size() == ingredients.size()) {
-                                        return true;
-                                    }
-                                    return false;
+                                    return true;
                                 }
-                                return true;
-                            }
+                         /*   } catch (NullPointerException e) {
+                                System.out.println("These ingredients ");
+
+                            }*/
                             return true;
                         }
                 )
