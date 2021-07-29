@@ -197,9 +197,6 @@ public class RecipeView {
                         ingredient.setName(name);
 
                         dbIngredient = ingredientService.getByName(name);
-//                        if (ingredient !=dbIngredient){
-//                            System.out.println("This name doesn't exist! ");
-//                        }
                         ingredient.setId(dbIngredient.getId());
                         ingredient.setCalories(dbIngredient.getCalories());
 
