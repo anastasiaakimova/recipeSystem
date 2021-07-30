@@ -211,7 +211,7 @@ public class RecipeView {
 
                     } catch (NullPointerException e) {
                         System.out.println("This name doesn't exist! Try another: ");
-                          break;
+                        break;
                     } catch (InputMismatchException e) {
                         System.out.println("This is invalid meaning! Try another: ");
                         break;
@@ -230,7 +230,7 @@ public class RecipeView {
         if (recipes.isEmpty()) {
             System.out.println("Recipes doesn't exist!");
         } else
-        System.out.println("List of recipes: ");
+            System.out.println("List of recipes: ");
         recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }
 

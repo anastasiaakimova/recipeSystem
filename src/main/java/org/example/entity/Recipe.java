@@ -62,9 +62,16 @@ public class Recipe {
 
     @Override
     public String toString() {
-        return " name: " + name + "\n" +
-                " description: " + description + "\n" +
-                " calories: " + getRecipeCalories() +  " Kcal/100g" +"\n"  +
-                " ingredients: " + ingredients + "\n";
+        if (ingredients.get(0).getName() == null) {
+            return " name: " + name + "\n" +
+                    " description: " + description + "\n" +
+                    " calories doesn't count! " + "\n" +
+                    " ingredients doesn't added! " + "\n";
+        } else
+            return
+                    " name: " + name + "\n" +
+                            " description: " + description + "\n" +
+                            " calories: " + getRecipeCalories() + " Kcal/100g" + "\n" +
+                            " ingredients: " + ingredients + "\n";
     }
 }
