@@ -58,29 +58,22 @@ public class RecipeServiceImpl {
         return recipes.stream()
                 .filter(Objects::nonNull)
                 .filter(recipe -> {
-                            try {
-                                //подумать над проверкой пустых рецептов
-                                if (recipe.getIngredients() == null){
-                                    System.out.println("ERROR!!!!!");
-                                    return false;
-                                } else
-                                for (RecipeIngredient ingredient : recipe.getIngredients()) {
-                                    for (RecipeIngredient ingredient1 : ingredients) {
-                                        if (!(ingredient.getName().equals(ingredient1.getName())
-                                                && ingredient.getRequiredAmount() <= ingredient1.getRequiredAmount())) {
-                                            return false;
-                                        }
-                                        if (recipe.getIngredients().size() == ingredients.size()) {
-                                            return true;
-                                        }
+                            for (RecipeIngredient ingredient : recipe.getIngredients()) {
+                                for (RecipeIngredient ingredient1 : ingredients) {
+                                    if (ingredient.getName() == null) {
+                                        return false;
+                                    } else if (!(ingredient.getName().equals(ingredient1.getName())
+                                            && ingredient.getRequiredAmount() <= ingredient1.getRequiredAmount())) {
                                         return false;
                                     }
-                                    return true;
+                                    if (recipe.getIngredients().size() == ingredients.size()) {
+                                        return true;
+                                    }
+                                    return false;
                                 }
-                            } catch (NullPointerException e) {
-                                // ошибка из за возможных пустых ингридиентов в рецептах
-
+                                return true;
                             }
+
                             return true;
                         }
                 )
