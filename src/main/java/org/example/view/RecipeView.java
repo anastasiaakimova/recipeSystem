@@ -97,27 +97,27 @@ public class RecipeView {
                     int number = scanner.nextInt();
                     switch (number) {
                         case 1:
-                            Scanner scanner0 = new Scanner(System.in);
                             System.out.println("Enter new name, please: ");
-                            String newName = scanner0.nextLine();
+                            scanner.skip("\n");
+                            String newName = scanner.nextLine();
                             recipe.setName(newName);
 
                             recipeService.updateName(recipe);
                             System.out.println("Your recipe was successfully edited!");
                             break;
                         case 2:
-                            Scanner scanner1 = new Scanner(System.in);
                             System.out.println("Enter new description, please: ");
-                            String newDescription = scanner1.nextLine();
+                            scanner.skip("\n");
+                            String newDescription = scanner.nextLine();
                             recipe.setDescription(newDescription);
 
                             recipeService.updateDescription(recipe);
                             System.out.println("Your recipe was successfully edited!");
                             break;
                         case 3:
-                            Scanner scanner2 = new Scanner(System.in);
                             System.out.println("Enter ingredient's name which you want to delete, please: ");
-                            String deleteName = scanner2.nextLine();
+                            scanner.skip("\n");
+                            String deleteName = scanner.nextLine();
 
                             dbIngredient = ingredientService.getByName(deleteName);
                             ingredient.setId(dbIngredient.getId());
@@ -128,13 +128,13 @@ public class RecipeView {
                             System.out.println(newRecipe);
                             break;
                         case 4:
-                            Scanner scanner3 = new Scanner(System.in);
                             System.out.println("Enter ingredients which you want to add, please: ");
                             System.out.println("-------------------------------------------------------------------");
                             System.out.println("You can add only this ingredients: " + ingredientService.getAll());
                             System.out.println("-------------------------------------------------------------------");
 
-                            String ingName = scanner3.nextLine();
+                            scanner.skip("\n");
+                            String ingName = scanner.nextLine();
                             ingredient.setName(ingName);
 
                             dbIngredient = ingredientService.getByName(ingName);
@@ -142,7 +142,8 @@ public class RecipeView {
                             ingredient.setCalories(dbIngredient.getCalories());
 
                             System.out.println("Enter required amount, please: ");
-                            int requiredAmount = scanner3.nextInt();
+                            scanner.skip("\n");
+                            int requiredAmount = scanner.nextInt();
                             ingredient.setRequiredAmount(requiredAmount);
 
                             List<RecipeIngredient> ingredients = new LinkedList<>();
@@ -189,11 +190,12 @@ public class RecipeView {
                 case 1:
                     try {
                         RecipeIngredient ingredient = new RecipeIngredient();
-                        Scanner scanner1 = new Scanner(System.in);
+
                         System.out.println("Ingredients which you can enter: " + ingredientService.getAll());
 
                         System.out.println("Enter name of ingredient :");
-                        String name = scanner1.nextLine();
+                        scanner.skip("\n");
+                        String name = scanner.nextLine();
                         ingredient.setName(name);
 
                         dbIngredient = ingredientService.getByName(name);
@@ -201,6 +203,7 @@ public class RecipeView {
                         ingredient.setCalories(dbIngredient.getCalories());
 
                         System.out.println("Enter required amount of ingredient :");
+                        scanner.skip("\n");
                         int requiredAmount = scanner.nextInt();
                         ingredient.setRequiredAmount(requiredAmount);
 
@@ -273,7 +276,6 @@ public class RecipeView {
 
             boolean go = true;
             while (go) {
-                Scanner scanner1 = new Scanner(System.in);
                 System.out.println("1. Enter recipe's ingredient ");
                 System.out.println("2. Back");
                 int yesOrNo = scanner.nextInt();
@@ -282,14 +284,16 @@ public class RecipeView {
                         RecipeIngredient ingredient = new RecipeIngredient();
                         try {
                             System.out.println("Enter ingredient's name: ");
-                            String ingName = scanner1.nextLine();
+                            scanner.skip("\n");
+                            String ingName = scanner.nextLine();
                             ingredient.setName(ingName);
 
                             dbIngredient = ingredientService.getByName(ingName);
                             ingredient.setId(dbIngredient.getId());
 
                             System.out.println("Enter required amount, please: ");
-                            int requiredAmount = scanner1.nextInt();
+                            scanner.skip("\n");
+                            int requiredAmount = scanner.nextInt();
                             ingredient.setRequiredAmount(requiredAmount);
 
                             ingredients.add(ingredient);
