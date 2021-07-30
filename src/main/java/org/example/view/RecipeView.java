@@ -142,7 +142,6 @@ public class RecipeView {
                             ingredient.setCalories(dbIngredient.getCalories());
 
                             System.out.println("Enter required amount, please: ");
-                            scanner.skip("\n");
                             int requiredAmount = scanner.nextInt();
                             ingredient.setRequiredAmount(requiredAmount);
 
@@ -203,7 +202,6 @@ public class RecipeView {
                         ingredient.setCalories(dbIngredient.getCalories());
 
                         System.out.println("Enter required amount of ingredient :");
-                        scanner.skip("\n");
                         int requiredAmount = scanner.nextInt();
                         ingredient.setRequiredAmount(requiredAmount);
 
@@ -292,7 +290,6 @@ public class RecipeView {
                             ingredient.setId(dbIngredient.getId());
 
                             System.out.println("Enter required amount, please: ");
-                            scanner.skip("\n");
                             int requiredAmount = scanner.nextInt();
                             ingredient.setRequiredAmount(requiredAmount);
 
