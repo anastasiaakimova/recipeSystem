@@ -71,7 +71,7 @@ public class Recipe {
             return
                     " name: " + name + "\n" +
                             " description: " + description + "\n" +
-                            " calories: " + getRecipeCalories() + " Kcal/100g" + "\n" +
+                            " calories: " + getRecipeCalories() + " Kcal" + "\n" +
                             " ingredients: " + ingredients + "\n";
     }
 }
