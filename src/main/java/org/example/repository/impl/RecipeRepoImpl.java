@@ -18,15 +18,17 @@ public class RecipeRepoImpl {
     // методы выводит имя описание всех рецептов и их ингридиенты и требуемое количество
     public List<Recipe> getAll() {
         Map<String, Recipe> map = new HashMap<>();
+        Recipe recipe = null;
         try (Connection connection = DbConnection.getConnection()) {
             String query = "SELECT recipe.id, recipe.name " +
-                    "AS \"recipeName\", recipe.description, i.name AS ingredientName, i.calories " +
-                    "AS calories,  ri.\"requiredAmount\" AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri " +
-                    "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i on ri.\"idIngredient\" = i.id";
+                    "AS \"recipeName\", recipe.description, i.name " +
+                    "AS ingredientName, i.calories " +
+                    "AS calories,  ri.\"requiredAmount\" " +
+                    "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri " +
+                    "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i " +
+                    "ON ri.\"idIngredient\" = i.id";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            Recipe recipe = null;
 
             while (resultSet.next()) {
                 if (!map.containsKey(resultSet.getString("recipeName"))) {
@@ -36,13 +38,17 @@ public class RecipeRepoImpl {
                     recipe.setDescription(resultSet.getString("description"));
                     recipe.setIngredients(new ArrayList<>());
                     map.put(recipe.getName(), recipe);
+                } else {
+                    recipe = map.get(resultSet.getString("recipeName"));
                 }
+
                 RecipeIngredient ingredient = new RecipeIngredient();
                 ingredient.setId(resultSet.getInt("id"));
                 ingredient.setName(resultSet.getString("ingredientName"));
                 ingredient.setCalories(resultSet.getDouble("calories"));
                 ingredient.setRequiredAmount(resultSet.getInt("requiredAmount"));
                 recipe.getIngredients().add(ingredient);
+
             }
 
         } catch (SQLException | NullPointerException e) {
@@ -59,7 +65,6 @@ public class RecipeRepoImpl {
             String query = "INSERT INTO recipe (name, description) VALUES(?,?)";
             String query2 = "INSERT INTO recipe_ingredient (\"idRecipe\", \"idIngredient\", \"requiredAmount\") VALUES( ?, ?, ?)";
             String query3 = "SELECT id FROM recipe WHERE name = ?";
-            String query4 = "SELECT id FROM ingredient WHERE name = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, recipe.getName());
@@ -73,18 +78,11 @@ public class RecipeRepoImpl {
                 recipe.setId(resultSet.getInt("id"));
             }
 
-            PreparedStatement pSt3 = connection.prepareStatement(query4);
             PreparedStatement pSt1 = connection.prepareStatement(query2);
 
             List<RecipeIngredient> ingredients = recipe.getIngredients();
 
             for (RecipeIngredient ingredient : ingredients) {
-
-//                pSt3.setString(1, ingredient.getName());
-//                ResultSet resultSet1 = pSt3.executeQuery();
-//                while (resultSet1.next()) {
-//                    ingredient.setId(resultSet1.getInt("id"));
-//                }
 
                 connection.setAutoCommit(false);
                 pSt1.setInt(1, recipe.getId());
@@ -190,11 +188,12 @@ public class RecipeRepoImpl {
 
     // метода выводит имя описание рецептов и их ингридиенты по заданному имени
     public Recipe getByName(String name) {
-
         Recipe recipe = null;
         try (Connection connection = DbConnection.getConnection()) {
-            String query = "SELECT recipe.id, recipe.name AS recipeName, recipe.description, i.name\n" +
-                    "AS ingredientName, i.calories AS calories, ri.\"requiredAmount\"\n" +
+            String query = "SELECT recipe.id, recipe.name " +
+                    "AS recipeName, recipe.description, i.name\n" +
+                    "AS ingredientName, i.calories " +
+                    "AS calories, ri.\"requiredAmount\"\n" +
                     "AS requiredAmount FROM recipe LEFT JOIN recipe_ingredient ri\n" +
                     "ON recipe.id = ri.\"idRecipe\" LEFT JOIN ingredient i\n" +
                     "ON ri.\"idIngredient\" = i.id WHERE recipe.name = ?";
