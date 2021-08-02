@@ -2,7 +2,6 @@ package org.example.service.impl;
 
 import org.example.entity.Recipe;
 import org.example.entity.RecipeIngredient;
-import org.example.repository.impl.IngredientRepoImpl;
 import org.example.repository.impl.RecipeRepoImpl;
 
 import java.util.Comparator;
@@ -10,11 +9,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * The class contains of business logic.
+ * Filters by ingredients list.
+ * Sort by parameters.
+ *
+ * @author Anastasia Akimova
+ * @version 1.0
+ */
 public class RecipeServiceImpl {
 
     private RecipeRepoImpl recipeRepository = new RecipeRepoImpl();
-
-    private IngredientRepoImpl ingredientRepo = new IngredientRepoImpl();
 
     public RecipeServiceImpl() {
     }
@@ -23,8 +28,8 @@ public class RecipeServiceImpl {
         return recipeRepository.save(recipe);
     }
 
-    public RecipeIngredient deleteIngredient(RecipeIngredient recipeIngredient) {
-        return recipeRepository.deleteIngredient(recipeIngredient);
+    public void deleteIngredient(RecipeIngredient recipeIngredient) {
+        recipeRepository.deleteIngredient(recipeIngredient);
     }
 
     public Recipe updateName(Recipe recipe) {
@@ -51,7 +56,12 @@ public class RecipeServiceImpl {
         return recipeRepository.getByName(name);
     }
 
-    // найти рецепты по заданному списку и количеству ингредиентов
+    /**
+     * The method find recipe by ingredient's list and required amount.
+     *
+     * @param ingredients the list of ingredients by which the recipe is searched
+     * @return List of recipes which was found.
+     */
     public List<Recipe> findByIngredientsSet(List<RecipeIngredient> ingredients) {
         List<Recipe> recipes = recipeRepository.getAll();
 
@@ -73,29 +83,39 @@ public class RecipeServiceImpl {
                                 }
                                 return true;
                             }
-
                             return true;
                         }
                 )
                 .collect(Collectors.toList());
     }
 
-    //  отсортировать рецепты по калорийности
+    /**
+     * The method sort recipes by calories.
+     *
+     * @return list of recipes sorted by calories.
+     */
     public List<Recipe> sortByCalories() {
         List<Recipe> recipes = recipeRepository.getAll();
         return recipes.stream().sorted(Comparator.comparing(recipe -> recipe.getRecipeCalories()))
                 .collect(Collectors.toList());
-
     }
 
-    //  вывести рецепты по калорийности в заданном диапазоне (min, max)
+    /**
+     * The method sort recipes by range of calories.
+     *
+     * @param min This is lower calorie limit.
+     * @param max This is upper calorie limit.
+     * @return List of recipes in range from min calories to max calories.
+     */
     public List<Recipe> sortByRangeCalories(Double min, Double max) {
         List<Recipe> recipes = recipeRepository.getAll();
 
         return recipes.stream().filter(recipe -> {
-            if (recipe.getRecipeCalories() <= min || recipe.getRecipeCalories() >= max)
-                return false;
-            return true;
-        }).collect(Collectors.toList());
+                    if (recipe.getRecipeCalories() <= min || recipe.getRecipeCalories() >= max)
+                        return false;
+                    return true;
+                }).sorted(Comparator.comparing(recipe -> recipe.getRecipeCalories()))
+                .collect(Collectors.toList());
+
     }
 }

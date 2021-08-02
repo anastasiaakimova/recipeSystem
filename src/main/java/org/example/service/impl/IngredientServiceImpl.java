@@ -6,6 +6,12 @@ import org.example.repository.impl.IngredientRepoImpl;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * The class contains of business logic.
+ *
+ * @author Anastasia Akimova
+ * @version 1.0
+ */
 public class IngredientServiceImpl {
 
     private IngredientRepoImpl ingredientRepository = new IngredientRepoImpl();

@@ -13,9 +13,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The class is responsible to databases requests for recipes and response processing.
+ *
+ * @author Anastasia Akimova
+ * @version 1.0
+ */
 public class RecipeRepoImpl {
 
-    // методы выводит имя описание всех рецептов и их ингридиенты и требуемое количество
+    /**
+     * The method get recipe's name, recipe's description,
+     * ingredient's name, ingredient's calories, ingredient's required amount of all recipes from database.
+     *
+     * @return List of recipes with their fields.
+     */
     public List<Recipe> getAll() {
         Map<String, Recipe> map = new HashMap<>();
         Recipe recipe = null;
@@ -29,7 +40,6 @@ public class RecipeRepoImpl {
                     "ON ri.\"idIngredient\" = i.id";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             while (resultSet.next()) {
                 if (!map.containsKey(resultSet.getString("recipeName"))) {
                     recipe = new Recipe();
@@ -41,25 +51,26 @@ public class RecipeRepoImpl {
                 } else {
                     recipe = map.get(resultSet.getString("recipeName"));
                 }
-
                 RecipeIngredient ingredient = new RecipeIngredient();
                 ingredient.setId(resultSet.getInt("id"));
                 ingredient.setName(resultSet.getString("ingredientName"));
                 ingredient.setCalories(resultSet.getDouble("calories"));
                 ingredient.setRequiredAmount(resultSet.getInt("requiredAmount"));
                 recipe.getIngredients().add(ingredient);
-
             }
-
         } catch (SQLException | NullPointerException e) {
             System.out.println("Something went wrong! " + e.getMessage());
         }
         List<Recipe> result = new ArrayList<>(map.values());
-
         return result;
     }
 
-    // добавление рецепта
+    /**
+     * The method adding new ingredient to database.
+     *
+     * @param recipe This is object which comes from console.
+     * @return Recipe which was added to database/
+     */
     public Recipe save(Recipe recipe) {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "INSERT INTO recipe (name, description) VALUES(?,?)";
@@ -77,13 +88,9 @@ public class RecipeRepoImpl {
             while (resultSet.next()) {
                 recipe.setId(resultSet.getInt("id"));
             }
-
             PreparedStatement pSt1 = connection.prepareStatement(query2);
-
             List<RecipeIngredient> ingredients = recipe.getIngredients();
-
             for (RecipeIngredient ingredient : ingredients) {
-
                 connection.setAutoCommit(false);
                 pSt1.setInt(1, recipe.getId());
                 pSt1.setInt(2, ingredient.getId());
@@ -104,23 +111,31 @@ public class RecipeRepoImpl {
         return recipe;
     }
 
-    // редактироание названия рецепта
+    /**
+     * The method edit recipe's name.
+     *
+     * @param recipe which name should be edited.
+     * @return Recipe with new name.
+     */
     public Recipe updateName(Recipe recipe) {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "UPDATE recipe SET name = ? WHERE id = ?";
-
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, recipe.getName());
             preparedStatement.setInt(2, recipe.getId());
             preparedStatement.executeUpdate();
-
         } catch (SQLException | NullPointerException e) {
             System.out.println("Something went wrong!" + e.getMessage());
         }
         return recipe;
     }
 
-    // редактироание описания рецепта
+    /**
+     * The method edit recipe's description.
+     *
+     * @param recipe which description should be edited.
+     * @return Recipe with new description.
+     */
     public Recipe updateDescription(Recipe recipe) {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "UPDATE recipe SET description = ? WHERE id = ?";
@@ -129,14 +144,19 @@ public class RecipeRepoImpl {
             preparedStatement.setString(1, recipe.getDescription());
             preparedStatement.setInt(2, recipe.getId());
             preparedStatement.executeUpdate();
-
         } catch (SQLException | NullPointerException e) {
             System.out.println("Something went wrong!" + e.getMessage());
         }
         return recipe;
     }
 
-    //редактирование ингридиентов рецепта
+    /**
+     * The method add ingredients and required amount of them to recipe.
+     *
+     * @param recipe      which should have new ingredients.
+     * @param ingredients which should be added.
+     * @return Recipe with new ingredients and required amount for them.
+     */
     public Recipe addIngredients(Recipe recipe, List<RecipeIngredient> ingredients) {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "INSERT INTO recipe_ingredient  (\"idIngredient\", \"requiredAmount\", \"idRecipe\") VALUES (?, ?, ? )";
@@ -151,28 +171,33 @@ public class RecipeRepoImpl {
             }
             preparedStatement.executeBatch();
             connection.commit();
-
         } catch (SQLException | NullPointerException e) {
             System.out.println("Something went wrong!" + e.getMessage());
         }
         return recipe;
     }
 
-    // удаление ингридиента из рецепта
-    public RecipeIngredient deleteIngredient(RecipeIngredient recipeIngredient) {
+    /**
+     * The method delete ingredients and required amount of them to recipe.
+     *
+     * @param recipeIngredient this ingredient which should be deleted from recipe.
+     */
+    public void deleteIngredient(RecipeIngredient recipeIngredient) {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "DELETE FROM recipe_ingredient WHERE \"idIngredient\" = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-
             preparedStatement.setInt(1, recipeIngredient.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException | NullPointerException e) {
             System.out.println("Something went wrong! " + e.getMessage());
         }
-        return recipeIngredient;
     }
 
-    // удаление рецепта
+    /**
+     * The method delete recipe from database.
+     *
+     * @param name of recipe which should be deleted.
+     */
     public void deleteByName(String name) {
         try (Connection connection = DbConnection.getConnection()) {
             String query = "DELETE FROM recipe USING recipe_ingredient " +
@@ -186,7 +211,12 @@ public class RecipeRepoImpl {
         }
     }
 
-    // метода выводит имя описание рецептов и их ингридиенты по заданному имени
+    /**
+     * The method get recipe's name, recipe's description recipe's ingredients required amount of ingredients by recipe's name.
+     *
+     * @param name of recipe which should be found.
+     * @return Recipe which was found by name.
+     */
     public Recipe getByName(String name) {
         Recipe recipe = null;
         try (Connection connection = DbConnection.getConnection()) {
@@ -200,7 +230,6 @@ public class RecipeRepoImpl {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             recipe = new Recipe();
             while (resultSet.next()) {
                 if (recipe.getName() == null) {

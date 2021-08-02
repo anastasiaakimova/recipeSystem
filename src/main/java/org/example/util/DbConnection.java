@@ -4,6 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * The class is responsible for connecting to the database.
+ *
+ * @author Anastasia Akimova
+ * @version 1.0
+ */
+
 public class DbConnection {
 
     private static String username = "root";
@@ -11,6 +18,11 @@ public class DbConnection {
     private static String databaseURL = "jdbc:postgresql://localhost:5433/recipeSystem";
     private static String driver = "org.postgresql.Driver";
 
+    /**
+     * The method is used to connect to database.
+     *
+     * @return connection
+     */
     public static Connection getConnection() {
 
         Connection myConnection = null;
