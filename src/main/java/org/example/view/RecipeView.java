@@ -7,8 +7,14 @@ import org.example.service.impl.IngredientServiceImpl;
 import org.example.service.impl.RecipeServiceImpl;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.InputMismatchException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
+/**
+ * The class view of recipe's menu and methods.
+ */
 public class RecipeView {
     private RecipeServiceImpl recipeService = new RecipeServiceImpl();
     private IngredientServiceImpl ingredientService = new IngredientServiceImpl();
@@ -16,6 +22,9 @@ public class RecipeView {
     public RecipeView() {
     }
 
+    /**
+     * The method shows main menu of ingredients functionality
+     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
         try {
@@ -68,19 +77,28 @@ public class RecipeView {
         }
     }
 
+    /**
+     * The method show list of recipes with their description, ingredients and calories.
+     *
+     * @throws SQLException
+     */
     private void showAllRecipes() throws SQLException {
         List<Recipe> recipes = recipeService.getAll();
         System.out.println("List of all recipes: ");
         recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }
 
+    /**
+     * The method edit recipe's name, description, add or delete ingredients to recipe.
+     *
+     * @throws SQLException
+     */
     private void updateRecipe() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter recipe's name, please: ");
         String name = scanner.nextLine();
         Ingredient dbIngredient = new Ingredient();
         RecipeIngredient ingredient = new RecipeIngredient();
-
         try {
             Recipe recipe = recipeService.findByName(name);
             if (recipe != null) {
@@ -161,7 +179,6 @@ public class RecipeView {
                             System.out.println("Enter number from 1 to 4, please");
                     }
                 }
-
             } else {
                 System.out.println("This name doesn't exist");
             }
@@ -172,8 +189,13 @@ public class RecipeView {
             } else
                 System.out.println("There is no name");
         }
-
     }
+
+    /**
+     * The method finds and shows recipe by list of ingredients.
+     *
+     * @throws SQLException
+     */
 
     private void findRecipeByIngredientsSet() throws SQLException {
         Scanner scanner = new Scanner(System.in);
@@ -234,14 +256,22 @@ public class RecipeView {
         recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }
 
-    //сортировка по калорийности
+    /**
+     * The method sorts recipes by calories.
+     *
+     * @throws SQLException
+     */
     private void sortByCalories() throws SQLException {
         List<Recipe> recipes = recipeService.sortByCalories();
 
         recipes.forEach(recipe -> System.out.println(recipe.toString()));
     }
 
-    //сортировка по диапазону
+    /**
+     * The method sort recipes by range of calories.
+     *
+     * @throws SQLException
+     */
     private void sortByRangeOfCalories() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter min number of range: ");
@@ -255,7 +285,11 @@ public class RecipeView {
 
     }
 
-    // добавление рецепта работает
+    /**
+     * The method add new recipe.
+     *
+     * @throws SQLException
+     */
     private void addRecipe() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         Recipe recipe = new Recipe();
@@ -319,7 +353,11 @@ public class RecipeView {
         }
     }
 
-
+    /**
+     * The method delete recipe.
+     *
+     * @throws SQLException
+     */
     private void deleteRecipe() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter recipe's name which you want to delete, please: ");

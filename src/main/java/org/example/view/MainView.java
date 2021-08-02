@@ -4,6 +4,13 @@ import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * The class show main menu in the console.
+ *
+ * @author Anastasia Akimova
+ * @version 1.0
+ */
+
 public class MainView {
 
     private static MainView view;
@@ -15,6 +22,12 @@ public class MainView {
         ingredientView = new IngredientView();
     }
 
+    /**
+     * The method create instance of class.
+     *
+     * @return view that shows main menu.
+     * @throws SQLException
+     */
     public static MainView getInstance() throws SQLException {
         if (view == null) {
             view = new MainView();
@@ -22,11 +35,13 @@ public class MainView {
         return view;
     }
 
+    /**
+     * The method shows main menu.
+     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
         try {
             while (true) {
-
                 System.out.println("Please select a number to select an option: ");
                 System.out.println("1. Recipes");
                 System.out.println("2. Ingredients");

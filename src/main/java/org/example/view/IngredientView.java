@@ -8,9 +8,17 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The class view of ingredient's menu and methods.
+ */
 public class IngredientView {
     private IngredientServiceImpl ingredientService = new IngredientServiceImpl();
 
+    /**
+     * The method shows main menu of ingredients functionality
+     *
+     * @throws SQLException
+     */
     public void run() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         try {
@@ -51,16 +59,32 @@ public class IngredientView {
         }
     }
 
+    /**
+     * The method goes over to main menu.
+     *
+     * @throws SQLException
+     */
     private void showMainMenu() throws SQLException {
         MainView.getInstance().run();
     }
 
+    /**
+     * The method delete ingredient.
+     *
+     * @throws SQLException
+     */
     private void deleteIngredient() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter name of ingredient which you want to delete, please: ");
         String name = scanner.nextLine();
         ingredientService.remove(name);
     }
+
+    /**
+     * The method update ingredient.
+     *
+     * @throws SQLException
+     */
 
     private void updateIngredient() throws SQLException {
         Scanner scanner = new Scanner(System.in);
@@ -78,6 +102,9 @@ public class IngredientView {
         ingredientService.update(ingredient);
     }
 
+    /**
+     * The method add new ingredient.
+     */
     private void addNewIngredient() {
         try {
             Scanner scanner = new Scanner(System.in);
@@ -97,6 +124,11 @@ public class IngredientView {
         }
     }
 
+    /**
+     * The method show list of ingredients with their calories.
+     *
+     * @throws SQLException
+     */
     private void showAllIngredients() throws SQLException {
         List<Ingredient> ingredients = ingredientService.getAll();
         System.out.println("List of ingredients: ");
