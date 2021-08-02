@@ -1,5 +1,11 @@
 package org.example.entity;
 
+/**
+ * The Ingredient is a model of db's ingredient
+ *
+ * @author Anastasia Akimova
+ * @version 1.0
+ */
 public class Ingredient {
     private Integer id;
     private String name;

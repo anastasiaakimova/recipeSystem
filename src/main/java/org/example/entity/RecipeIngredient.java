@@ -1,5 +1,11 @@
 package org.example.entity;
 
+/**
+ * The Object of RecipeIngredient class is ingredient which used in the recipe
+ *
+ * @author Anastasia Akimova
+ * @version 1.0
+ */
 public class RecipeIngredient extends Ingredient {
     private Integer id;
     private String name;
@@ -7,13 +13,6 @@ public class RecipeIngredient extends Ingredient {
     private Integer requiredAmount;
 
     public RecipeIngredient() {
-    }
-
-    public RecipeIngredient(Integer id, String name, Double calories, Integer requiredAmount) {
-        this.id = id;
-        this.name = name;
-        this.calories = calories;
-        this.requiredAmount = requiredAmount;
     }
 
     public int getId() {
