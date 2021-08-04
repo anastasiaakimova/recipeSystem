@@ -280,7 +280,7 @@ public class RecipeView {
         System.out.println("Enter max number of range: ");
         Double max = scanner.nextDouble();
 
-        List<Recipe> recipes = recipeService.sortByRangeCalories(min, max);
+        List<Recipe> recipes = recipeService.filterByRangeCalories(min, max);
         recipes.forEach(recipe -> System.out.println(recipe.toString()));
 
     }

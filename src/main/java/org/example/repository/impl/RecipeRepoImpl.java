@@ -66,10 +66,10 @@ public class RecipeRepoImpl {
     }
 
     /**
-     * The method adding new ingredient to database.
+     * The method adding new recipe to database.
      *
-     * @param recipe This is object which comes from console.
-     * @return Recipe which was added to database/
+     * @param recipe This is object which should be added to database.
+     * @return Recipe which was added to database.
      */
     public Recipe save(Recipe recipe) {
         try (Connection connection = DbConnection.getConnection()) {

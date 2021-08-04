@@ -101,13 +101,13 @@ public class RecipeServiceImpl {
     }
 
     /**
-     * The method sort recipes by range of calories.
+     * The method filter recipes by range of calories.
      *
      * @param min This is lower calorie limit.
      * @param max This is upper calorie limit.
      * @return List of recipes in range from min calories to max calories.
      */
-    public List<Recipe> sortByRangeCalories(Double min, Double max) {
+    public List<Recipe> filterByRangeCalories(Double min, Double max) {
         List<Recipe> recipes = recipeRepository.getAll();
 
         return recipes.stream().filter(recipe -> {
